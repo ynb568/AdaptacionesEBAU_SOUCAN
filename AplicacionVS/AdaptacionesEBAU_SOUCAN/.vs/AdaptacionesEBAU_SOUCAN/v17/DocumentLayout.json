@@ -1,0 +1,162 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4B7D8A08-E886-4584-9FED-CF696CF522B5}|CapaNegocio\\CapaNegocio.csproj|c:\\users\\navay\\desktop\\desarrolloappweb\\aplicacionvs\\adaptacionesebau_soucan\\capanegocio\\cn_adaptaciones.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4B7D8A08-E886-4584-9FED-CF696CF522B5}|CapaNegocio\\CapaNegocio.csproj|solutionrelative:capanegocio\\cn_adaptaciones.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{42D63DD1-4E46-4D67-87EA-2C238133390E}|CapaDatos\\CapaDatos.csproj|c:\\users\\navay\\desktop\\desarrolloappweb\\aplicacionvs\\adaptacionesebau_soucan\\capadatos\\cd_adaptaciones.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{42D63DD1-4E46-4D67-87EA-2C238133390E}|CapaDatos\\CapaDatos.csproj|solutionrelative:capadatos\\cd_adaptaciones.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4B7D8A08-E886-4584-9FED-CF696CF522B5}|CapaNegocio\\CapaNegocio.csproj|c:\\users\\navay\\desktop\\desarrolloappweb\\aplicacionvs\\adaptacionesebau_soucan\\capanegocio\\cn_diagnosticos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4B7D8A08-E886-4584-9FED-CF696CF522B5}|CapaNegocio\\CapaNegocio.csproj|solutionrelative:capanegocio\\cn_diagnosticos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4B7D8A08-E886-4584-9FED-CF696CF522B5}|CapaNegocio\\CapaNegocio.csproj|c:\\users\\navay\\desktop\\desarrolloappweb\\aplicacionvs\\adaptacionesebau_soucan\\capanegocio\\cn_asignaturas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4B7D8A08-E886-4584-9FED-CF696CF522B5}|CapaNegocio\\CapaNegocio.csproj|solutionrelative:capanegocio\\cn_asignaturas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{201C15C2-3CED-4CD9-80E8-7EE41D9916DC}|CapaEntidad\\CapaEntidad.csproj|c:\\users\\navay\\desktop\\desarrolloappweb\\aplicacionvs\\adaptacionesebau_soucan\\capaentidad\\estudiante.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{201C15C2-3CED-4CD9-80E8-7EE41D9916DC}|CapaEntidad\\CapaEntidad.csproj|solutionrelative:capaentidad\\estudiante.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{201C15C2-3CED-4CD9-80E8-7EE41D9916DC}|CapaEntidad\\CapaEntidad.csproj|c:\\users\\navay\\desktop\\desarrolloappweb\\aplicacionvs\\adaptacionesebau_soucan\\capaentidad\\adaptacion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{201C15C2-3CED-4CD9-80E8-7EE41D9916DC}|CapaEntidad\\CapaEntidad.csproj|solutionrelative:capaentidad\\adaptacion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{42D63DD1-4E46-4D67-87EA-2C238133390E}|CapaDatos\\CapaDatos.csproj|c:\\users\\navay\\desktop\\desarrolloappweb\\aplicacionvs\\adaptacionesebau_soucan\\capadatos\\cd_diagnosticos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{42D63DD1-4E46-4D67-87EA-2C238133390E}|CapaDatos\\CapaDatos.csproj|solutionrelative:capadatos\\cd_diagnosticos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{201C15C2-3CED-4CD9-80E8-7EE41D9916DC}|CapaEntidad\\CapaEntidad.csproj|c:\\users\\navay\\desktop\\desarrolloappweb\\aplicacionvs\\adaptacionesebau_soucan\\capaentidad\\diagnostico.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{201C15C2-3CED-4CD9-80E8-7EE41D9916DC}|CapaEntidad\\CapaEntidad.csproj|solutionrelative:capaentidad\\diagnostico.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 346,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CN_Adaptaciones.cs",
+              "DocumentMoniker": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\CapaNegocio\\CN_Adaptaciones.cs",
+              "RelativeDocumentMoniker": "CapaNegocio\\CN_Adaptaciones.cs",
+              "ToolTip": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\CapaNegocio\\CN_Adaptaciones.cs",
+              "RelativeToolTip": "CapaNegocio\\CN_Adaptaciones.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAtAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-21T09:44:34.671Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CN_Asignaturas.cs",
+              "DocumentMoniker": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\CapaNegocio\\CN_Asignaturas.cs",
+              "RelativeDocumentMoniker": "CapaNegocio\\CN_Asignaturas.cs",
+              "ToolTip": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\CapaNegocio\\CN_Asignaturas.cs",
+              "RelativeToolTip": "CapaNegocio\\CN_Asignaturas.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-21T09:29:07.745Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Adaptacion.cs",
+              "DocumentMoniker": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\CapaEntidad\\Adaptacion.cs",
+              "RelativeDocumentMoniker": "CapaEntidad\\Adaptacion.cs",
+              "ToolTip": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\CapaEntidad\\Adaptacion.cs",
+              "RelativeToolTip": "CapaEntidad\\Adaptacion.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-21T09:30:55.188Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CD_Diagnosticos.cs",
+              "DocumentMoniker": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\CapaDatos\\CD_Diagnosticos.cs",
+              "RelativeDocumentMoniker": "CapaDatos\\CD_Diagnosticos.cs",
+              "ToolTip": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\CapaDatos\\CD_Diagnosticos.cs",
+              "RelativeToolTip": "CapaDatos\\CD_Diagnosticos.cs",
+              "ViewState": "AQIAABwAAAAAAAAAAAAgwDMAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-21T09:21:32.742Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Diagnostico.cs",
+              "DocumentMoniker": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\CapaEntidad\\Diagnostico.cs",
+              "RelativeDocumentMoniker": "CapaEntidad\\Diagnostico.cs",
+              "ToolTip": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\CapaEntidad\\Diagnostico.cs",
+              "RelativeToolTip": "CapaEntidad\\Diagnostico.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAvAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-21T09:24:02.361Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 346,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Estudiante.cs",
+              "DocumentMoniker": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\CapaEntidad\\Estudiante.cs",
+              "RelativeDocumentMoniker": "CapaEntidad\\Estudiante.cs",
+              "ToolTip": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\CapaEntidad\\Estudiante.cs",
+              "RelativeToolTip": "CapaEntidad\\Estudiante.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAowBMAAAAtAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-21T09:39:31.093Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CN_Diagnosticos.cs",
+              "DocumentMoniker": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\CapaNegocio\\CN_Diagnosticos.cs",
+              "RelativeDocumentMoniker": "CapaNegocio\\CN_Diagnosticos.cs",
+              "ToolTip": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\CapaNegocio\\CN_Diagnosticos.cs",
+              "RelativeToolTip": "CapaNegocio\\CN_Diagnosticos.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-21T09:29:00.293Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CD_Adaptaciones.cs",
+              "DocumentMoniker": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\CapaDatos\\CD_Adaptaciones.cs",
+              "RelativeDocumentMoniker": "CapaDatos\\CD_Adaptaciones.cs",
+              "ToolTip": "C:\\Users\\navay\\Desktop\\DesarrolloAppWeb\\AplicacionVS\\AdaptacionesEBAU_SOUCAN\\CapaDatos\\CD_Adaptaciones.cs",
+              "RelativeToolTip": "CapaDatos\\CD_Adaptaciones.cs",
+              "ViewState": "AQIAABMAAAAAAAAAAAAgwBIAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-21T09:30:47.575Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

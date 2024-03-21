@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - GestionAdaptacionesUNICAN</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        .nav-link-uc {
+            background-image: url('../Images/logoUC.png'); /* Ruta relativa a Content */
+            background-size: contain; /* Ajusta según tus necesidades */
+            background-repeat: no-repeat;
+            width: 30px; /* Ancho del logo */
+            height: 30px; /* Altura del logo */
+            display: inline-block;
+            text-indent: -9999px; /* Oculta el texto del enlace */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+        <div class="container">
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav">
+                    <li>@Html.ActionLink("UC", "WebUC", "Home", new { area = "" }, new { @class = "nav-link nav-link-uc" })</li>
+                    <li>@Html.ActionLink("SOUCAN (Sistema de Orientación de la UC)", "WebSoucan", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li>@Html.ActionLink("Programas de Orientación", "Preuniversitarios", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Inclusión en la UC", "Estudiantes", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>SOUCAN (Sistema de Orientación de la UC)</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
