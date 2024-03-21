@@ -34,7 +34,7 @@ as
 		declare @idDireccionNueva int;
 		begin try
 			begin transaction
-				--Comprobar existencia centroEducativo y que esté validado
+				--Comprobar existencia centroEducativo y que estï¿½ validado
 				--REVISAR
 				if (not exists(select * from Estudiante
 								where CONCAT(nombreEstudiante, ' ', ap1Estudiante, ' ', ap2Estudiante) = CONCAT(@nombreEstudiante, ' ', @ap1Estudiante, ' ', @ap2Estudiante)))
@@ -54,7 +54,7 @@ as
 				else
 					begin
 						rollback transaction
-						set @Mensaje = 'El correo y la contraseña ya están registrados';
+						set @Mensaje = 'El correo y la contraseï¿½a ya estï¿½n registrados';
 						set @Registrado = 0;
 					end		
 		end try
@@ -148,7 +148,7 @@ as
 						else
 							begin
 								rollback transaction
-								set @Mensaje = ('La contraseña anterior no es correcta');
+								set @Mensaje = ('La contraseï¿½a anterior no es correcta');
 								set @Completado = 0;
 							end
 					end
@@ -220,13 +220,6 @@ as
 	end;
 go
 
---REVISADO
-create procedure sp_listaAsignaturasCE
-as
-	begin 
-		select * from Asignatura where activo = 1
-	end;
-go
 
 create procedure sp_listaAsignaturasPrevistasEstudianteF1 @idE int
 as
@@ -301,7 +294,7 @@ as
 						else
 							begin
 								rollback transaction
-								set @Mensaje = ('Adaptación no asignada a estudiante previamente');
+								set @Mensaje = ('Adaptaciï¿½n no asignada a estudiante previamente');
 								set @Completado = 0;
 							end
 					end
@@ -383,7 +376,7 @@ as
 				else
 				begin
 					rollback transaction
-					set @Mensaje = 'El correo y la contraseña ya están registrados';
+					set @Mensaje = 'El correo y la contraseï¿½a ya estï¿½n registrados';
 					set @Registrado = 0;
 				end
 
@@ -420,7 +413,7 @@ as
 						else
 							begin
 							rollback transaction
-							set @Mensaje = ('Campo de texto vacío');
+							set @Mensaje = ('Campo de texto vacï¿½o');
 							set @Completado = 0;
 
 						end
@@ -552,7 +545,7 @@ as
 go
 
 --REVISADO
-create procedure sp_listaAsignaturasSoucan
+create procedure sp_listaAsignaturas
 as
 	begin 
 		select * from Asignatura
