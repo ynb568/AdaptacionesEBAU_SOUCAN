@@ -14,7 +14,8 @@ create table PlazosRegistro (
 	idPlazo int primary key identity,
 	activo bit default 1,
 	fechaIni date not null,
-	fechaFin date not null
+	fechaFin date not null,
+	cursoConvocatoria varchar(10) not null
 );
 
 create table Municipio (
@@ -38,15 +39,6 @@ create table Usuario (
 create table Soucan (
 	idSoucan int primary key references Usuario(idUsuario)
 );
-
---ME PARECE CHORRADA
-/*
-create table CEDisponible (
-	idCED int primary key identity,
-	nombreCED varchar(100) not null unique,
-	activo bit null
-);
-*/
 
 create table Sede (
 	idSede int primary key identity,
@@ -79,16 +71,24 @@ create table CentroEducativo (
 
 create table Estudiante (
 	idEstudiante int primary key identity,
+	dni varchar(20) not null, --Puede ser DNI,NIE o Pasaporte
 	nombreEstudiante varchar(50) not null,
 	ap1Estudiante varchar(50) not null,
 	ap2Estudiante varchar(50) not null,
-	convocatoria varchar(20) not null,
+	nombreCompletoTutor1 varchar(100) null,
+	telefonoTutor1 varchar(9) null,
+	nombreCompletoTutor2 varchar(100) null,
+	telefonoTutor2 varchar(9) null,
+	ordinaria bit null,
+	extraordinaria bit null,
 	observaciones varchar(500) null,
 	validado bit null,
+	cursoConvocatoria varchar(10),
 	fechaRegistro datetime default getdate(),
-	idDireccion int foreign key references Direccion(idDireccion),
+	--idDireccion int foreign key references Direccion(idDireccion),
 	idCE int foreign key references CentroEducativo (idCE) not null,
-	constraint ck_convocatoria check (convocatoria in ('Ordinaria', 'Extraordinaria'))
+	constraint ck_tlfnT1 check (telefonoTutor1 like ('[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')),
+	constraint ck_tlfnT2 check (telefonoTutor2 like ('[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')),
 );
 
 create table Documento (
@@ -169,5 +169,6 @@ create table AdaptacionDiagnosticoEstudiante (
 	validado bit null,
 	observaciones varchar(500) null,
 	revision varchar(500) null,
+	aprobado bit default null,
 	primary key (idAdaptacion, idDiagnostico, idEstudiante)
 );

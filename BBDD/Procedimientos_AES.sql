@@ -24,37 +24,43 @@ go
 
 --REVISADO
 create procedure sp_registraEstudiante 
-	@nombreEstudiante varchar(50), @ap1Estudiante varchar(50), @ap2Estudiante varchar(50), @convocatoria varchar(20),
-	@direccion varchar(100), @idMunicipio int,
+	@nombreEstudiante varchar(50), @ap1Estudiante varchar(50), @ap2Estudiante varchar(50),
+	@nombreCompletoT1 varchar(100), @telefonoT1 varchar(9), @nombreCompletoT2 varchar(100), @telefonoT2 varchar(9),
 	@idCE int
 as
 	begin
 		declare @Mensaje varchar(50);
 		declare @registrado bit;
-		declare @idDireccionNueva int;
+		declare @curso varchar(10);
 		begin try
 			begin transaction
 				--Comprobar existencia centroEducativo y que esté validado
 				--REVISAR
-				if (not exists(select * from Estudiante
-								where CONCAT(nombreEstudiante, ' ', ap1Estudiante, ' ', ap2Estudiante) = CONCAT(@nombreEstudiante, ' ', @ap1Estudiante, ' ', @ap2Estudiante)))
+				if (exists(select * from CentroEducativo
+								where idCE = @idCE))
 					begin
-						insert into Direccion (direccion, idMunicipio)
-							values (@direccion, @idMunicipio)
-
-						set @idDireccionNueva = (select idDireccion from Direccion where direccion = @direccion and idMunicipio = @idMunicipio);
-
-						insert into Estudiante (nombreEstudiante, ap1Estudiante, ap2Estudiante, convocatoria, idDireccion, idCE)
-							values (@nombreEstudiante, @ap1Estudiante, @ap2Estudiante, @convocatoria, @idDireccionNueva, @idCE)
-				
-						set @Mensaje = ('Procedimiento correcto');
-						set @Registrado = 1;
-						commit transaction
+						if (exists (select * from PlazosRegistro where activo = 1))
+							begin
+								--TODO: asegurar que únicamente haya 1 plazo activo
+								set @curso = (select top(1) cursoConvocatoria from PlazosRegistro where activo = 1) 
+								insert into Estudiante (nombreEstudiante, ap1Estudiante, ap2Estudiante, nombreCompletoTutor1, telefonoTutor1,  nombreCompletoTutor2, telefonoTutor2, cursoConvocatoria, idCE)
+									values (@nombreEstudiante, @ap1Estudiante, @ap2Estudiante, @nombreCompletoT1, @telefonoT1, @nombreCompletoT2, @telefonoT2, @curso, @idCE)
+		
+								set @Mensaje = ('Procedimiento correcto');
+								set @Registrado = 1;
+								commit transaction
+							end
+						else
+							begin
+								rollback transaction
+								set @Mensaje = 'No hay un curso académico activo';
+								set @Registrado = 0;
+							end
 					end
 				else
 					begin
 						rollback transaction
-						set @Mensaje = 'El correo y la contraseña ya están registrados';
+						set @Mensaje = 'Centro educativo no existente';
 						set @Registrado = 0;
 					end		
 		end try
