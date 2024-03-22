@@ -20,8 +20,8 @@ namespace CapaEntidad
 		public DateTime FechaRegistro { get; set; }
         public List<Asignatura> AsignaturasPrevistas { get; set; }
         public List<Asignatura> AsignaturasMatriculadas { get; set; }
-		public List<Apunte> Apuntes { get; set; } //Creo que es List<string>
-		public List<Documento> Documentos {  get; set; } //Creo que es List<string>
+		public List<Apunte> Apuntes { get; set; } 
+		public List<Documento> Documentos {  get; set; } 
 
 
 

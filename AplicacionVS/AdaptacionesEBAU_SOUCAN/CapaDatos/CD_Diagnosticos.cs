@@ -28,16 +28,19 @@ namespace CapaDatos
                     {
                         while (dr.Read())
                         {
-                            listaDiagnosticos.Add(
-                                new Diagnostico()
-                                {
-                                    IdDiagnostico = Convert.ToInt32(dr["idDiagnostico"]),
-                                    NombreDiagnostico = dr["nombreDiagnostico"].ToString(),
-                                    Activo = Convert.ToBoolean(dr["activo"]),
-                                    Descripcion = dr["descripcion"].ToString(),
-                                    Adaptaciones =,
-                                }
-                            );
+                            Diagnostico d = new Diagnostico()
+                            {
+                                IdDiagnostico = Convert.ToInt32(dr["idDiagnostico"]),
+                                NombreDiagnostico = dr["nombreDiagnostico"].ToString(),
+                                Activo = Convert.ToBoolean(dr["activo"]),
+                                Descripcion = dr["descripcion"].ToString()
+                            };
+                            int idDiagnostico = d.IdDiagnostico;
+
+                            CD_Adaptaciones cdAdaptaciones = new CD_Adaptaciones();
+                            List<Adaptacion> adaptaciones = cdAdaptaciones.listaAdaptacionesDiagnostico(idDiagnostico);
+                            d.Adaptaciones = adaptaciones;
+                            listaDiagnosticos.Add(d);
                         }
                     }
 

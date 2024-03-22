@@ -65,6 +65,69 @@ as
 	end;
 go	
 
+create procedure sp_obtenAdaptacionDiagnostico @idD int
+as
+	begin
+		declare @Mensaje varchar(50);
+		declare @Completado bit;
+		if (exists (select * from Diagnostico where idDiagnostico = @idD))
+			begin
+				select * from Adaptacion a
+					inner join AdaptacionDiagnostico ad on a.idAdaptacion = ad.idDiagnostico
+					where ad.idDiagnostico = @idD
+				set @Mensaje = ('Procedimiento correcto');
+				set @Completado = 1;
+			end
+		else
+			begin
+				set @Mensaje = ('No existe el diagnostico asociado');
+				set @Completado = 0;
+			end
+	end;
+go	
+
+create procedure sp_obtenAsignaturasPrevistasEstudiante @idE int
+as
+	begin
+		declare @Mensaje varchar(50);
+		declare @Completado bit;
+		if (exists (select * from Estudiante where idEstudiante = @idE))
+			begin
+				select * from Asignatura a
+					inner join AsignaturaEstudiantePrevista aep on a.idAsignatura = aep.idAsignatura
+					where aep.idEstudiante = @idE
+				set @Mensaje = ('Procedimiento correcto');
+				set @Completado = 1;
+			end
+		else
+			begin
+				set @Mensaje = ('No existe el estudiante asociado');
+				set @Completado = 0;
+			end
+	end;
+go	
+
+create procedure sp_obtenAsignaturasMatriculadasEstudiante @idE int
+as
+	begin
+		declare @Mensaje varchar(50);
+		declare @Completado bit;
+		if (exists (select * from Estudiante where idEstudiante = @idE))
+			begin
+				select * from Asignatura a
+					inner join AsignaturaEstudianteMatriculada aem on a.idAsignatura = aem.idAsignatura
+					where aem.idEstudiante = @idE
+				set @Mensaje = ('Procedimiento correcto');
+				set @Completado = 1;
+			end
+		else
+			begin
+				set @Mensaje = ('No existe el estudiante asociado');
+				set @Completado = 0;
+			end
+	end;
+go
+
 
 
 
@@ -450,7 +513,7 @@ as
 					insert into Direccion (direccion, idMunicipio)
 						values (@direccion, @idMunicipio)
 
-					set @idDireccionNueva = (select idDireccion from Direccion where direccion = @direccion and idMunicipio = @idMunicipio);
+					set @idDireccionNueva = (select top(1) idDireccion from Direccion where direccion = @direccion and idMunicipio = @idMunicipio);
 
 					insert into CentroEducativo (idCE, nombreCE, telefonoCE, nombreOrientador, apellidosOrientador, telefonoOrientador, correoOrientador,
 						nombreEquipoDirectivo, apellidosEquipoDirectivo, telefonoEquipoDirectivo, idDireccion)

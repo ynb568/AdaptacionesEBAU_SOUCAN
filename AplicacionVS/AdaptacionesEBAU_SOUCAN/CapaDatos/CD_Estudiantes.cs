@@ -33,28 +33,40 @@ namespace CapaDatos
                         //Para leer múltiples filas
                         while (dr.Read())
                         {
-                            estudiantes.Add(
-                                new Estudiante()
-                                {
-                                    IdEstudiante = Convert.ToInt32(dr["idEstudiante"]),
-                                    NombreEstudiante = dr["nombreEstudiante"].ToString(),
-                                    Ap1Estudiante = dr["ap1Estudiante"].ToString(),
-                                    Ap2Estudiante = dr["ap2Estudiante"].ToString(),
-                                    NombreCompletoTutor1 = dr["nombreCompletoTutor1"].ToString(),
-                                    TelefonoTutor1 = dr["telefonoTutor1"].ToString(),
-                                    NombreCompletoTutor2 = dr["nombreCompletoTutor2"].ToString(),
-                                    TelefonoTutor2 = dr["telefonoTutor2"].ToString(),
-                                    CursoConvocatoria = dr["cursoConvocatoria"].ToString(),
-                                    FechaRegistro = Convert.ToDateTime(dr["fechaRegistro"]),
-                                    Ordinaria = Convert.ToBoolean(dr["ordinaria"]),
-                                    ExtraOrdinaria = Convert.ToBoolean(dr["extraOrdinaria"]),
-                                    AsignaturasPrevistas = ,
-                                    AsignaturasMatriculadas = ,
-                                    Apuntes = ,
-                                    Documentos =
-                                }
-                                
-                            ) ;
+                            Estudiante e = new Estudiante()
+                            {
+                                IdEstudiante = Convert.ToInt32(dr["idEstudiante"]),
+                                NombreEstudiante = dr["nombreEstudiante"].ToString(),
+                                Ap1Estudiante = dr["ap1Estudiante"].ToString(),
+                                Ap2Estudiante = dr["ap2Estudiante"].ToString(),
+                                NombreCompletoTutor1 = dr["nombreCompletoTutor1"].ToString(),
+                                TelefonoTutor1 = dr["telefonoTutor1"].ToString(),
+                                NombreCompletoTutor2 = dr["nombreCompletoTutor2"].ToString(),
+                                TelefonoTutor2 = dr["telefonoTutor2"].ToString(),
+                                CursoConvocatoria = dr["cursoConvocatoria"].ToString(),
+                                FechaRegistro = Convert.ToDateTime(dr["fechaRegistro"]),
+                                Ordinaria = Convert.ToBoolean(dr["ordinaria"]),
+                                ExtraOrdinaria = Convert.ToBoolean(dr["extraOrdinaria"]),
+                            };
+
+                            int idEstudiante = e.IdEstudiante;
+
+                            CD_Asignaturas cdAsignaturas = new CD_Asignaturas();
+                            List<Asignatura> asignaturasPrevistas = cdAsignaturas.listaAsignaturasPrevistasEstudiante(idEstudiante);
+                            e.AsignaturasPrevistas = asignaturasPrevistas;
+                            List<Asignatura> asignaturasMatriculadas = cdAsignaturas.listaAsignaturasMatriculadasEstudiante(idEstudiante);
+                            e.AsignaturasMatriculadas = asignaturasMatriculadas;
+
+
+                            CD_Apuntes cdApuntes = new CD_Apuntes();
+                            List<Apunte> apuntes = cdApuntes.listaApuntesEstudiante(idEstudiante);
+                            e.Apuntes = apuntes;
+
+                            CD_Documentos cdDocumentos = new CD_Documentos();
+                            List<Documento> documentos = cdDocumentos.listaDocumentosEstudiante(idEstudiante);
+                            e.Documentos = documentos;
+
+                            estudiantes.Add(e);
                         }
                     }
                 }
