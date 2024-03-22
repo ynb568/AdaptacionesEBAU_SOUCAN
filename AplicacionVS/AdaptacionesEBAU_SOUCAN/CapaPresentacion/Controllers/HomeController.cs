@@ -13,6 +13,15 @@ namespace CapaPresentacion.Controllers
             return View();
         }
 
+        public ActionResult ApuntesFor()
+        {
+            if(DateTime.Now.Date > new DateTime(2024, 03, 22))
+            {
+                return RedirectToAction(nameof(HomeController.Index));
+            }
+            return View();
+        }
+
         public ActionResult LoginCE()
         {
             return View("~/Views/CentrosEducativos/loginCE.cshtml"); // Ruta a la vista loginCE.cshtml

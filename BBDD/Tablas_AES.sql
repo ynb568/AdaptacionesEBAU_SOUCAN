@@ -25,7 +25,7 @@ create table Municipio (
 
 create table Direccion (
 	idDireccion int primary key identity,
-	direccion varchar(100) not null,
+	nombreDireccion varchar(100) not null,
 	idMunicipio int foreign key references Municipio(idMunicipio)
 );
 

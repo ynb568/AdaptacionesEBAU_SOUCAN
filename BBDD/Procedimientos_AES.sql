@@ -1,6 +1,76 @@
 use AdaptacionesEBAU_SOUCAN;
 go
 
+-- MAPEADOS DE OBJETOS ---
+create procedure sp_obtenMunicipioDireccion @idD int
+as
+	begin
+		declare @Mensaje varchar(50);
+		declare @Completado bit;
+		if (exists (select * from Direccion where idDireccion = @idD))
+			begin
+				select * from Municipio m
+					inner join Direccion d on m.idMunicipio = d.idMunicipio
+					where d.idDireccion = @idD
+				set @Mensaje = ('Procedimiento correcto');
+				set @Completado = 1;
+			end
+		else
+			begin
+				set @Mensaje = ('No existe la direccion asociada');
+				set @Completado = 0;
+			end
+	end;
+go	
+
+create procedure sp_obtenDireccionCentro @idCE int
+as
+	begin
+		declare @Mensaje varchar(50);
+		declare @Completado bit;
+		if (exists (select * from CentroEducativo where idCE = @idCE))
+			begin
+				select * from Direccion d
+					inner join CentroEducativo ce on d.idDireccion = ce.idDireccion
+					where ce.idCE = @idCE
+				set @Mensaje = ('Procedimiento correcto');
+				set @Completado = 1;
+			end
+		else
+			begin
+				set @Mensaje = ('No existe el centro educativo asociado');
+				set @Completado = 0;
+			end
+	end;
+go	
+
+create procedure sp_obtenSedeCentro @idCE int
+as
+	begin
+		declare @Mensaje varchar(50);
+		declare @Completado bit;
+		if (exists (select * from CentroEducativo where idCE = @idCE))
+			begin
+				select * from Sede d
+					inner join CentroEducativo ce on d.idSede = ce.idSede
+					where ce.idCE = @idCE
+				set @Mensaje = ('Procedimiento correcto');
+				set @Completado = 1;
+			end
+		else
+			begin
+				set @Mensaje = ('No existe el centro educativo asociado');
+				set @Completado = 0;
+			end
+	end;
+go	
+
+
+
+
+
+
+
 -----------------------------------------------------------------
 -----------------------------------------------------------------
 --------- SECCION FUNCIONALIDADES CENTRO EDUCATIVO --------------
@@ -172,6 +242,17 @@ as
 	end;
 go
 
+--ABARCA LISTA SEDES Y LISTA SEDES ACTIVAS
+create procedure sp_listaSedes
+as
+	begin
+		select * from Sede
+	end;
+go
+
+
+
+
 --REVISADO
 create procedure sp_muestraInfoCentroEducativo @idCE int
 as
@@ -248,7 +329,7 @@ go
 create procedure sp_listaDocumentosEstudiante @idE int
 as
 	begin
-		select * from Documento d
+		select de.* from Documento d
 			inner join DocumentoEstudiante de on d.idDocumento = de.idDocumento
 			where de.idEstudiante = @idE
 	end;
@@ -397,6 +478,13 @@ as
 	end;
 go
 
+create procedure sp_listaMunicipios 
+as
+	begin
+		select * from Municipio
+	end;
+go
+
 
 
 --REVISADO
@@ -439,14 +527,14 @@ as
 	end;
 go
 
-create procedure sp_listaApuntesEstudiante @idEstudiante int
+create procedure sp_listaApuntesEstudiante @idE int
 as
 	begin
 		declare @Mensaje varchar(50);
 		declare @Completado bit;
-		if (exists (select * from Estudiante where idEstudiante = @idEstudiante))
+		if (exists (select * from Estudiante where idEstudiante = @idE))
 			begin
-				select * from Apunte where idEstudiante = @idEstudiante
+				select * from Apunte where idEstudiante = @idE
 				set @Mensaje = ('Procedimiento correcto');
 				set @Completado = 1;
 			end
