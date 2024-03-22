@@ -4,6 +4,10 @@ namespace CapaEntidad
 {
     public class CentroEducativo : Usuario
     {
+        public CentroEducativo()
+        {
+        }
+
         public CentroEducativo(string correo, string contrasenha) : base(correo, contrasenha)
         {
         }

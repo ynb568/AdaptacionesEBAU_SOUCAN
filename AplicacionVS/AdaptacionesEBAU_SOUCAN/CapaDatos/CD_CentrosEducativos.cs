@@ -34,24 +34,33 @@ namespace CapaDatos
                         //Para leer múltiples filas
                         while (dr.Read())
                         {
-                            centros.Add(
-                                new CentroEducativo()
-                                {
-                                    IdUsuario = Convert.ToInt32(dr["IdCE"]),
-                                    NombreCE = dr["nombreCE"].ToString(),
-                                    Sede = ,
-                                    TelefonoCE = dr["telefonoCE"].ToString(),
-                                    NombreOrientador = dr["nombreOrientador"].ToString(),
-                                    ApellidosOrientador = dr["apellidosorientador"].ToString(),
-                                    TelefonoOrientador = dr["telefonoOrientador"].ToString(),
-                                    CorreoOrientador = dr["correoOrientador"].ToString(),
-                                    NombreEquipoDirectivo = dr["nombreEquipoDirectivo"].ToString(),
-                                    ApellidosEquipoDirectivo = dr["apellidosEquipoDirectivo"].ToString(),
-                                    Direccion = ,
-                                    Estudiantes = 
+                            CentroEducativo ce = new CentroEducativo()
+                            {
+                                IdUsuario = Convert.ToInt32(dr["IdCE"]),
+                                NombreCE = dr["nombreCE"].ToString(),
+                                TelefonoCE = dr["telefonoCE"].ToString(),
+                                NombreOrientador = dr["nombreOrientador"].ToString(),
+                                ApellidosOrientador = dr["apellidosorientador"].ToString(),
+                                TelefonoOrientador = dr["telefonoOrientador"].ToString(),
+                                CorreoOrientador = dr["correoOrientador"].ToString(),
+                                NombreEquipoDirectivo = dr["nombreEquipoDirectivo"].ToString(),
+                                ApellidosEquipoDirectivo = dr["apellidosEquipoDirectivo"].ToString()
+                            };
+                            int idCentro = ce.IdUsuario;
 
-                                }
-                                );
+                            CD_Direcciones cdDirecciones = new CD_Direcciones();
+                            Direccion direccion = cdDirecciones.obtenDireccionCentro(idCentro);
+                            ce.Direccion = direccion;
+
+                            CD_Sedes cdSedes = new CD_Sedes();
+                            Sede sede = cdSedes.obtenSedeCentro(idCentro);
+                            ce.Sede = sede;
+
+                            CD_Estudiantes cdEstudiantes = new CD_Estudiantes();
+                            List<Estudiante> estudiantes = cdEstudiantes.listaEstudiantes(idCentro);
+                            ce.Estudiantes= estudiantes;
+
+                            centros.Add(ce);
                         }
                     }
 

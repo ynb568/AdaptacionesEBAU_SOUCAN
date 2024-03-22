@@ -43,11 +43,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CD_Adaptaciones.cs" />
+    <Compile Include="CD_Apuntes.cs" />
     <Compile Include="CD_Asignaturas.cs" />
     <Compile Include="CD_CentrosEducativos.cs" />
     <Compile Include="CD_Diagnosticos.cs" />
+    <Compile Include="CD_Direcciones.cs" />
+    <Compile Include="CD_Documentos.cs" />
     <Compile Include="CD_Estudiantes.cs" />
+    <Compile Include="CD_Municipios.cs" />
     <Compile Include="CD_Usuarios.cs" />
+    <Compile Include="CD_Sedes.cs" />
     <Compile Include="Conexion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -53,13 +53,14 @@ namespace CapaDatos
                                     Apuntes = ,
                                     Documentos =
                                 }
+                                
                             ) ;
                         }
                     }
                 }
             } catch
             {
-
+                estudiantes = new List<Estudiante>();
             }
 
 

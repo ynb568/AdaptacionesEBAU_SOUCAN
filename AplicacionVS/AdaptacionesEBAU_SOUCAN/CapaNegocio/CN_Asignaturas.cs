@@ -33,13 +33,10 @@ namespace CapaNegocio
             List<Asignatura> asignaturas = objCD.listaAsignaturas();
             List<Asignatura> asignaturasCE = new List<Asignatura> ();
 
-            foreach (Asignatura a in asignaturas)
-            {
-                if (a.Activo == true)
-                {
-                    asignaturasCE.Add (a);
-                }
-            }
+            asignaturasCE = asignaturas
+                .Where (a => a.Activo)
+                .ToList ();
+
             return asignaturasCE;
         }
 
@@ -54,25 +51,19 @@ namespace CapaNegocio
         {
             List<Asignatura> asignaturas = listaAsignaturasCE();
             List<Asignatura> asignaturasFase = new List<Asignatura> ();
+
             if (fase == 1)
             {
-                foreach (Asignatura a in asignaturas)
-                {
-                    if (a.Fase1 == false)
-                    {
-                        asignaturasFase.Add(a);
-                    }
-                }
-
+                // LINQ
+                asignaturasFase = asignaturas
+                    .Where(a => a.Fase1)
+                    .ToList();
+                //asignaturas.OrderBy(a => a.Fase1).F(a => a.IdAsignatura == 25);
             } else if (fase == 2)
             {
-                foreach (Asignatura a in asignaturas)
-                {
-                    if (a.Fase2 == false)
-                    {
-                        asignaturasFase.Add(a);
-                    }
-                }
+                asignaturasFase = asignaturas
+                    .Where(a => a.Fase2)
+                    .ToList();
             } else
             {
                 throw new ArgumentException("La fase debe ser 1 o 2", nameof(fase));

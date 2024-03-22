@@ -42,11 +42,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CN_Adaptaciones.cs" />
+    <Compile Include="CN_Apuntes.cs" />
     <Compile Include="CN_Asignaturas.cs" />
     <Compile Include="CN_CentrosEducativos.cs" />
     <Compile Include="CN_Diagnosticos.cs" />
+    <Compile Include="CN_Documentos.cs" />
     <Compile Include="CN_Estudiantes.cs" />
+    <Compile Include="CN_Municipios.cs" />
     <Compile Include="CN_Recursos.cs" />
+    <Compile Include="CN_Sedes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
