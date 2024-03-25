@@ -510,10 +510,10 @@ as
 
 					set @idUsuarioNuevo = (select idUsuario from Usuario where correo = @correo and contrasenha = @contrasenha)
 
-					insert into Direccion (direccion, idMunicipio)
+					insert into Direccion (nombreDireccion, idMunicipio)
 						values (@direccion, @idMunicipio)
 
-					set @idDireccionNueva = (select top(1) idDireccion from Direccion where direccion = @direccion and idMunicipio = @idMunicipio);
+					set @idDireccionNueva = (select top(1) idDireccion from Direccion where nombreDireccion = @direccion and idMunicipio = @idMunicipio);
 
 					insert into CentroEducativo (idCE, nombreCE, telefonoCE, nombreOrientador, apellidosOrientador, telefonoOrientador, correoOrientador,
 						nombreEquipoDirectivo, apellidosEquipoDirectivo, telefonoEquipoDirectivo, idDireccion)

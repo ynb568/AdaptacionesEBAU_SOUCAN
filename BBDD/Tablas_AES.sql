@@ -63,6 +63,7 @@ create table CentroEducativo (
 	--
 	fechaRegistro datetime default getdate(),
 	idDireccion int foreign key references Direccion(idDireccion) not null,
+
 	constraint  ck_correoO check (correoOrientador like ('%@%.%')),
 	constraint ck_tlfnCE check (telefonoCE like ('[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')),
 	constraint ck_tlfnO check (telefonoOrientador like ('[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')),
@@ -82,13 +83,16 @@ create table Estudiante (
 	ordinaria bit null,
 	extraordinaria bit null,
 	observaciones varchar(500) null,
-	validado bit null,
+	validado bit null default null,
 	cursoConvocatoria varchar(10),
 	fechaRegistro datetime default getdate(),
 	--idDireccion int foreign key references Direccion(idDireccion),
 	idCE int foreign key references CentroEducativo (idCE) not null,
 	constraint ck_tlfnT1 check (telefonoTutor1 like ('[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')),
 	constraint ck_tlfnT2 check (telefonoTutor2 like ('[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')),
+	CONSTRAINT ck_convocatoria check (
+        (ordinaria = 1 AND extraordinaria = 0) OR
+        (ordinaria = 0 AND extraordinaria = 1))
 );
 
 create table Documento (
@@ -100,7 +104,7 @@ create table DocumentoEstudiante (
 	idEstudiante int foreign key references Estudiante(idEstudiante),
 	idDocumento int foreign key references Documento(idDocumento),
 	rutaDocumento varchar(MAX) null,
-	validado bit null
+	validado bit null default null
 );
 
 create table Apunte (
@@ -166,9 +170,8 @@ create table AdaptacionDiagnosticoEstudiante (
 	idAdaptacion int foreign key references Adaptacion(idAdaptacion),
 	idDiagnostico int foreign key references Diagnostico(idDiagnostico),
 	idEstudiante int foreign key references Estudiante(idEstudiante),
-	validado bit null,
+	validado bit null default null,
 	observaciones varchar(500) null,
 	revision varchar(500) null,
-	aprobado bit default null,
 	primary key (idAdaptacion, idDiagnostico, idEstudiante)
 );
