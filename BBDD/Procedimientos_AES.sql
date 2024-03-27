@@ -2,7 +2,7 @@ use AdaptacionesEBAU_SOUCAN;
 go
 
 -- MAPEADOS DE OBJETOS ---
-create procedure sp_obtenMunicipioDireccion @idD int
+create or alter procedure sp_obtenMunicipioDireccion @idD int
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -23,7 +23,7 @@ as
 	end;
 go	
 
-create procedure sp_obtenDireccionCentro @idCE int
+create or alter procedure sp_obtenDireccionCentro @idCE int
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -44,7 +44,7 @@ as
 	end;
 go	
 
-create procedure sp_obtenSedeCentro @idCE int
+create or alter procedure sp_obtenSedeCentro @idCE int
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -65,7 +65,7 @@ as
 	end;
 go	
 
-create procedure sp_obtenAdaptacionDiagnostico @idD int
+create or alter procedure sp_obtenAdaptacionDiagnostico @idD int
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -86,7 +86,7 @@ as
 	end;
 go	
 
-create procedure sp_obtenAsignaturasPrevistasEstudiante @idE int
+create or alter procedure sp_obtenAsignaturasPrevistasEstudiante @idE int
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -107,7 +107,7 @@ as
 	end;
 go	
 
-create procedure sp_obtenAsignaturasMatriculadasEstudiante @idE int
+create or alter procedure sp_obtenAsignaturasMatriculadasEstudiante @idE int
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -129,7 +129,80 @@ as
 go
 
 
+create or alter procedure sp_obtenCentro @idCE int
+as
+	begin
+		declare @Mensaje varchar(50);
+		declare @Completado bit;
+		if (exists (select * from CentroEducativo where idCE = @idCE))
+			begin
+				select top(1) * from CentroEducativo where idCE = @idCE 
+				set @Mensaje = ('Procedimiento correcto');
+				set @Completado = 1;
+			end
+		else
+			begin
+				set @Mensaje = ('No existe el centro educativo asociado');
+				set @Completado = 0;
+			end
+	end;
+go	
 
+create or alter procedure obtenApunteEstudiante @idE int, @idA int
+as
+	begin
+		declare @Mensaje varchar(50);
+		declare @Completado bit;
+		if (exists (select * from Estudiante where idEstudiante = @idE))
+			begin
+				if (exists (select * from Apunte where @idA = idApunte))
+					begin
+						select * from Asignatura a
+							inner join AsignaturaEstudianteMatriculada aem on a.idAsignatura = aem.idAsignatura
+							where aem.idEstudiante = @idE
+						set @Mensaje = ('Procedimiento correcto');
+						set @Completado = 1;
+					end
+				else
+					begin
+						set @Mensaje = ('No existe apunte asociado');
+						set @Completado = 0;
+					end
+			end
+		else
+			begin
+				set @Mensaje = ('No existe el estudiante asociado');
+				set @Completado = 0;
+			end
+	end;
+go
+
+create or alter procedure sp_obtenEstudianteCentro @idCE int, @idE int
+as
+	begin
+		declare @Mensaje varchar(50);
+		declare @Completado bit;
+		if (exists (select * from CentroEducativo where idCE = @idCE))
+			begin
+				if (exists(select * from Estudiante where idEstudiante = @idE))
+					begin
+						select top(1) * from Estudiante where idEstudiante= @idE
+						set @Mensaje = ('Procedimiento correcto');
+						set @Completado = 1;
+					end
+				else
+					begin
+						set @Mensaje = ('No existe el estudiante asociado');
+						set @Completado = 0;
+					end
+			end
+		else
+			begin
+				set @Mensaje = ('No existe el centro educativo asociado');
+				set @Completado = 0;
+			end
+	end;
+go
 
 
 
@@ -141,7 +214,7 @@ go
 -----------------------------------------------------------------
 
 --REVISADO
-create procedure sp_inicioSesionCentroEducativo @correo varchar(100), @contrasenha varchar(500)
+create or alter procedure sp_inicioSesionCentroEducativo @correo varchar(100), @contrasenha varchar(500)
 as
 	begin
 		if (exists(select * from CentroEducativo ce
@@ -156,7 +229,7 @@ as
 go
 
 --REVISADO
-create procedure sp_registraEstudiante 
+create or alter procedure sp_registraEstudiante 
 	@nombreEstudiante varchar(50), @ap1Estudiante varchar(50), @ap2Estudiante varchar(50),
 	@nombreCompletoT1 varchar(100), @telefonoT1 varchar(9), @nombreCompletoT2 varchar(100), @telefonoT2 varchar(9),
 	@idCE int
@@ -205,7 +278,59 @@ as
 	end;
 go
 
-create procedure sp_anhadeDocumentoEstudiante @idE int, @idD int, @rutaD varchar(MAX)
+--ARREGLAR
+/*
+create type AsignaturaType as table (idA int);
+go
+*/
+
+create or alter procedure sp_modificaEstudiante 
+	@idE int, @idCE int,
+	@nuevasAsignaturas AsignaturaType READONLY
+as
+	begin
+		declare @Mensaje varchar(50);
+		declare @registrado bit;
+		declare @curso varchar(10);
+		begin try
+			begin transaction
+				--Comprobar existencia centroEducativo y que est� validado
+				--REVISAR
+				if (exists(select * from CentroEducativo
+								where idCE = @idCE))
+					begin
+						if (exists (select * from Estudiante where idEstudiante = @idE))
+							begin
+								
+								set @Mensaje = ('Procedimiento correcto');
+								set @Registrado = 1;
+								commit transaction
+							end
+						else
+							begin
+								rollback transaction
+								set @Mensaje = 'Estudiante no existente';
+								set @Registrado = 0;
+							end
+					end
+				else
+					begin
+						rollback transaction
+						set @Mensaje = 'Centro educativo no existente';
+						set @Registrado = 0;
+					end		
+		end try
+
+		begin catch
+			rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+		end catch
+	end;
+go
+
+
+
+create or alter procedure sp_anhadeDocumentoEstudiante @idE int, @idD int, @rutaD varchar(MAX)
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -245,7 +370,7 @@ as
 go
 
 --REVISADO
-create procedure sp_listaEstudiantesCentro @idCE int
+create or alter procedure sp_listaEstudiantesCentro @idCE int
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -265,7 +390,7 @@ as
 go
 
 --REVISADO
-create procedure sp_cambiaContrasenhaCentro @idCE int, @contrasenhaPrevia varchar(500), @contrasenhaNueva varchar(500)
+create or alter procedure sp_cambiaContrasenhaCentro @idCE int, @contrasenhaPrevia varchar(500), @contrasenhaNueva varchar(500)
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -306,7 +431,7 @@ as
 go
 
 --ABARCA LISTA SEDES Y LISTA SEDES ACTIVAS
-create procedure sp_listaSedes
+create or alter procedure sp_listaSedes
 as
 	begin
 		select * from Sede
@@ -317,7 +442,7 @@ go
 
 
 --REVISADO
-create procedure sp_muestraInfoCentroEducativo @idCE int
+create or alter procedure sp_muestraInfoCentroEducativo @idCE int
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -336,7 +461,7 @@ as
 	end;
 go
 
-create procedure sp_cambiaInfoCentro @idCE int, @nuevoTelefono varchar(9), 
+create or alter procedure sp_cambiaInfoCentro @idCE int, @nuevoTelefono varchar(9), 
 	@nuevoNombreO varchar(50), @nuevosApellidosO varchar(100), @nuevoCorreoO varchar(100), @nuevoTelefonoO varchar(9),
 	@nuevoNombreED varchar(50), @nuevosApellidosED varchar(100), @nuevoTelefonoED varchar(9)
 as
@@ -371,7 +496,7 @@ as
 go
 
 
-create procedure sp_listaAsignaturasPrevistasEstudianteF1 @idE int
+create or alter procedure sp_listaAsignaturasPrevistasEstudianteF1 @idE int
 as
 	begin
 		select * from Asignatura a
@@ -380,7 +505,7 @@ as
 	end;
 go
 
-create procedure sp_listaAsignaturasPrevistasEstudianteF2 @idE int
+create or alter procedure sp_listaAsignaturasPrevistasEstudianteF2 @idE int
 as
 	begin
 		select * from Asignatura a
@@ -389,16 +514,18 @@ as
 	end;
 go
 
-create procedure sp_listaDocumentosEstudiante @idE int
+create or alter procedure sp_listaDocumentosEstudiante @idE int
 as
 	begin
-		select de.* from Documento d
+		select d.nombreDocumento, de.* from Documento d
 			inner join DocumentoEstudiante de on d.idDocumento = de.idDocumento
 			where de.idEstudiante = @idE
 	end;
 go
 
-create procedure sp_listaDiagnosticosEstudiante @idE int
+
+
+create or alter procedure sp_listaDiagnosticosEstudiante @idE int
 as
 	begin
 		select * from Diagnostico d
@@ -407,7 +534,7 @@ as
 	end;
 go
 
-create procedure sp_listaAdaptacionesPorDiagnosticoCE @idDiagnostico int
+create or alter procedure sp_listaAdaptacionesPorDiagnosticoCE @idDiagnostico int
 as
 	begin
 		select a.* from Adaptacion a 
@@ -417,14 +544,7 @@ as
 	end;
 go
 
-create procedure sp_listaDiagnosticosCE
-as
-	begin
-		select * from Diagnostico where activo = 1
-	end;
-go
-
-create procedure sp_eliminaDiagnosticoEstudiante @idE int, @idDiagnostico int
+create or alter procedure sp_eliminaDiagnosticoEstudiante @idE int, @idDiagnostico int
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -468,7 +588,7 @@ go
 -----------------------------------------------------------------
 
 --REVISADO
-create procedure sp_inicioSesionSoucan @correo varchar(100), @contrasenha varchar(500)
+create or alter procedure sp_inicioSesionSoucan @correo varchar(100), @contrasenha varchar(500)
 as
 	begin 
 		if (exists (select * from Soucan s 
@@ -486,7 +606,7 @@ go
 
 
 --REVISADO
-create procedure sp_registraCentroEducativo
+create or alter procedure sp_registraCentroEducativo
 	@nombreCE varchar(100), @telefonoCE varchar(9),
 	@nombreOrientador varchar(50), @apellidosOrientador varchar(100), @telefonoOrientador varchar (9) , @correoOrientador varchar(100), 
 	@nombreEquipoDirectivo varchar(50), @apellidosEquipoDirectivo varchar(100), @telefonoEquipoDirectivo varchar(9),
@@ -541,7 +661,7 @@ as
 	end;
 go
 
-create procedure sp_listaMunicipios 
+create or alter procedure sp_listaMunicipios 
 as
 	begin
 		select * from Municipio
@@ -551,7 +671,7 @@ go
 
 
 --REVISADO
-create procedure sp_anhadeApunteEstudiante @descripcion varchar(5000), @idEstudiante int
+create or alter procedure sp_anhadeApunteEstudiante @descripcion varchar(5000), @idEstudiante int
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -590,7 +710,7 @@ as
 	end;
 go
 
-create procedure sp_listaApuntesEstudiante @idE int
+create or alter procedure sp_listaApuntesEstudiante @idE int
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -611,7 +731,7 @@ as
 go
 
 --REVISADO
-create procedure sp_muestraInfoEstudiante @idEstudiante int
+create or alter procedure sp_muestraInfoEstudiante @idEstudiante int
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -641,7 +761,7 @@ go
 */
 
 --REVISADO
-create procedure sp_listaCentrosEducativos
+create or alter procedure sp_listaCentrosEducativos
 as
 	begin
 		select * from CentroEducativo
@@ -650,7 +770,7 @@ go
 
 
 --REVISADO
-create procedure sp_anhadeAsigantura @nombreAsignatura varchar(100), @fase1 bit, @fase2 bit
+create or alter procedure sp_anhadeAsigantura @nombreAsignatura varchar(100), @fase1 bit, @fase2 bit
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -680,7 +800,7 @@ as
 go
 
 --REVISADO
-create procedure sp_gestionaEstadoAsignatura @idAsignatura int, @activo bit
+create or alter procedure sp_gestionaEstadoAsignatura @idAsignatura int, @activo bit
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -702,7 +822,7 @@ as
 go
 
 --REVISADO
-create procedure sp_listaAsignaturas
+create or alter procedure sp_listaAsignaturas
 as
 	begin 
 		select * from Asignatura
@@ -710,7 +830,7 @@ as
 go
 
 --RETOCAR PARA ADAPTACIONES DETALLE
-create procedure sp_anhadeAdaptacion @nombreAdaptacion varchar(100)
+create or alter procedure sp_anhadeAdaptacion @nombreAdaptacion varchar(100)
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -729,7 +849,7 @@ as
 	end;
 go
 
-create procedure sp_gestionaEstadoAdaptacion @idAdaptacion int, @activo bit
+create or alter procedure sp_gestionaEstadoAdaptacion @idAdaptacion int, @activo bit
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -748,7 +868,7 @@ as
 	end;
 go
 
-create procedure sp_listaAdaptacionesSoucan
+create or alter procedure sp_listaAdaptaciones
 as
 	begin
 		select * from Adaptacion
@@ -757,7 +877,7 @@ go
 
 
 
-create procedure sp_anhadeDiagnostico @nombreDiagnostico varchar(100)
+create or alter procedure sp_anhadeDiagnostico @nombreDiagnostico varchar(100)
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -776,7 +896,7 @@ as
 	end;
 go
 
-create procedure sp_gestionaEstadoDiagnostico @idDiagnostico int, @activo bit
+create or alter procedure sp_gestionaEstadoDiagnostico @idDiagnostico int, @activo bit
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -795,7 +915,7 @@ as
 	end;
 go
 
-create procedure sp_listaDiagnosticosSoucan
+create or alter procedure sp_listaDiagnosticos
 as
 	begin
 		select * from Diagnostico

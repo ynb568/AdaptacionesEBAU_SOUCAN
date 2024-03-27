@@ -19,7 +19,10 @@ namespace CapaNegocio
             return objCD.listaCentros();
         }
 
-
+        public CentroEducativo obtenCentro (int idCentroEducativo)
+        {
+            return objCD.obtenCentro(idCentroEducativo);
+        }
 
     }
 }

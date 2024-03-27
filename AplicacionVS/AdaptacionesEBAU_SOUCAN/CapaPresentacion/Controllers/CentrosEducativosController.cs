@@ -19,7 +19,7 @@ namespace CapaPresentacion.Controllers
          * Initial Catalog = nombre de BBDD
          * Integrated Security = Tipo de autenticación (Windows = true)
          */
-        static string cadenaCon = "Data Source=3TPC64\SQLEXPRESS;Initial Catalog=AdaptacionesEBAU_SOUCAN;Integrated Security=true";
+        //static string cadenaCon = "Data Source=3TPC64\SQLEXPRESS;Initial Catalog=AdaptacionesEBAU_SOUCAN;Integrated Security=true";
         
         [HttpPost]
         public ActionResult LoginCE(CentroEducativo ce)

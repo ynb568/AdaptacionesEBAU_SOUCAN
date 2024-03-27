@@ -3,6 +3,7 @@
     public class Documento
     {
         public int IdDocumento { get; set; }
+        public string NombreDocumento { get; set; }
         public string RutaDocumento { get; set; }
         public bool Validado { get; set; }
     }

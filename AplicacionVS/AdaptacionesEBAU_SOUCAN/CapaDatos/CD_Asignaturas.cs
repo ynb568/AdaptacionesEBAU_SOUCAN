@@ -91,6 +91,64 @@ namespace CapaDatos
             }
             return listaAsignaturas;
         }
+
+        public void cambiaAsignaturasPrevistasEstudiante(int idEstudiante, List<Asignatura> asignaturasPrevistas)
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    con.Open();
+
+                    foreach (Asignatura asignatura in asignaturasPrevistas)
+                    {
+                        SqlCommand cmd = new SqlCommand("sp_cambiaAsignaturasPrevistasEstudiante", con);
+                        cmd.Parameters.AddWithValue("idE", idEstudiante);
+                        cmd.Parameters.AddWithValue("idA", asignatura.IdAsignatura);
+                        cmd.Parameters.AddWithValue("activo", asignatura.Activo);
+                        cmd.Parameters.AddWithValue("fase1", asignatura.Fase1);
+                        cmd.Parameters.AddWithValue("fase2", asignatura.Fase2);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void creaAsignaturasmatriculadasEstudiante(int idEstudiante, List<Asignatura> asignaturasMatriculadas)
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    con.Open();
+
+                    foreach (Asignatura asignatura in asignaturasMatriculadas)
+                    {
+                        SqlCommand cmd = new SqlCommand("sp_creaAsignaturasMatriculadasEstudiante", con);
+                        cmd.Parameters.AddWithValue("idE", idEstudiante);
+                        cmd.Parameters.AddWithValue("idA", asignatura.IdAsignatura);
+                        cmd.Parameters.AddWithValue("fase1", asignatura.Fase1);
+                        cmd.Parameters.AddWithValue("fase2", asignatura.Fase2);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+
+
         public List<Asignatura> listaAsignaturasMatriculadasEstudiante(int idEstudiante)
         {
             List<Asignatura> listaAsignaturas = new List<Asignatura>();

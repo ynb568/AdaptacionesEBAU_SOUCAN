@@ -34,6 +34,7 @@ namespace CapaDatos
                                 new Documento()
                                 {
                                     IdDocumento = Convert.ToInt32(dr["idDocumento"]),
+                                    NombreDocumento = dr["nombreDocumento"].ToString(),
                                     RutaDocumento = dr["rutaDocumento"].ToString(),
                                     Validado = Convert.ToBoolean(dr["validado"])
                                 }

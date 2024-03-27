@@ -18,7 +18,7 @@ namespace CapaNegocio
         * 
         * @return Lista de asignaturas completa
         */
-        public List<Asignatura> listaAsignaturasSoucan ()
+        public List<Asignatura> listaAsignaturas ()
         {   
             return objCD.listaAsignaturas();
         }
@@ -28,7 +28,7 @@ namespace CapaNegocio
         * 
         * @return Lista de asignaturas activas
         */
-        public List<Asignatura> listaAsignaturasCE ()
+        public List<Asignatura> listaAsignaturasActivas ()
         {
             List<Asignatura> asignaturas = objCD.listaAsignaturas();
             List<Asignatura> asignaturasCE = new List<Asignatura> ();
@@ -49,7 +49,7 @@ namespace CapaNegocio
         */
         public List<Asignatura> listaAsignaturasPorFase (int fase)
         {
-            List<Asignatura> asignaturas = listaAsignaturasCE();
+            List<Asignatura> asignaturas = listaAsignaturasActivas();
             List<Asignatura> asignaturasFase = new List<Asignatura> ();
 
             if (fase == 1)
@@ -70,6 +70,16 @@ namespace CapaNegocio
             }
             return asignaturasFase;
         }
-        
+
+        public List<Asignatura> listaAsignaturasPrevistasEstudiante(int idEstudiante)
+        {
+            return objCD.listaAsignaturasPrevistasEstudiante(idEstudiante);
+        }
+
+        public List<Asignatura> listaAsignaturasMatriculadasEstudiante(int idEstudiante)
+        {
+            return objCD.listaAsignaturasMatriculadasEstudiante(idEstudiante);
+        }
+
     }
 }

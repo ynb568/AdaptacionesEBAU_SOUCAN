@@ -16,5 +16,17 @@ namespace CapaNegocio
         {
             return objCD.listaDiagnosticos();
         }
+
+        public List<Diagnostico> listaDiagnosticosActivos()
+        {
+            List<Diagnostico> diagnosticos = objCD.listaDiagnosticos();
+            List<Diagnostico> diagnosticosActivos;
+
+            diagnosticosActivos = diagnosticos.
+                Where(d => d.Activo)
+                .ToList();
+
+            return diagnosticosActivos;
+        }
     }
 }

@@ -44,7 +44,8 @@ namespace CapaDatos
                                 TelefonoOrientador = dr["telefonoOrientador"].ToString(),
                                 CorreoOrientador = dr["correoOrientador"].ToString(),
                                 NombreEquipoDirectivo = dr["nombreEquipoDirectivo"].ToString(),
-                                ApellidosEquipoDirectivo = dr["apellidosEquipoDirectivo"].ToString()
+                                ApellidosEquipoDirectivo = dr["apellidosEquipoDirectivo"].ToString(),
+                                TelefonoEquipoDirectivo = dr["telefonoEquipoDirectivo"].ToString()
                             };
                             int idCentro = ce.IdUsuario;
 
@@ -73,6 +74,59 @@ namespace CapaDatos
 
 
             return centros;
+        }
+
+        public CentroEducativo obtenCentro(int idCentro)
+        {
+            CentroEducativo ce = null;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_obtenCentro", con);
+                    cmd.Parameters.AddWithValue("idCE", idCentro);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    con.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            
+                            ce = new CentroEducativo()
+                            {
+                                IdUsuario = Convert.ToInt32(dr["IdCE"]),
+                                NombreCE = dr["nombreCE"].ToString(),
+                                TelefonoCE = dr["telefonoCE"].ToString(),
+                                NombreOrientador = dr["nombreOrientador"].ToString(),
+                                ApellidosOrientador = dr["apellidosorientador"].ToString(),
+                                TelefonoOrientador = dr["telefonoOrientador"].ToString(),
+                                CorreoOrientador = dr["correoOrientador"].ToString(),
+                                NombreEquipoDirectivo = dr["nombreEquipoDirectivo"].ToString(),
+                                ApellidosEquipoDirectivo = dr["apellidosEquipoDirectivo"].ToString()
+                            };
+
+                            CD_Direcciones cdDirecciones = new CD_Direcciones();
+                            Direccion direccion = cdDirecciones.obtenDireccionCentro(idCentro);
+                            ce.Direccion = direccion;
+
+                            CD_Sedes cdSedes = new CD_Sedes();
+                            Sede sede = cdSedes.obtenSedeCentro(idCentro);
+                            ce.Sede = sede;
+
+                            CD_Estudiantes cdEstudiantes = new CD_Estudiantes();
+                            List<Estudiante> estudiantes = cdEstudiantes.listaEstudiantes(idCentro);
+                            ce.Estudiantes = estudiantes;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                ce = new CentroEducativo();
+            }
+            return ce;
         }
     }
 }

@@ -17,5 +17,10 @@ namespace CapaNegocio
         {
             return objCD.listaEstudiantes(idCentro);
         }
+
+        public Estudiante obtenEstudianteCentro (int idCentro, int idEstudiante)
+        {
+            return objCD.obtenEstudianteCentro(idCentro, idEstudiante);
+        }
     }
 }

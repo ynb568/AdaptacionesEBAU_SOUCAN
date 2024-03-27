@@ -7,3 +7,12 @@ C:\Users\navay\Desktop\DesarrolloAppWeb\AplicacionVS\AdaptacionesEBAU_SOUCAN\Cap
 C:\Users\navay\Desktop\DesarrolloAppWeb\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaDatos\obj\Debug\CapaDatos.csproj.Up2Date
 C:\Users\navay\Desktop\DesarrolloAppWeb\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaDatos\obj\Debug\CapaDatos.dll
 C:\Users\navay\Desktop\DesarrolloAppWeb\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaDatos\obj\Debug\CapaDatos.csproj.AssemblyReference.cache
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaDatos\obj\Debug\CapaDatos.csproj.CoreCompileInputs.cache
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaDatos\bin\Debug\CapaDatos.dll
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaDatos\bin\Debug\CapaDatos.pdb
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaDatos\bin\Debug\CapaEntidad.dll
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaDatos\bin\Debug\CapaEntidad.pdb
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaDatos\obj\Debug\CapaDatos.csproj.Up2Date

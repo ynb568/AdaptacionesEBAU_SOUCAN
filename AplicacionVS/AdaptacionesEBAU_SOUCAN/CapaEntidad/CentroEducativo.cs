@@ -2,15 +2,19 @@
 
 namespace CapaEntidad
 {
-    public class CentroEducativo : Usuario
+    public class CentroEducativo //: Usuario
     {
-        public CentroEducativo()
-        {
-        }
 
-        public CentroEducativo(string correo, string contrasenha) : base(correo, contrasenha)
-        {
-        }
+		public CentroEducativo()
+		{
+
+		}
+        //public CentroEducativo(string correo, string contrasenha) : base(correo, contrasenha)
+        //{
+        //}
+        public int IdUsuario { get; set; }
+        public string Correo { get; set; }
+		public string Contrasenha { get; set; }
 		public string NombreCE {  get; set; }
 
 		public Sede Sede { get; set; }
