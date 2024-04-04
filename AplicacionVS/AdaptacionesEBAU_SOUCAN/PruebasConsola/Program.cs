@@ -122,7 +122,7 @@ namespace PruebasConsola
                 {
                     Console.WriteLine($"Nombre: {a.IdDocumento}, {a.NombreDocumento},{a.RutaDocumento}, {a.Validado} ");
                 }
-
+                Console.ReadKey();
             }
         }
     }

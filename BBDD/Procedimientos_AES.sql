@@ -1,7 +1,11 @@
 use AdaptacionesEBAU_SOUCAN;
 go
 
--- MAPEADOS DE OBJETOS ---
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+----------------- MAPEADOS DE OBJETOS ---------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
 create or alter procedure sp_obtenMunicipioDireccion @idD int
 as
 	begin
@@ -204,6 +208,76 @@ as
 	end;
 go
 
+create or alter procedure sp_listaAdaptacionesDiagnostico @idD int
+as
+	begin
+		select a.* from Adaptacion a 
+			inner join AdaptacionDiagnostico ad on a.idAdaptacion = ad.idAdaptacion
+			inner join Diagnostico d on ad.idDiagnostico = d.idDiagnostico
+			where a.activo = 1 and d.activo = 1 and d.idDiagnostico = @idD
+	end;
+go
+
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+----------------- INSERCION DE OBJETOS ---------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+
+create or alter procedure sp_registraCentroEducativo
+	@nombreCE varchar(100), @telefonoCE varchar(9),
+	@nombreOrientador varchar(50), @apellidosOrientador varchar(100), @telefonoOrientador varchar(9) , @correoOrientador varchar(100), 
+	@nombreEquipoDirectivo varchar(50), @apellidosEquipoDirectivo varchar(100), @telefonoEquipoDirectivo varchar(9),
+	@direccion varchar(100), @idMunicipio int, @idSede int,
+	@correo varchar(100), @contrasenha varchar(500), @repetirContrasenha varchar(500)
+as
+	begin 
+		declare @Mensaje varchar(50);
+		declare @Registrado bit;
+
+		declare @idUsuarioNuevo int;
+		declare @idDireccionNueva int;
+		begin try
+			begin transaction
+				if (not exists(select * from CentroEducativo ce
+									inner join Usuario u on ce.idCE = u.idUsuario
+									where u.correo = @correo and u.contrasenha = @contrasenha and ce.nombreCE = @nombreCE))
+				begin
+					insert into Usuario (correo, contrasenha)
+						values (@correo, @contrasenha)
+
+					set @idUsuarioNuevo = (select idUsuario from Usuario where correo = @correo and contrasenha = @contrasenha)
+
+					insert into Direccion (nombreDireccion, idMunicipio)
+						values (@direccion, @idMunicipio)
+
+					set @idDireccionNueva = (select top(1) idDireccion from Direccion where nombreDireccion = @direccion and idMunicipio = @idMunicipio);
+
+					insert into CentroEducativo (idCE, nombreCE, telefonoCE, nombreOrientador, apellidosOrientador, telefonoOrientador, correoOrientador,
+						nombreEquipoDirectivo, apellidosEquipoDirectivo, telefonoEquipoDirectivo, idDireccion)
+						values (@idUsuarioNuevo, @nombreCE, @telefonoCE, @nombreOrientador, @apellidosOrientador, @telefonoOrientador, @correoOrientador,
+							@nombreEquipoDirectivo, @apellidosEquipoDirectivo, @telefonoEquipoDirectivo, @idDireccionNueva)
+
+					set @Mensaje = ('Procedimiento correcto');
+					set @Registrado = 1;
+				end
+				else
+				begin
+					rollback transaction
+					set @Mensaje = 'El correo y la contraseï¿½a ya estï¿½n registrados';
+					set @Registrado = 0;
+				end
+
+			commit transaction
+		end try
+
+		begin catch
+			rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+			set @Registrado = 0;
+		end catch
+	end;
+go
 
 
 
@@ -278,14 +352,14 @@ as
 	end;
 go
 
---ARREGLAR
+--ARREGLAR: lo mejor va a ser eliminar todas las asignaturas previas y despues ir añadiendo una a una las nuevas
 /*
 create type AsignaturaType as table (idA int);
 go
 
 
 create or alter procedure sp_modificaEstudiante 
-	@idE int, @idCE int,
+	@idE int, @idCE int, @idA int
 	@nuevasAsignaturas AsignaturaType READONLY
 as
 	begin
@@ -536,15 +610,7 @@ go
 
 --create or alter procedure sp_listaAdaptacionesDiagnosticoEstudiante @id
 
-create or alter procedure sp_listaAdaptacionesDiagnostico @idD int
-as
-	begin
-		select a.* from Adaptacion a 
-			inner join AdaptacionDiagnostico ad on a.idAdaptacion = ad.idAdaptacion
-			inner join Diagnostico d on ad.idDiagnostico = d.idDiagnostico
-			where a.activo = 1 and d.activo = 1 and d.idDiagnostico = @idD
-	end;
-go
+
 
 create or alter procedure sp_eliminaDiagnosticoEstudiante @idE int, @idDiagnostico int
 as
@@ -608,60 +674,7 @@ go
 
 
 --REVISADO
-create or alter procedure sp_registraCentroEducativo
-	@nombreCE varchar(100), @telefonoCE varchar(9),
-	@nombreOrientador varchar(50), @apellidosOrientador varchar(100), @telefonoOrientador varchar (9) , @correoOrientador varchar(100), 
-	@nombreEquipoDirectivo varchar(50), @apellidosEquipoDirectivo varchar(100), @telefonoEquipoDirectivo varchar(9),
-	@direccion varchar(100), @idMunicipio int, @idSede int,
-	@correo varchar(100), @contrasenha varchar(500), @repetirContrasenha varchar(500)
-as
-	begin 
-		declare @Mensaje varchar(50);
-		declare @Registrado bit;
 
-		declare @idUsuarioNuevo int;
-		declare @idDireccionNueva int;
-		begin try
-			begin transaction
-				if (not exists(select * from CentroEducativo ce
-									inner join Usuario u on ce.idCE = u.idUsuario
-									where u.correo = @correo and u.contrasenha = @contrasenha and ce.nombreCE = @nombreCE))
-				begin
-					insert into Usuario (correo, contrasenha)
-						values (@correo, @contrasenha)
-
-					set @idUsuarioNuevo = (select idUsuario from Usuario where correo = @correo and contrasenha = @contrasenha)
-
-					insert into Direccion (nombreDireccion, idMunicipio)
-						values (@direccion, @idMunicipio)
-
-					set @idDireccionNueva = (select top(1) idDireccion from Direccion where nombreDireccion = @direccion and idMunicipio = @idMunicipio);
-
-					insert into CentroEducativo (idCE, nombreCE, telefonoCE, nombreOrientador, apellidosOrientador, telefonoOrientador, correoOrientador,
-						nombreEquipoDirectivo, apellidosEquipoDirectivo, telefonoEquipoDirectivo, idDireccion)
-						values (@idUsuarioNuevo, @nombreCE, @telefonoCE, @nombreOrientador, @apellidosOrientador, @telefonoOrientador, @correoOrientador,
-							@nombreEquipoDirectivo, @apellidosEquipoDirectivo, @telefonoEquipoDirectivo, @idDireccionNueva)
-
-					set @Mensaje = ('Procedimiento correcto');
-					set @Registrado = 1;
-				end
-				else
-				begin
-					rollback transaction
-					set @Mensaje = 'El correo y la contraseï¿½a ya estï¿½n registrados';
-					set @Registrado = 0;
-				end
-
-			commit transaction
-		end try
-
-		begin catch
-			rollback transaction
-			set @Mensaje = ('Se ha producido un error');
-			set @Registrado = 0;
-		end catch
-	end;
-go
 
 create or alter procedure sp_listaMunicipios 
 as

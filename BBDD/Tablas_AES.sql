@@ -54,7 +54,7 @@ create table CentroEducativo (
 	--los datos que puede no tener el centro en el momento pueden ser nulos
 	telefonoCE varchar(9) null unique,
 	nombreOrientador varchar(50) null,
-	apellidosOrientador varchar (100) null,
+	apellidosOrientador varchar(100) null,
 	telefonoOrientador varchar(9) null unique,
 	correoOrientador varchar(100) null unique,
 	nombreEquipoDirectivo varchar(50) null,
