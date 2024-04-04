@@ -50,14 +50,6 @@ insert into Apunte (descripcion, idEstudiante)
 	values ('Apunte Estudiante Test', 1);
 go
 
-insert into Documento(nombreDocumento)
-	values ('Documentotest')
-go
-
-insert into DocumentoEstudiante(idDocumento,idEstudiante,rutaDocumento)
-	values (1,1,'RutaDocTest')
-go
-
 
 insert into Asignatura (nombreAsignatura, activo, fase1, fase2)
 	values ('AsignaturaTest1', 1, 1, 1), 

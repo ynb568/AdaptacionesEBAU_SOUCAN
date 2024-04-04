@@ -14,6 +14,8 @@ namespace CapaEntidad
         public string NombreCompletoTutor2 { get; set; }
         public string TelefonoTutor2 { get; set; }
 
+
+		public bool? Validado { get; set; } // Nullable
         public bool Ordinaria { get; set; }
 		public bool ExtraOrdinaria { get; set; }
 		public string CursoConvocatoria { get; set; }

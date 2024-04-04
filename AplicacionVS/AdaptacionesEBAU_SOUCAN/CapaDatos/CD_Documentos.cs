@@ -14,7 +14,6 @@ namespace CapaDatos
         public List<Documento> listaDocumentosEstudiante(int idEstudiante)
         {
             List<Documento> documentos = new List<Documento>();
-
             try
             {
                 using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
@@ -36,16 +35,17 @@ namespace CapaDatos
                                     IdDocumento = Convert.ToInt32(dr["idDocumento"]),
                                     NombreDocumento = dr["nombreDocumento"].ToString(),
                                     RutaDocumento = dr["rutaDocumento"].ToString(),
-                                    Validado = Convert.ToBoolean(dr["validado"])
+                                    Validado = dr["validado"] == DBNull.Value ? (bool?)null : Convert.ToBoolean(dr["validado"])
                                 }
                             );
                         }
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 documentos = new List<Documento>();
+                Console.WriteLine("Error al obtener los documentos: " + ex.Message);
             }
             return documentos;
         }

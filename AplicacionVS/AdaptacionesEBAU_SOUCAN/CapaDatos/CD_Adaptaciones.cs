@@ -58,7 +58,7 @@ namespace CapaDatos
             {
                 using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
                 {
-                    SqlCommand cmd = new SqlCommand("sp_listaAdaptaciones", con);
+                    SqlCommand cmd = new SqlCommand("sp_listaAdaptacionesDiagnostico", con);
                     cmd.Parameters.AddWithValue("idD", idDiagnostico);
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -83,9 +83,10 @@ namespace CapaDatos
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
                 listaAdaptaciones = new List<Adaptacion>();
+                Console.WriteLine("Error al obtener las adaptaciones: " + ex.Message);
             }
             return listaAdaptaciones;
         }

@@ -282,7 +282,7 @@ go
 /*
 create type AsignaturaType as table (idA int);
 go
-*/
+
 
 create or alter procedure sp_modificaEstudiante 
 	@idE int, @idCE int,
@@ -327,7 +327,7 @@ as
 		end catch
 	end;
 go
-
+*/
 
 
 create or alter procedure sp_anhadeDocumentoEstudiante @idE int, @idD int, @rutaD varchar(MAX)
@@ -517,7 +517,7 @@ go
 create or alter procedure sp_listaDocumentosEstudiante @idE int
 as
 	begin
-		select d.nombreDocumento, de.* from Documento d
+		select de.idDocumento, d.nombreDocumento, de.rutaDocumento, de.validado from Documento d
 			inner join DocumentoEstudiante de on d.idDocumento = de.idDocumento
 			where de.idEstudiante = @idE
 	end;
@@ -534,13 +534,15 @@ as
 	end;
 go
 
-create or alter procedure sp_listaAdaptacionesPorDiagnosticoCE @idDiagnostico int
+--create or alter procedure sp_listaAdaptacionesDiagnosticoEstudiante @id
+
+create or alter procedure sp_listaAdaptacionesDiagnostico @idD int
 as
 	begin
 		select a.* from Adaptacion a 
 			inner join AdaptacionDiagnostico ad on a.idAdaptacion = ad.idAdaptacion
 			inner join Diagnostico d on ad.idDiagnostico = d.idDiagnostico
-			where a.activo = 1 and d.activo = 1 and d.idDiagnostico = @idDiagnostico
+			where a.activo = 1 and d.activo = 1 and d.idDiagnostico = @idD
 	end;
 go
 

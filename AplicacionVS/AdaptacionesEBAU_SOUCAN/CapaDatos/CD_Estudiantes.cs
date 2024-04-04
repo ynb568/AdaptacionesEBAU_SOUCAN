@@ -110,7 +110,8 @@ namespace CapaDatos
                                 CursoConvocatoria = dr["cursoConvocatoria"].ToString(),
                                 FechaRegistro = Convert.ToDateTime(dr["fechaRegistro"]),
                                 Ordinaria = Convert.ToBoolean(dr["ordinaria"]),
-                                ExtraOrdinaria = Convert.ToBoolean(dr["extraOrdinaria"])
+                                ExtraOrdinaria = Convert.ToBoolean(dr["extraOrdinaria"]),
+                                Validado = dr["validado"] == DBNull.Value ? (bool?)null : Convert.ToBoolean(dr["validado"])
                             };
 
                             CD_Asignaturas cdAsignaturas = new CD_Asignaturas();
@@ -128,7 +129,11 @@ namespace CapaDatos
                             List<Documento> documentos = cdDocumentos.listaDocumentosEstudiante(idEstudiante);
                             e.Documentos = documentos;
                         }
+                        //AÑADIR AL RESTO DE LISTAS
+                        dr.Close();
+                        con.Close();
                     }
+                    
                 }
             }
             catch
