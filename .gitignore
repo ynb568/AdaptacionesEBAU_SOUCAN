@@ -397,4 +397,5 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+# Configuracion personal
 AplicacionVS/AdaptacionesEBAU_SOUCAN/*/obj/
