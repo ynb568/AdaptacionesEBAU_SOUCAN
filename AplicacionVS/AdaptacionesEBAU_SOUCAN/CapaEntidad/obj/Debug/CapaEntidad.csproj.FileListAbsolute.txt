@@ -4,3 +4,9 @@ C:\Users\navay\Desktop\DesarrolloAppWeb\AplicacionVS\AdaptacionesEBAU_SOUCAN\Cap
 C:\Users\navay\Desktop\DesarrolloAppWeb\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaEntidad\obj\Debug\CapaEntidad.csproj.CoreCompileInputs.cache
 C:\Users\navay\Desktop\DesarrolloAppWeb\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaEntidad\obj\Debug\CapaEntidad.dll
 C:\Users\navay\Desktop\DesarrolloAppWeb\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaEntidad\obj\Debug\CapaEntidad.pdb
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaEntidad\bin\Debug\CapaEntidad.dll
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaEntidad\bin\Debug\CapaEntidad.pdb
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaEntidad\obj\Debug\CapaEntidad.csproj.AssemblyReference.cache
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaEntidad\obj\Debug\CapaEntidad.csproj.CoreCompileInputs.cache
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaEntidad\obj\Debug\CapaEntidad.dll
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaEntidad\obj\Debug\CapaEntidad.pdb
