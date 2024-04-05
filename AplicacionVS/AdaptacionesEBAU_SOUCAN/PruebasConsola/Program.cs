@@ -42,7 +42,7 @@ namespace PruebasConsola
 
             foreach (var ce in centros)
             {
-                Console.WriteLine($"ID: {ce.IdUsuario}, correo: {ce.Correo}, contrasenha: {ce.Contrasenha}");
+                Console.WriteLine($"ID: {ce.IdCE}, correo: {ce.Correo}, contrasenha: {ce.Contrasenha}");
                 Console.WriteLine($"Nombre: {ce.NombreCE}, Sede: {ce.Sede.NombreSede}, telefono: {ce.TelefonoCE}");
                 Console.WriteLine($"Orientador: {ce.NombreOrientador} {ce.ApellidosOrientador}, telefonoO:{ce.TelefonoOrientador}, correoO. {ce.CorreoOrientador}");
                 Console.WriteLine($"ED: {ce.NombreEquipoDirectivo} {ce.ApellidosEquipoDirectivo}, telefonoED:{ce.TelefonoEquipoDirectivo}");
@@ -81,6 +81,7 @@ namespace PruebasConsola
             foreach (var e in estudiantes)
             {
                 Console.WriteLine($"ID: {e.IdEstudiante}, Nombre: {e.NombreEstudiante} {e.Ap1Estudiante} {e.Ap2Estudiante}");
+                Console.WriteLine($"DNI: {e.DniEstudiante}");
                 Console.WriteLine($"Tutor1: {e.NombreCompletoTutor1}, Telefono: {e.TelefonoTutor1}");
                 Console.WriteLine($"Tutor2: {e.NombreCompletoTutor2}, Telefono: {e.TelefonoTutor2}");
                 Console.WriteLine($"Curso: {e.CursoConvocatoria}, Fecha: {e.FechaRegistro}");

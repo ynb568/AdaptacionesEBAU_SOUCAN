@@ -72,7 +72,7 @@ create table CentroEducativo (
 
 create table Estudiante (
 	idEstudiante int primary key identity,
-	dni varchar(20) not null, --Puede ser DNI,NIE o Pasaporte
+	dniEstudiante varchar(20) not null, --Puede ser DNI,NIE o Pasaporte
 	nombreEstudiante varchar(50) not null,
 	ap1Estudiante varchar(50) not null,
 	ap2Estudiante varchar(50) not null,

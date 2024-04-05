@@ -398,4 +398,12 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Configuracion personal
-AplicacionVS/AdaptacionesEBAU_SOUCAN/*/obj/
+AplicacionVS/AdaptacionesEBAU_SOUCAN/CapaDatos/obj/
+AplicacionVS/AdaptacionesEBAU_SOUCAN/CapaEntidad/obj/
+AplicacionVS/AdaptacionesEBAU_SOUCAN/CapaNegocio/obj/
+AplicacionVS/AdaptacionesEBAU_SOUCAN/CapaPresentacion/obj/
+AplicacionVS/AdaptacionesEBAU_SOUCAN/PruebasConsola/obj/
+*.FileListAbsolute.txt
+*.dll
+
+

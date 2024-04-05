@@ -6,6 +6,7 @@ namespace CapaEntidad
     public class Estudiante
     {
 		public int IdEstudiante { get; set; }
+		public string DniEstudiante { get; set; }
 		public string NombreEstudiante { get; set; }
 		public string Ap1Estudiante { get; set; }
 		public string Ap2Estudiante { get;set; }

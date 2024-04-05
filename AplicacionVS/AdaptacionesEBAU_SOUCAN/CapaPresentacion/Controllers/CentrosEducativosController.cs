@@ -38,10 +38,10 @@ namespace CapaPresentacion.Controllers
                 ce.IdUsuario = Convert.ToInt32(cmd.ExecuteScalar().ToString()); // Solo lee 1 fila y 1 columna
             }
 
-            if (ce.IdUsuario != 0)
+            if (ce.IdCE != 0)
             {
                 //Crea una sesion para el centro educativo que se logea
-                Session["centro educativo"] = ce.IdUsuario;
+                Session["centro educativo"] = ce.IdCE;
 
                 return RedirectToAction("Index", "Home"); //CAMBIAR A CONTROLADOR DE CENTRO
             } else
@@ -97,7 +97,7 @@ namespace CapaPresentacion.Controllers
             using (SqlConnection con = new SqlConnection(cadenaCon))
             {
                 SqlCommand cmd = new SqlCommand("sp_modificarContrasenha", con);
-                cmd.Parameters.AddWithValue("IdCE", ce.IdUsuario); 
+                cmd.Parameters.AddWithValue("IdCE", ce.IdCE); 
                 cmd.Parameters.AddWithValue("contrasenha", nuevaContrasenha);
                 cmd.Parameters.Add("completado", SqlDbType.Bit).Direction = ParameterDirection.Output;
                 cmd.CommandType = CommandType.StoredProcedure;

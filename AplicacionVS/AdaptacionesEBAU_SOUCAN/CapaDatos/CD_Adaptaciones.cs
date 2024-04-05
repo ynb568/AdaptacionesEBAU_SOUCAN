@@ -86,7 +86,7 @@ namespace CapaDatos
             catch (Exception ex)
             {
                 listaAdaptaciones = new List<Adaptacion>();
-                Console.WriteLine("Error al obtener las adaptaciones: " + ex.Message);
+                Console.WriteLine("Error en CD_Adaptaciones.listaAdaptacionesDiagnostico: " + ex.Message);
             }
             return listaAdaptaciones;
         }

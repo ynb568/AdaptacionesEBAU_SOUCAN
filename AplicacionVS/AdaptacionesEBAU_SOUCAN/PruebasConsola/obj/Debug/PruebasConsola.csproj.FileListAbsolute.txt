@@ -1,3 +1,5 @@
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\PruebasConsola\obj\Debug\PruebasConsola.csproj.AssemblyReference.cache
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\PruebasConsola\obj\Debug\PruebasConsola.csproj.CoreCompileInputs.cache
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\PruebasConsola\bin\Debug\PruebasConsola.exe.config
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\PruebasConsola\bin\Debug\PruebasConsola.exe
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\PruebasConsola\bin\Debug\PruebasConsola.pdb
@@ -7,8 +9,6 @@ C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\Aplicacio
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\PruebasConsola\bin\Debug\CapaDatos.pdb
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\PruebasConsola\bin\Debug\CapaEntidad.pdb
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\PruebasConsola\bin\Debug\CapaNegocio.pdb
-C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\PruebasConsola\obj\Debug\PruebasConsola.csproj.AssemblyReference.cache
-C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\PruebasConsola\obj\Debug\PruebasConsola.csproj.CoreCompileInputs.cache
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\PruebasConsola\obj\Debug\PruebasC.ADCD1C43.Up2Date
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\PruebasConsola\obj\Debug\PruebasConsola.exe
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\PruebasConsola\obj\Debug\PruebasConsola.pdb

@@ -36,7 +36,9 @@ namespace CapaDatos
                         {
                             CentroEducativo ce = new CentroEducativo()
                             {
-                                IdUsuario = Convert.ToInt32(dr["IdCE"]),
+                                Correo = dr["correo"].ToString(),
+                                Contrasenha = dr["contrasenha"].ToString(),
+                                IdCE = Convert.ToInt32(dr["IdCE"]),
                                 NombreCE = dr["nombreCE"].ToString(),
                                 TelefonoCE = dr["telefonoCE"].ToString(),
                                 NombreOrientador = dr["nombreOrientador"].ToString(),
@@ -47,7 +49,7 @@ namespace CapaDatos
                                 ApellidosEquipoDirectivo = dr["apellidosEquipoDirectivo"].ToString(),
                                 TelefonoEquipoDirectivo = dr["telefonoEquipoDirectivo"].ToString()
                             };
-                            int idCentro = ce.IdUsuario;
+                            int idCentro = ce.IdCE;
 
                             CD_Direcciones cdDirecciones = new CD_Direcciones();
                             Direccion direccion = cdDirecciones.obtenDireccionCentro(idCentro);
@@ -67,12 +69,11 @@ namespace CapaDatos
 
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 centros = new List<CentroEducativo>();
+                Console.WriteLine("Error en CD_CentrosEducativos.listaCentros: " + ex.Message);
             }
-
-
             return centros;
         }
 
@@ -96,7 +97,9 @@ namespace CapaDatos
                             
                             ce = new CentroEducativo()
                             {
-                                IdUsuario = Convert.ToInt32(dr["IdCE"]),
+                                IdCE = Convert.ToInt32(dr["IdCE"]),
+                                Correo = dr["correo"].ToString(),
+                                Contrasenha = dr["contrasenha"].ToString(),
                                 NombreCE = dr["nombreCE"].ToString(),
                                 TelefonoCE = dr["telefonoCE"].ToString(),
                                 NombreOrientador = dr["nombreOrientador"].ToString(),
@@ -106,6 +109,8 @@ namespace CapaDatos
                                 NombreEquipoDirectivo = dr["nombreEquipoDirectivo"].ToString(),
                                 ApellidosEquipoDirectivo = dr["apellidosEquipoDirectivo"].ToString()
                             };
+
+                            
 
                             CD_Direcciones cdDirecciones = new CD_Direcciones();
                             Direccion direccion = cdDirecciones.obtenDireccionCentro(idCentro);
@@ -122,8 +127,9 @@ namespace CapaDatos
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine("Error en CD_CentrosEducativos.obtenCentro: " + ex.Message);
                 ce = new CentroEducativo();
             }
             return ce;

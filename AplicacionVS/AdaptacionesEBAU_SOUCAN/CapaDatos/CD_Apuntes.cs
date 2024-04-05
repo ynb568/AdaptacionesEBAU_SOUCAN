@@ -42,9 +42,10 @@ namespace CapaDatos
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
                 listaApuntes = new List<Apunte>();
+                Console.WriteLine("Error en CD_Apuntes.listaApuntesEstudiante: " + ex.Message);
             }
             return listaApuntes;
         }

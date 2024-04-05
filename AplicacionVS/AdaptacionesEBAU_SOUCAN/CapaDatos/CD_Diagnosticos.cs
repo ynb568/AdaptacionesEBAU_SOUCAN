@@ -47,9 +47,10 @@ namespace CapaDatos
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
                 listaDiagnosticos = new List<Diagnostico>();
+                Console.WriteLine("Error en CD_Diagnosticos.listaDiagnosticos: " + ex.Message);
             }
             return listaDiagnosticos;
         }

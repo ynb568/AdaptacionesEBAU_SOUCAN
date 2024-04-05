@@ -36,6 +36,7 @@ namespace CapaDatos
                             Estudiante e = new Estudiante()
                             {
                                 IdEstudiante = Convert.ToInt32(dr["idEstudiante"]),
+                                DniEstudiante = dr["dniEstudiante"].ToString(),
                                 NombreEstudiante = dr["nombreEstudiante"].ToString(),
                                 Ap1Estudiante = dr["ap1Estudiante"].ToString(),
                                 Ap2Estudiante = dr["ap2Estudiante"].ToString(),
@@ -70,9 +71,11 @@ namespace CapaDatos
                         }
                     }
                 }
-            } catch
+            } 
+            catch (Exception ex)
             {
                 estudiantes = new List<Estudiante>();
+                Console.WriteLine("Error en CD_Estudiantes.listaEstudiantes: " + ex.Message);
             }
 
 
@@ -136,9 +139,10 @@ namespace CapaDatos
                     
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 e = new Estudiante();
+                Console.WriteLine("Error en CD_Estudiantes.obtenEstudianteCentro: " + ex.Message);
             }
             return e;
         }
@@ -153,6 +157,7 @@ namespace CapaDatos
 
                     // Parámetros del procedimiento almacenado
                     command.Parameters.Add("@nombreEstudiante", SqlDbType.VarChar).Value = e.NombreEstudiante;
+                    command.Parameters.Add("@dniEstudiante", SqlDbType.VarChar).Value = e.DniEstudiante;
                     command.Parameters.Add("@ap1Estudiante", SqlDbType.VarChar).Value = e.Ap1Estudiante;
                     command.Parameters.Add("@ap2Estudiante", SqlDbType.VarChar).Value = e.Ap2Estudiante;
                     command.Parameters.Add("@nombreCompletoT1", SqlDbType.VarChar).Value = e.NombreCompletoTutor1;

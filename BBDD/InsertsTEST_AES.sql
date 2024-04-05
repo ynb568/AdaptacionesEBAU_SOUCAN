@@ -30,7 +30,7 @@ insert into CentroEducativo (idCE, nombreCE, idSede, telefonoCE,
 				'NomEDTest', 'ApEDTest', '333444555', 1);
 go
 
-insert into Estudiante (dni, nombreEstudiante, ap1Estudiante, ap2Estudiante,
+insert into Estudiante (dniEstudiante, nombreEstudiante, ap1Estudiante, ap2Estudiante,
 							nombreCompletoTutor1, telefonoTutor1, nombreCompletoTutor2, telefonoTutor2,
 							ordinaria, extraordinaria, observaciones, validado, cursoConvocatoria, idCE)
 	values ('12345678A', 'NomETest', 'Ap1Test', 'Ap2Test',

@@ -45,7 +45,7 @@ namespace CapaDatos
             catch (Exception ex)
             {
                 documentos = new List<Documento>();
-                Console.WriteLine("Error al obtener los documentos: " + ex.Message);
+                Console.WriteLine("Error en CD_Documentos.listaDocumentosEstudiante: " + ex.Message);
             }
             return documentos;
         }

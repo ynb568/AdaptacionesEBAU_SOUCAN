@@ -140,7 +140,9 @@ as
 		declare @Completado bit;
 		if (exists (select * from CentroEducativo where idCE = @idCE))
 			begin
-				select top(1) * from CentroEducativo where idCE = @idCE 
+				select top(1) u.correo, u.contrasenha , ce.* from CentroEducativo ce
+					inner join Usuario u on ce.idCE = u.idUsuario
+					where idCE = @idCE 
 				set @Mensaje = ('Procedimiento correcto');
 				set @Completado = 1;
 			end
@@ -151,6 +153,8 @@ as
 			end
 	end;
 go	
+
+
 
 create or alter procedure obtenApunteEstudiante @idE int, @idA int
 as
@@ -275,6 +279,85 @@ as
 			rollback transaction
 			set @Mensaje = ('Se ha producido un error');
 			set @Registrado = 0;
+		end catch
+	end;
+go
+
+create or alter procedure sp_registraAsignaturaPrevistaEstudiante @idE int, @idA int, @fase1 bit, @fase2 bit
+as
+	begin 
+		declare @Mensaje varchar(50);
+		declare @Registrado bit;
+		begin try
+			begin transaction
+				if (exists(select * from Estudiante where idEstudiante = @idE))
+					begin
+						if (exists (select * from Asignatura where idAsignatura = @idA and activo = 1))
+							begin
+								insert into AsignaturaEstudiantePrevista(idEstudiante, idAsignatura, fase1, fase2)
+									values (@idE, @idA, @fase1, @fase2)
+								set @Mensaje = ('Procedimiento correcto');
+								set @Registrado = 1;
+							end
+						else 
+							begin 
+								rollback transaction
+								set @Mensaje = 'No existe el asignatura activa asociada';
+								set @Registrado = 0;
+							end
+					end
+				else
+					begin
+						rollback transaction
+						set @Mensaje = 'No existe el estudiante asociado';
+						set @Registrado = 0;
+					end
+			commit transaction
+		end try
+
+		begin catch
+			rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+			set @Registrado = 0;
+		end catch
+	end;
+go
+
+
+create or alter procedure sp_registraDocumentoEstudiante @idE int, @idD int, @rutaD varchar(MAX)
+as
+	begin
+		declare @Mensaje varchar(50);
+		declare @registrado bit;
+		begin try
+			begin transaction
+				if (exists (select * from Estudiante where idEstudiante = @idE))
+					begin
+						if (exists (select * from Documento
+										where idDocumento = @idD))
+							begin
+								insert into DocumentoEstudiante(idEstudiante, idDocumento, rutaDocumento)
+									values (@idE, @idD, @rutaD)
+							end
+						else
+							begin
+								rollback transaction
+								set @Mensaje = 'No existe el documento solicitado asociado';
+								set @Registrado = 0;
+							end	
+					end
+				else
+					begin
+						rollback transaction
+						set @Mensaje = 'No existe el estudiante asociadoe';
+						set @Registrado = 0;
+					end	
+			commit transaction
+		end try
+
+		begin catch
+			rollback transaction
+			set @Mensaje = ('Se ha producido un error');
 		end catch
 	end;
 go
@@ -404,44 +487,6 @@ go
 */
 
 
-create or alter procedure sp_anhadeDocumentoEstudiante @idE int, @idD int, @rutaD varchar(MAX)
-as
-	begin
-		declare @Mensaje varchar(50);
-		declare @registrado bit;
-		declare @idDireccionNueva int;
-		begin try
-			begin transaction
-				if (exists (select * from Estudiante where idEstudiante = @idE))
-					begin
-						if (not exists (select * from AdaptacionDiagnosticoEstudiante
-										where idEstudiante = @idE and idDiagnostico = @idD))
-							begin
-								insert into DocumentoEstudiante(idEstudiante, idDocumento, rutaDocumento)
-									values (@idE, @idD, @rutaD)
-							end
-						else
-							begin
-								rollback transaction
-								set @Mensaje = 'Documento ya asociado al estudiante';
-								set @Registrado = 0;
-							end	
-					end
-				else
-					begin
-						rollback transaction
-						set @Mensaje = 'Estudiante no existente';
-						set @Registrado = 0;
-					end	
-
-		end try
-
-		begin catch
-			rollback transaction
-			set @Mensaje = ('Se ha producido un error');
-		end catch
-	end;
-go
 
 --REVISADO
 create or alter procedure sp_listaEstudiantesCentro @idCE int
@@ -779,7 +824,8 @@ go
 create or alter procedure sp_listaCentrosEducativos
 as
 	begin
-		select * from CentroEducativo
+		select u.correo, u.contrasenha, ce.* from CentroEducativo ce
+			inner join Usuario u on ce.idCE = u.idUsuario
 	end;
 go
 
@@ -934,5 +980,48 @@ create or alter procedure sp_listaDiagnosticos
 as
 	begin
 		select * from Diagnostico
+	end;
+go
+
+create or alter procedure sp_registraAsignaturaMatriculadaEstudiante @idE int, @idA int, @fase1 bit, @fase2 bit
+as
+	begin 
+		declare @Mensaje varchar(50);
+		declare @Registrado bit;
+
+		declare @idUsuarioNuevo int;
+		declare @idDireccionNueva int;
+		begin try
+			begin transaction
+				if (exists(select * from Estudiante where idEstudiante = @idE))
+					begin
+						if (exists (select * from Asignatura where idAsignatura = @idA and activo = 1))
+							begin
+								insert into AsignaturaEstudianteMatriculada(idEstudiante, idAsignatura, fase1, fase2)
+									values (@idE, @idA, @fase1, @fase2)
+								set @Mensaje = ('Procedimiento correcto');
+								set @Registrado = 1;
+							end
+						else 
+							begin 
+								rollback transaction
+								set @Mensaje = 'No existe el asignatura activa asociada';
+								set @Registrado = 0;
+							end
+					end
+				else
+					begin
+						rollback transaction
+						set @Mensaje = 'No existe el estudiante asociado';
+						set @Registrado = 0;
+					end
+			commit transaction
+		end try
+
+		begin catch
+			rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+			set @Registrado = 0;
+		end catch
 	end;
 go
