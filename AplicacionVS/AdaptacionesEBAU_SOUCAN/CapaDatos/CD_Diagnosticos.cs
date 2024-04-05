@@ -54,5 +54,50 @@ namespace CapaDatos
             }
             return listaDiagnosticos;
         }
+
+        public List<Diagnostico> listaDiagnosticosEstudiante (int idEstudiante)
+        {
+            List<Diagnostico> listaDiagnosticos = new List<Diagnostico>();
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_listaDiagnosticosEstudiante", con);
+                    cmd.Parameters.AddWithValue("idEstudiante", idEstudiante);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    con.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            Diagnostico d = new Diagnostico()
+                            {
+                                IdDiagnostico = Convert.ToInt32(dr["idDiagnostico"]),
+                                NombreDiagnostico = dr["nombreDiagnostico"].ToString(),
+                                Activo = Convert.ToBoolean(dr["activo"]),
+                                Descripcion = dr["descripcion"].ToString()
+                            };
+                            int idDiagnostico = d.IdDiagnostico;
+
+                            CD_Adaptaciones cdAdaptaciones = new CD_Adaptaciones();
+                            List<Adaptacion> adaptaciones = cdAdaptaciones.listaAdaptacionesDiagnostico(idDiagnostico);
+                            d.Adaptaciones = adaptaciones;
+                            listaDiagnosticos.Add(d);
+                        }
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                listaDiagnosticos = new List<Diagnostico>();
+                Console.WriteLine("Error en CD_Diagnosticos.: " + ex.Message);
+            }
+            return listaDiagnosticos;
+        }
     }
 }

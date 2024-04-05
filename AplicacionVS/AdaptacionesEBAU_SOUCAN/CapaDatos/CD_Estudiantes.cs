@@ -47,7 +47,9 @@ namespace CapaDatos
                                 CursoConvocatoria = dr["cursoConvocatoria"].ToString(),
                                 FechaRegistro = Convert.ToDateTime(dr["fechaRegistro"]),
                                 Ordinaria = Convert.ToBoolean(dr["ordinaria"]),
-                                ExtraOrdinaria = Convert.ToBoolean(dr["extraOrdinaria"])
+                                ExtraOrdinaria = Convert.ToBoolean(dr["extraordinaria"]),
+                                Validado = dr["validado"] == DBNull.Value ? (bool?)null : Convert.ToBoolean(dr["validado"]),
+                                Observaciones = dr["observaciones"].ToString()
                             };
 
                             int idEstudiante = e.IdEstudiante;
@@ -103,6 +105,7 @@ namespace CapaDatos
                             e = new Estudiante()
                             {
                                 IdEstudiante = Convert.ToInt32(dr["idEstudiante"]),
+                                DniEstudiante = dr["dniEstudiante"].ToString(),
                                 NombreEstudiante = dr["nombreEstudiante"].ToString(),
                                 Ap1Estudiante = dr["ap1Estudiante"].ToString(),
                                 Ap2Estudiante = dr["ap2Estudiante"].ToString(),
@@ -114,9 +117,15 @@ namespace CapaDatos
                                 FechaRegistro = Convert.ToDateTime(dr["fechaRegistro"]),
                                 Ordinaria = Convert.ToBoolean(dr["ordinaria"]),
                                 ExtraOrdinaria = Convert.ToBoolean(dr["extraOrdinaria"]),
-                                Validado = dr["validado"] == DBNull.Value ? (bool?)null : Convert.ToBoolean(dr["validado"])
+                                Validado = dr["validado"] == DBNull.Value ? (bool?)null : Convert.ToBoolean(dr["validado"]),
+                                Observaciones = dr["observaciones"].ToString()
                             };
 
+                            /* CONSIDERAR SI ES NECESARIO RECUPERAR EL CENTRO EDUCATIVO
+                            CD_CentrosEducativos cdCentros = new CD_CentrosEducativos();
+                            CentroEducativo ce = cdCentros.obtenCentro(idCentro);
+                            e.Centro = ce;
+                            */
                             CD_Asignaturas cdAsignaturas = new CD_Asignaturas();
                             List<Asignatura> asignaturasPrevistas = cdAsignaturas.listaAsignaturasPrevistasEstudiante(idEstudiante);
                             e.AsignaturasPrevistas = asignaturasPrevistas;
@@ -131,6 +140,16 @@ namespace CapaDatos
                             CD_Documentos cdDocumentos = new CD_Documentos();
                             List<Documento> documentos = cdDocumentos.listaDocumentosEstudiante(idEstudiante);
                             e.Documentos = documentos;
+
+                            CD_Diagnosticos cdDiagnosticos = new CD_Diagnosticos();
+                            List<Diagnostico> diagnosticos = cdDiagnosticos.listaDiagnosticosEstudiante(idEstudiante);
+                            e.Diagnosticos = diagnosticos;
+                            CD_Adaptaciones cdAdaptaciones = new CD_Adaptaciones();
+                            foreach (Diagnostico d in diagnosticos)
+                            {
+                                List<Adaptacion> adaptaciones = cdAdaptaciones.listaAdaptacionesDiagnosticoEstudiante(idEstudiante, d.IdDiagnostico);
+                            }
+                            
                         }
                         //AÑADIR AL RESTO DE LISTAS
                         dr.Close();

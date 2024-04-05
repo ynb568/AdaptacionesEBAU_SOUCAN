@@ -90,5 +90,45 @@ namespace CapaDatos
             }
             return listaAdaptaciones;
         }
+
+        public List<Adaptacion> listaAdaptacionesDiagnosticoEstudiante(int idEstudiante, int idDiagnostico)
+        {
+            List<Adaptacion> listaAdaptaciones = new List<Adaptacion>();
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_listaAdaptacionesDiagnosticoEstudiante", con);
+                    cmd.Parameters.AddWithValue("idE", idEstudiante);
+                    cmd.Parameters.AddWithValue("idD", idDiagnostico);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    con.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            listaAdaptaciones.Add(
+                                new Adaptacion() 
+                                { 
+                                    IdAdaptacion = Convert.ToInt32(dr["idAdaptacion"]),
+                                    NombreAdaptacion = dr["nombreAdaptacion"].ToString(),
+                                    Activo = Convert.ToBoolean(dr["activo"]),
+                                    Descripcion = dr["descripcion"].ToString()
+                                }
+                            );
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                listaAdaptaciones = new List<Adaptacion>();
+                Console.WriteLine("Error en CD_Adaptaciones.obtenAdaptacionesEstudiante: " + ex.Message);
+            }
+            return listaAdaptaciones;
+        }
     }
 }

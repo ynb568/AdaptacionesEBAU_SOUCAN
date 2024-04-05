@@ -31,7 +31,11 @@ namespace CapaNegocio
                 .ToList();
 
             return adaptacionesActivas;
+        }
 
+        public List<Adaptacion> listaAdaptacionesDiagnosticoEstudiante(int idEstudiante, int idDiagnostico)
+        {
+            return objCD.listaAdaptacionesDiagnosticoEstudiante(idEstudiante, idDiagnostico);
         }
     }
 }

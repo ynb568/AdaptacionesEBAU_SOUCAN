@@ -90,6 +90,55 @@ as
 	end;
 go	
 
+create or alter procedure sp_listaDiagnosticosEstudiante @idE int
+as
+	begin
+		declare @Mensaje varchar(50);
+		declare @Completado bit;
+		if (exists (select * from DiagnosticoEstudiante where idEstudiante = @idE))
+			begin
+				select * from Diagnostico d
+					inner join DiagnosticoEstudiante de on d.idDiagnostico = de.idDiagnostico
+					where de.idEstudiante = @idE
+				set @Mensaje = ('Procedimiento correcto');
+				set @Completado = 1;
+			end
+		else
+			begin
+				set @Mensaje = ('No existe el diagnostico asociado');
+				set @Completado = 0;
+			end
+	end;
+go
+create or alter procedure sp_listaAdaptacionesDiagnosticoEstudiante @idE int, @idD int
+as
+	begin
+		declare @Mensaje varchar(50);
+		declare @Completado bit;
+		if (exists (select * from Estudiante where idEstudiante = @idE))
+			begin
+				if (exists (select * from AdaptacionDiagnosticoEstudiante where idDiagnostico = @idD and idEstudiante = @idE))
+					begin
+						select * from Adaptacion a
+							inner join AdaptacionDiagnosticoEstudiante ade on a.idAdaptacion = ade.idAdaptacion
+							where ade.idDiagnostico = @idD and ade.idEstudiante = @idE
+						set @Mensaje = ('Procedimiento correcto');
+						set @Completado = 1;
+					end
+				else
+					begin
+						set @Mensaje = ('No existe el diagnostico asociado');
+						set @Completado = 0;
+					end
+			end
+		else
+			begin
+				set @Mensaje = ('No existe el estudiante asociado');
+				set @Completado = 0;
+			end
+	end;
+go	
+
 create or alter procedure sp_obtenAsignaturasPrevistasEstudiante @idE int
 as
 	begin
@@ -363,33 +412,10 @@ as
 go
 
 
-
------------------------------------------------------------------
------------------------------------------------------------------
---------- SECCION FUNCIONALIDADES CENTRO EDUCATIVO --------------
------------------------------------------------------------------
------------------------------------------------------------------
-
---REVISADO
-create or alter procedure sp_inicioSesionCentroEducativo @correo varchar(100), @contrasenha varchar(500)
-as
-	begin
-		if (exists(select * from CentroEducativo ce
-						inner join Usuario u on ce.idCE = u.idUsuario
-							where u.correo = @correo and u.contrasenha = @contrasenha))
-			select idCE from CentroEducativo ce
-						inner join Usuario u on ce.idCE = u.idUsuario
-							where u.correo = @correo and u.contrasenha = @contrasenha 
-		else 
-			select '0'
-	end;
-go
-
---REVISADO
-create or alter procedure sp_registraEstudiante 
+create or alter procedure sp_registraEstudiante @dniEstudiante varchar(20),
 	@nombreEstudiante varchar(50), @ap1Estudiante varchar(50), @ap2Estudiante varchar(50),
 	@nombreCompletoT1 varchar(100), @telefonoT1 varchar(9), @nombreCompletoT2 varchar(100), @telefonoT2 varchar(9),
-	@idCE int
+	@ordinaria bit, @extraordinaria bit, @idCE int, @observaciones varchar(500)
 as
 	begin
 		declare @Mensaje varchar(50);
@@ -406,8 +432,12 @@ as
 							begin
 								--TODO: asegurar que únicamente haya 1 plazo activo
 								set @curso = (select top(1) cursoConvocatoria from PlazosRegistro where activo = 1) 
-								insert into Estudiante (nombreEstudiante, ap1Estudiante, ap2Estudiante, nombreCompletoTutor1, telefonoTutor1,  nombreCompletoTutor2, telefonoTutor2, cursoConvocatoria, idCE)
-									values (@nombreEstudiante, @ap1Estudiante, @ap2Estudiante, @nombreCompletoT1, @telefonoT1, @nombreCompletoT2, @telefonoT2, @curso, @idCE)
+								insert into Estudiante (dniEstudiante, nombreEstudiante, ap1Estudiante, ap2Estudiante, 
+									nombreCompletoTutor1, telefonoTutor1,  nombreCompletoTutor2, telefonoTutor2, 
+										ordinaria, extraordinaria, cursoConvocatoria, idCE, observaciones)
+									values (@dniEstudiante, @nombreEstudiante, @ap1Estudiante, @ap2Estudiante, 
+										@nombreCompletoT1, @telefonoT1, @nombreCompletoT2, @telefonoT2, 
+										@ordinaria, @extraordinaria, @curso, @idCE, @observaciones)
 		
 								set @Mensaje = ('Procedimiento correcto');
 								set @Registrado = 1;
@@ -434,6 +464,30 @@ as
 		end catch
 	end;
 go
+
+
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+--------- SECCION FUNCIONALIDADES CENTRO EDUCATIVO --------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+
+--REVISADO
+create or alter procedure sp_inicioSesionCentroEducativo @correo varchar(100), @contrasenha varchar(500)
+as
+	begin
+		if (exists(select * from CentroEducativo ce
+						inner join Usuario u on ce.idCE = u.idUsuario
+							where u.correo = @correo and u.contrasenha = @contrasenha))
+			select idCE from CentroEducativo ce
+						inner join Usuario u on ce.idCE = u.idUsuario
+							where u.correo = @correo and u.contrasenha = @contrasenha 
+		else 
+			select '0'
+	end;
+go
+
+--REVISADO
 
 --ARREGLAR: lo mejor va a ser eliminar todas las asignaturas previas y despues ir añadiendo una a una las nuevas
 /*

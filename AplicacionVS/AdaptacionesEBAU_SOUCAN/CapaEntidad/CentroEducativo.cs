@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CapaEntidad
 {
@@ -27,6 +28,7 @@ namespace CapaEntidad
 		public string ApellidosEquipoDirectivo { get; set; }
 		public string TelefonoEquipoDirectivo { get; set; }
 		public Direccion Direccion { get; set; }
+		public DateTime FechaRegistro { get; set; }
 
 		public List<Estudiante> Estudiantes { get; set; }
     }

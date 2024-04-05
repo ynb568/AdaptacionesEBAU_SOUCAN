@@ -47,7 +47,8 @@ namespace CapaDatos
                                 CorreoOrientador = dr["correoOrientador"].ToString(),
                                 NombreEquipoDirectivo = dr["nombreEquipoDirectivo"].ToString(),
                                 ApellidosEquipoDirectivo = dr["apellidosEquipoDirectivo"].ToString(),
-                                TelefonoEquipoDirectivo = dr["telefonoEquipoDirectivo"].ToString()
+                                TelefonoEquipoDirectivo = dr["telefonoEquipoDirectivo"].ToString(),
+                                FechaRegistro = Convert.ToDateTime(dr["fechaRegistro"])
                             };
                             int idCentro = ce.IdCE;
 
@@ -107,7 +108,9 @@ namespace CapaDatos
                                 TelefonoOrientador = dr["telefonoOrientador"].ToString(),
                                 CorreoOrientador = dr["correoOrientador"].ToString(),
                                 NombreEquipoDirectivo = dr["nombreEquipoDirectivo"].ToString(),
-                                ApellidosEquipoDirectivo = dr["apellidosEquipoDirectivo"].ToString()
+                                ApellidosEquipoDirectivo = dr["apellidosEquipoDirectivo"].ToString(),
+                                TelefonoEquipoDirectivo = dr["telefonoEquipoDirectivo"].ToString(),
+                                FechaRegistro = Convert.ToDateTime(dr["fechaRegistro"])
                             };
 
                             
