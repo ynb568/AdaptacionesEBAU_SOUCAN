@@ -9,5 +9,7 @@
         public bool Excepcional { get; set; }
         public string DescripcionExcepcional { get; set; }
 
+        //FALTA MAPEAR LAS OBSERVCIONES VALIDADO Y DETALLES
+
     }
 }

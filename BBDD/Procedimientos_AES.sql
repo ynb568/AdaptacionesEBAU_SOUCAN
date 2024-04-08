@@ -282,12 +282,10 @@ create or alter procedure sp_registraCentroEducativo
 	@nombreOrientador varchar(50), @apellidosOrientador varchar(100), @telefonoOrientador varchar(9) , @correoOrientador varchar(100), 
 	@nombreEquipoDirectivo varchar(50), @apellidosEquipoDirectivo varchar(100), @telefonoEquipoDirectivo varchar(9),
 	@direccion varchar(100), @idMunicipio int, @idSede int,
-	@correo varchar(100), @contrasenha varchar(500), @repetirContrasenha varchar(500)
+	@correo varchar(100), @contrasenha varchar(500), @repetirContrasenha varchar(500),
+	@Mensaje varchar(50) output, @Registrado bit output
 as
 	begin 
-		declare @Mensaje varchar(50);
-		declare @Registrado bit;
-
 		declare @idUsuarioNuevo int;
 		declare @idDireccionNueva int;
 		begin try
@@ -304,11 +302,11 @@ as
 					insert into Direccion (nombreDireccion, idMunicipio)
 						values (@direccion, @idMunicipio)
 
-					set @idDireccionNueva = (select top(1) idDireccion from Direccion where nombreDireccion = @direccion and idMunicipio = @idMunicipio);
+					set @idDireccionNueva = (select idDireccion from Direccion where nombreDireccion = @direccion and idMunicipio = @idMunicipio);
 
-					insert into CentroEducativo (idCE, nombreCE, telefonoCE, nombreOrientador, apellidosOrientador, telefonoOrientador, correoOrientador,
+					insert into CentroEducativo (idCE, idSede, nombreCE, telefonoCE, nombreOrientador, apellidosOrientador, telefonoOrientador, correoOrientador,
 						nombreEquipoDirectivo, apellidosEquipoDirectivo, telefonoEquipoDirectivo, idDireccion)
-						values (@idUsuarioNuevo, @nombreCE, @telefonoCE, @nombreOrientador, @apellidosOrientador, @telefonoOrientador, @correoOrientador,
+						values (@idUsuarioNuevo, @idSede, @nombreCE, @telefonoCE, @nombreOrientador, @apellidosOrientador, @telefonoOrientador, @correoOrientador,
 							@nombreEquipoDirectivo, @apellidosEquipoDirectivo, @telefonoEquipoDirectivo, @idDireccionNueva)
 
 					set @Mensaje = ('Procedimiento correcto');
@@ -316,6 +314,7 @@ as
 				end
 				else
 				begin
+					if @@trancount > 0
 					rollback transaction
 					set @Mensaje = 'El correo y la contraseï¿½a ya estï¿½n registrados';
 					set @Registrado = 0;
@@ -325,6 +324,7 @@ as
 		end try
 
 		begin catch
+		if @@trancount > 0
 			rollback transaction
 			set @Mensaje = ('Se ha producido un error');
 			set @Registrado = 0;
@@ -332,15 +332,40 @@ as
 	end;
 go
 
+/*
+EXEC sp_registraCentroEducativo 
+    @nombreCE = 'Centro Educativo Prueba', 
+    @telefonoCE = '123456789',
+    @nombreOrientador = 'Nombre Orientador', 
+    @apellidosOrientador = 'Apellidos Orientador', 
+    @telefonoOrientador = '987654321', 
+    @correoOrientador = 'orientador@prueba.com', 
+    @nombreEquipoDirectivo = 'Nombre Directivo', 
+    @apellidosEquipoDirectivo = 'Apellidos Directivo', 
+    @telefonoEquipoDirectivo = '123456789',
+    @direccion = 'Calle Prueba, 123', 
+    @idMunicipio = 1, 
+    @idSede = 1,
+    @correo = 'centro@prueba.com', 
+    @contrasenha = 'contraseñaPrueba', 
+    @repetirContrasenha = 'contraseñaPrueba',
+    @Mensaje = '', 
+    @Registrado = 0
+go
 
-create or alter procedure sp_registraEstudiante @dniEstudiante varchar(20),
-	@nombreEstudiante varchar(50), @ap1Estudiante varchar(50), @ap2Estudiante varchar(50),
-	@nombreCompletoT1 varchar(100), @telefonoT1 varchar(9), @nombreCompletoT2 varchar(100), @telefonoT2 varchar(9),
-	@ordinaria bit, @extraordinaria bit, @idCE int, @observaciones varchar(500)
+select * from CentroEducativo;
+go
+*/
+
+
+
+create or alter procedure sp_registraEstudiante @dniE varchar(20),
+	@nombreE varchar(50), @ap1E varchar(50), @ap2E varchar(50),
+	@nombreT1 varchar(100), @telefonoT1 varchar(9), @nombreT2 varchar(100), @telefonoT2 varchar(9),
+	@ordinaria bit, @extraordinaria bit, @idCE int, @observaciones varchar(500),
+	@Mensaje varchar(50) output, @registrado bit output
 as
 	begin
-		declare @Mensaje varchar(50);
-		declare @registrado bit;
 		declare @curso varchar(10);
 		begin try
 			begin transaction
@@ -356,8 +381,8 @@ as
 								insert into Estudiante (dniEstudiante, nombreEstudiante, ap1Estudiante, ap2Estudiante, 
 									nombreCompletoTutor1, telefonoTutor1,  nombreCompletoTutor2, telefonoTutor2, 
 										ordinaria, extraordinaria, cursoConvocatoria, idCE, observaciones)
-									values (@dniEstudiante, @nombreEstudiante, @ap1Estudiante, @ap2Estudiante, 
-										@nombreCompletoT1, @telefonoT1, @nombreCompletoT2, @telefonoT2, 
+									values (@dniE, @nombreE, @ap1E, @ap2E, 
+										@nombreT1, @telefonoT1, @nombreT2, @telefonoT2, 
 										@ordinaria, @extraordinaria, @curso, @idCE, @observaciones)
 		
 								set @Mensaje = ('Procedimiento correcto');
@@ -366,6 +391,7 @@ as
 							end
 						else
 							begin
+								if @@trancount > 0
 								rollback transaction
 								set @Mensaje = 'No hay un curso académico activo';
 								set @Registrado = 0;
@@ -373,6 +399,7 @@ as
 					end
 				else
 					begin
+						if @@trancount > 0
 						rollback transaction
 						set @Mensaje = 'Centro educativo no existente';
 						set @Registrado = 0;
@@ -380,17 +407,40 @@ as
 		end try
 
 		begin catch
+			if @@trancount > 0
 			rollback transaction
 			set @Mensaje = ('Se ha producido un error');
+			set @Registrado = 0;
 		end catch
 	end;
 go
 
-create or alter procedure sp_registraAsignaturaPrevistaEstudiante @idE int, @idA int, @fase1 bit, @fase2 bit
+/*
+EXEC sp_registraEstudiante 
+    @dniE = 'dniEstudiante_REG', 
+    @nombreE = 'nombreEstudiante_REG', 
+    @ap1E = 'ap1Estudiante_REG', 
+    @ap2E = 'ap2Estudiante_REG',
+    @nombreT1 = 'nombreCompletoT1_REG', 
+    @telefonoT1 = '999888777', 
+    @nombreT2 = 'nombreCompletoT2_REG', 
+    @telefonoT2 = '888777666',
+    @ordinaria = 1, 
+    @extraordinaria = 0, 
+    @idCE = 1, 
+    @observaciones = 'observaciones_REG',
+    @Mensaje = '',
+    @Registrado = 0
+GO
+
+SELECT * FROM Estudiante;
+GO
+*/
+
+create or alter procedure sp_registraAsignaturaPrevistaEstudiante @idE int, @idA int, @fase1 bit, @fase2 bit,
+@Mensaje varchar(50) output, @registrado bit output
 as
 	begin 
-		declare @Mensaje varchar(50);
-		declare @Registrado bit;
 		begin try
 			begin transaction
 				if (exists(select * from Estudiante where idEstudiante = @idE))
@@ -411,6 +461,7 @@ as
 					end
 				else
 					begin
+						if @@trancount > 0
 						rollback transaction
 						set @Mensaje = 'No existe el estudiante asociado';
 						set @Registrado = 0;
@@ -419,19 +470,31 @@ as
 		end try
 
 		begin catch
+			if @@trancount > 0
 			rollback transaction
 			set @Mensaje = ('Se ha producido un error');
 			set @Registrado = 0;
 		end catch
 	end;
 go
+/*
+EXEC sp_registraAsignaturaPrevistaEstudiante 
+    @idE = 1, 
+    @idA = 1, 
+    @fase1 = 1, 
+    @fase2 = 0,
+    @Mensaje = '', 
+    @Registrado = 0
+GO
 
+SELECT * FROM AsignaturaEstudiantePrevista;
+GO
+*/
 
-create or alter procedure sp_registraDocumentoEstudiante @idE int, @idD int, @rutaD varchar(MAX)
+create or alter procedure sp_registraDocumentoEstudiante @idE int, @idD int, @rutaD varchar(MAX),
+@Mensaje varchar(50) output, @registrado bit output
 as
 	begin
-		declare @Mensaje varchar(50);
-		declare @registrado bit;
 		begin try
 			begin transaction
 				if (exists (select * from Estudiante where idEstudiante = @idE))
@@ -451,6 +514,7 @@ as
 					end
 				else
 					begin
+						if @@trancount > 0
 						rollback transaction
 						set @Mensaje = 'No existe el estudiante asociadoe';
 						set @Registrado = 0;
@@ -459,17 +523,30 @@ as
 		end try
 
 		begin catch
+			if @@trancount > 0
 			rollback transaction
 			set @Mensaje = ('Se ha producido un error');
 		end catch
 	end;
 go
 
-create or alter procedure sp_registraAdaptacionDiagnosticoEstudiante @idE int, @idD int, @idA int, @observaciones varchar(500)
+/*
+EXEC sp_registraDocumentoEstudiante 
+    @idE = 1, 
+    @idD = 1, 
+    @rutaD = 'rutaDocumento_REG',
+    @Mensaje = '', 
+    @Registrado = 0
+GO
+
+SELECT * FROM DocumentoEstudiante;
+GO
+*/
+
+create or alter procedure sp_registraAdaptacionDiagnosticoEstudiante @idE int, @idD int, @idA int, @observaciones varchar(500),
+@Mensaje varchar(50), @Registrado bit
 as
 	begin
-		declare @Mensaje varchar(50);
-		declare @registrado bit;
 		begin try
 			begin transaction
 				if (exists (select * from Estudiante where idEstudiante = @idE))
@@ -485,6 +562,7 @@ as
 									end
 						else
 							begin
+								if @@trancount > 0
 								rollback transaction
 								set @Mensaje = 'No existe el adaptacion activa asociado';
 								set @Registrado = 0;
@@ -492,6 +570,7 @@ as
 						end
 					else
 						begin
+							if @@trancount > 0
 							rollback transaction
 							set @Mensaje = 'No existe el diagnostico activo asociado';
 							set @Registrado = 0;
@@ -499,6 +578,7 @@ as
 					end
 				else
 					begin
+						if @@trancount > 0
 						rollback transaction
 						set @Mensaje = 'No existe el estudiante asociado';
 						set @Registrado = 0;
@@ -507,11 +587,27 @@ as
 		end try
 
 		begin catch
+			if @@trancount > 0
 			rollback transaction
 			set @Mensaje = ('Se ha producido un error');
 		end catch
 	end;
 go
+
+/*
+EXEC sp_registraAdaptacionDiagnosticoEstudiante 
+    @idE = 1, 
+    @idD = 1, 
+    @idA = 1, 
+    @observaciones = 'observaciones_REG',
+    @Mensaje = '', 
+    @Registrado = 0
+GO
+
+SELECT * FROM AdaptacionDiagnosticoEstudiante;
+GO
+*/
+
 
 
 

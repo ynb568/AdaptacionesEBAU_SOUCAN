@@ -50,25 +50,45 @@ namespace CapaDatos
             return documentos;
         }
 
-        public bool registraDocumentoEstudiante (int idEstudiante,int idDocumennto,string @rutaDocumento)
+        public bool registraDocumentoEstudiante(int idEstudiante, int idDocumento, string rutaDocumento)
         {
-            bool resultado = false;
+            bool registro = false;
             try
             {
                 using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
                 {
                     SqlCommand cmd = new SqlCommand("sp_registraDocumentoEstudiante", con);
-                    cmd.Parameters.AddWithValue("idE", idEstudiante);
-                    cmd.Parameters.AddWithValue("idD", idDocumennto);
-                    cmd.Parameters.AddWithValue("rutaD", rutaDocumento);
                     cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@idE", idEstudiante);
+                    cmd.Parameters.AddWithValue("@idD", idDocumento);
+                    cmd.Parameters.AddWithValue("@rutaD", rutaDocumento);
+
+                    // Parámetros de salida
+                    SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);
+                    mensajeParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(mensajeParameter);
+
+                    SqlParameter registradoParameter = new SqlParameter("@Registrado", SqlDbType.Bit);
+                    registradoParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(registradoParameter);
 
                     con.Open();
 
-                    int filas = cmd.ExecuteNonQuery();
-                    if (filas > 0)
+                    cmd.ExecuteNonQuery();
+
+                    // Obtener resultados de los parámetros de salida
+                    string mensaje = mensajeParameter.Value.ToString();
+                    registro = registradoParameter.Value != DBNull.Value ? Convert.ToBoolean(registradoParameter.Value) : false;
+
+                    Console.WriteLine(mensaje);
+                    if (registro)
                     {
-                        resultado = true;
+                        Console.WriteLine("El documento ha sido registrado correctamente.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No se pudo registrar el documento.");
                     }
                 }
             }
@@ -76,7 +96,8 @@ namespace CapaDatos
             {
                 Console.WriteLine("Error en CD_Documentos.registraDocumentoEstudiante: " + ex.Message);
             }
-            return resultado;
+            return registro;
         }
+
     }
 }

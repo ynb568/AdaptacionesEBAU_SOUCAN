@@ -1,11 +1,8 @@
 ﻿using CapaEntidad;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 namespace CapaDatos
 {
@@ -136,7 +133,7 @@ namespace CapaDatos
             return listaAsignaturas;
         }
 
-        public bool registraAsignaturaPrevistaEstudiante (int idEstudiante,int idAasignatura, bool fase1,bool fase2)
+        public bool registraAsignaturaPrevistaEstudiante(int idEstudiante, int idAasignatura, bool fase1, bool fase2)
         {
             bool registro = false;
             try
@@ -144,21 +141,40 @@ namespace CapaDatos
                 using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
                 {
                     SqlCommand cmd = new SqlCommand("sp_registraAsignaturaPrevistaEstudiante", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
                     cmd.Parameters.AddWithValue("idE", idEstudiante);
                     cmd.Parameters.AddWithValue("idA", idAasignatura);
                     cmd.Parameters.AddWithValue("fase1", fase1);
                     cmd.Parameters.AddWithValue("fase2", fase2);
-                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Parámetros de salida
+                    SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);
+                    mensajeParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(mensajeParameter);
+
+                    SqlParameter registradoParameter = new SqlParameter("@Registrado", SqlDbType.Bit);
+                    registradoParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(registradoParameter);
 
                     con.Open();
 
-                    int filas = cmd.ExecuteNonQuery();
-                    if (filas > 0)
+                    cmd.ExecuteNonQuery();
+
+                    // Obtener resultados de los parámetros de salida
+                    string mensaje = mensajeParameter.Value.ToString();
+                    registro = registradoParameter.Value != DBNull.Value ? Convert.ToBoolean(registradoParameter.Value) : false;
+
+                    Console.WriteLine(mensaje);
+                    if (registro)
                     {
-                        registro = true;
+                        Console.WriteLine("La asignatura prevista ha sido registrada correctamente.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No se pudo registrar la asignatura prevista.");
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -166,6 +182,8 @@ namespace CapaDatos
             }
             return registro;
         }
+
+
 
     }
 }

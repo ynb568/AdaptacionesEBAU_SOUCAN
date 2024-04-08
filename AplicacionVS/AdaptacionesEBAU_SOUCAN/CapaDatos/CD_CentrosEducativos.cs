@@ -168,12 +168,31 @@ namespace CapaDatos
                     cmd.Parameters.AddWithValue("contrasenha", contrasenha);
                     cmd.Parameters.AddWithValue("repetirContrasenha", repetirContrasenha);
 
+                    // Parámetros de salida
+                    SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);
+                    mensajeParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(mensajeParameter);
+
+                    SqlParameter registradoParameter = new SqlParameter("@Registrado", SqlDbType.Bit);
+                    registradoParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(registradoParameter);
+
                     con.Open();
 
-                    int res = cmd.ExecuteNonQuery();
-                    if (res > 0)
+                    cmd.ExecuteNonQuery();
+
+                    // Obtener resultados de los parámetros de salida
+                    string mensaje = mensajeParameter.Value.ToString();
+                    registro = Convert.ToBoolean(registradoParameter.Value);
+
+                    Console.WriteLine(mensaje);
+                    if (registro)
                     {
-                        registro = true;
+                        Console.WriteLine("El centro educativo ha sido registrado correctamente.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No se pudo registrar el centro educativo.");
                     }
                 }
             }
@@ -182,7 +201,7 @@ namespace CapaDatos
                 Console.WriteLine("Error en CD_CentrosEducativos.registraCentroEducativo: " + ex.Message);
             }
             return registro;
-
         }
+
     }
 }

@@ -97,7 +97,6 @@ namespace PruebasConsola
                 }
             }
 
-            */
             //ESTUDIANTES
             CN_Estudiantes cnEstudiantes = new CN_Estudiantes();
             List<Estudiante> estudiantes = cnEstudiantes.listaEstudiantes(1);
@@ -152,76 +151,43 @@ namespace PruebasConsola
             Estudiante estudiante = cnEstudiantes.obtenEstudianteCentro(1,1);
             Console.WriteLine("obtenEstudianteCentro");
             Console.WriteLine($"ID: {estudiante.IdEstudiante}, DNI: {estudiante.DniEstudiante}, Nombre: {estudiante.NombreEstudiante} {estudiante.Ap1Estudiante} {estudiante.Ap2Estudiante}");
-
-
-            /*
-            CN_Diagnosticos cnDiagosticos = new CN_Diagnosticos();
-
-            List<Diagnostico> diagnosticos = cnDiagosticos.listaDiagnosticos();
-
-            foreach (var d in diagnosticos)
-            {
-                Console.WriteLine($"ID: {d.IdDiagnostico}, Nombre: {d.NombreDiagnostico}, Descripcion: {d.Descripcion}");
-                Console.WriteLine("ADAPTACIONES");
-                if (d.Adaptaciones.Count == 0)
-                {
-                    Console.WriteLine("No hay adaptaciones del diagnostico");
-                }
-                foreach (var a in d.Adaptaciones)
-                {
-                    Console.WriteLine($"Nombre: {a.NombreAdaptacion}");
-                }
-            }
-
-            CN_Estudiantes cnEstudiantes = new CN_Estudiantes();
-            List<Estudiante> estudiantes = cnEstudiantes.listaEstudiantes(1);
-            foreach (var e in estudiantes)
-            {
-                Console.WriteLine($"ID: {e.IdEstudiante}, Nombre: {e.NombreEstudiante} {e.Ap1Estudiante} {e.Ap2Estudiante}");
-                Console.WriteLine($"DNI: {e.DniEstudiante}");
-                Console.WriteLine($"Tutor1: {e.NombreCompletoTutor1}, Telefono: {e.TelefonoTutor1}");
-                Console.WriteLine($"Tutor2: {e.NombreCompletoTutor2}, Telefono: {e.TelefonoTutor2}");
-                Console.WriteLine($"Curso: {e.CursoConvocatoria}, Fecha: {e.FechaRegistro}");
-
-                Console.WriteLine($"Asignaturas Previstas");
-                if (e.AsignaturasPrevistas.Count == 0)
-                {
-                    Console.WriteLine("No hay asignaturas previstas");
-                }
-                foreach (var a in e.AsignaturasPrevistas)
-                {
-                    Console.WriteLine($"Nombre: {a.NombreAsignatura}");
-                }
-                Console.WriteLine($"Asignaturas Matriculadas");
-                if (e.AsignaturasMatriculadas.Count == 0)
-                {
-                    Console.WriteLine("No hay asignaturas matriculadas");
-                }
-                foreach (var a in e.AsignaturasMatriculadas)
-                {
-                    Console.WriteLine($"Nombre: {a.NombreAsignatura}");
-                }
-                Console.WriteLine($"Apuntes");
-                if (e.Apuntes.Count == 0)
-                {
-                    Console.WriteLine("No hay apuntes");
-                }
-                foreach (var a in e.Apuntes)
-                {
-                    Console.WriteLine($"Nombre: {a.Descripcion}");
-                }
-
-                Console.WriteLine($"Documentos");
-                if (e.Documentos.Count == 0)
-                {
-                    Console.WriteLine("No hay documentos");
-                }
-                foreach (var a in e.Documentos)
-                {
-                    Console.WriteLine($"Nombre: {a.IdDocumento}, {a.NombreDocumento},{a.RutaDocumento}, {a.Validado} ");
-                }
             */
-                Console.ReadKey();
+
+            //PRUEVAS DE REGISTRO
+            // Crear una instancia de las clases de lógica de negocio
+            CN_CentrosEducativos cnCentros = new CN_CentrosEducativos();
+            CN_Estudiantes cnEstudiantes = new CN_Estudiantes();
+            CN_Documentos cnDocumentos = new CN_Documentos();
+            CN_Asignaturas cnAsignaturas = new CN_Asignaturas();
+            CN_Adaptaciones cnAdaptaciones = new CN_Adaptaciones();
+
+            // Llamar a los métodos de registro
+            bool registroCentro = cnCentros.registraCentroEducativo("nombreCE_REG", "111222333",
+                "nombreOrientador_REG", "apellidosOrientador_REG", "444333555", "correoOrientador@REG.com",
+                "nombreEquipoDirectivo_REG", "apellidosEquipoDirectivo_REG", "222333444",
+                "direccion_REG", 1, 1,
+                "correo@REG.com", "contrasenha_REG", "contrasenha_REG");
+
+            bool registroEstudiante = cnEstudiantes.registraEstudiante("dniEstudiante_REG", "nombreEstudiante_REG", "ap1Estudiante_REG", "ap2Estudiante_REG",
+                "nombreCompletoT1_REG", "999888777", "nombreCompletoT2_REG", "888777666",
+                true, false, 1, "observaciones_REG");
+
+            bool registroAsignatura = cnAsignaturas.registraAsignaturaPrevistaEstudiante(1, 1, true, false);
+
+            bool registroDocumento = cnDocumentos.registraDocumentoEstudiante(1, 1, "rutaDocumento_REG");
+
+            bool registroAdaptacion = cnAdaptaciones.registraAdaptacionDiagnosticoEstudiante(1, 1, 1, "observaciones_REG");
+
+            // Imprimir los resultados en la consola
+            Console.WriteLine($"Registro de centro educativo: {(registroCentro ? "Exitoso" : "Fallido")}"); //OK
+            Console.WriteLine($"Registro de estudiante: {(registroEstudiante ? "Exitoso" : "Fallido")}"); //OK
+            Console.WriteLine($"Registro de asignatura prevista: {(registroAsignatura ? "Exitoso" : "Fallido")}");//OK
+            Console.WriteLine($"Registro de documento: {(registroDocumento ? "Exitoso" : "Fallido")}"); 
+            Console.WriteLine($"Registro de adaptación: {(registroAdaptacion ? "Exitoso" : "Fallido")}");
+
+            Console.ReadKey(); //
+
+            Console.ReadKey();
             }
         }
     }

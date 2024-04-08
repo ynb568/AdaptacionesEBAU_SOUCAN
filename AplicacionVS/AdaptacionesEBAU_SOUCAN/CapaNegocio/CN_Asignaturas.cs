@@ -81,5 +81,10 @@ namespace CapaNegocio
             return objCD.listaAsignaturasMatriculadasEstudiante(idEstudiante);
         }
 
+        public bool registraAsignaturaPrevistaEstudiante(int idEstudiante, int idAasignatura, bool fase1, bool fase2)
+        {
+            return objCD.registraAsignaturaPrevistaEstudiante(idEstudiante, idAasignatura, fase1, fase2);
+        }
+
     }
 }

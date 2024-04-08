@@ -137,26 +137,46 @@ namespace CapaDatos
             return listaAdaptaciones;
         }
 
-        public bool registraAdaptacionDiagnosticoEstudiante (int idEestudiante,int idDiagnostico,int idAdaptacion,string observaciones)
+        public bool registraAdaptacionDiagnosticoEstudiante(int idEstudiante, int idDiagnostico, int idAdaptacion, string observaciones)
         {
-            bool resultado = false;
+            bool registro = false;
             try
             {
                 using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
                 {
                     SqlCommand cmd = new SqlCommand("sp_registraAdaptacionDiagnosticoEstudiante", con);
-                    cmd.Parameters.AddWithValue("idE", idEestudiante);
-                    cmd.Parameters.AddWithValue("idD", idDiagnostico);
-                    cmd.Parameters.AddWithValue("idA", idAdaptacion);
-                    cmd.Parameters.AddWithValue("observaciones", observaciones);
                     cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@idE", idEstudiante);
+                    cmd.Parameters.AddWithValue("@idD", idDiagnostico);
+                    cmd.Parameters.AddWithValue("@idA", idAdaptacion);
+                    cmd.Parameters.AddWithValue("@observaciones", observaciones);
+
+                    // Parámetros de salida
+                    SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);
+                    mensajeParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(mensajeParameter);
+
+                    SqlParameter registradoParameter = new SqlParameter("@Registrado", SqlDbType.Bit);
+                    registradoParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(registradoParameter);
 
                     con.Open();
 
-                    int filas = cmd.ExecuteNonQuery();
-                    if (filas > 0)
+                    cmd.ExecuteNonQuery();
+
+                    // Obtener resultados de los parámetros de salida
+                    string mensaje = mensajeParameter.Value.ToString();
+                    registro = registradoParameter.Value != DBNull.Value ? Convert.ToBoolean(registradoParameter.Value) : false;
+
+                    Console.WriteLine(mensaje);
+                    if (registro)
                     {
-                        resultado = true;
+                        Console.WriteLine("La adaptación ha sido registrada correctamente.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No se pudo registrar la adaptación.");
                     }
                 }
             }
@@ -164,7 +184,8 @@ namespace CapaDatos
             {
                 Console.WriteLine("Error en CD_Adaptaciones.registraAdaptacionDiagnosticoEstudiante: " + ex.Message);
             }
-            return resultado;
+            return registro;
         }
+
     }
 }

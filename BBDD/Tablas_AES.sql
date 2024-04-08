@@ -103,7 +103,7 @@ create table Documento (
 create table DocumentoEstudiante (
 	idEstudiante int foreign key references Estudiante(idEstudiante),
 	idDocumento int foreign key references Documento(idDocumento),
-	rutaDocumento varchar(MAX) null,
+	rutaDocumento varchar(500) null,
 	validado bit null default null
 );
 

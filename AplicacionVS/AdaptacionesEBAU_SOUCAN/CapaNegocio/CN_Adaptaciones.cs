@@ -37,5 +37,10 @@ namespace CapaNegocio
         {
             return objCD.listaAdaptacionesDiagnosticoEstudiante(idEstudiante, idDiagnostico);
         }
+
+        public bool registraAdaptacionDiagnosticoEstudiante(int idEestudiante, int idDiagnostico, int idAdaptacion, string observaciones)
+        {
+            return objCD.registraAdaptacionDiagnosticoEstudiante(idEestudiante, idDiagnostico, idAdaptacion, observaciones);
+        }
     }
 }

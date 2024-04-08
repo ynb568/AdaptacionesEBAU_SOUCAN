@@ -224,7 +224,7 @@ namespace CapaDatos
             }
         }
 
-        public bool registraEstudiante (string dniEstudiante, string nombreEstudiante, string ap1Estudiante, string ap2Estudiante,
+        public bool registraEstudiante(string dniEstudiante, string nombreEstudiante, string ap1Estudiante, string ap2Estudiante,
             string nombreCompletoT1, string telefonoT1, string nombreCompletoT2, string telefonoT2,
             bool ordinaria, bool extraordinaria, int idCE, string observaciones)
         {
@@ -249,12 +249,31 @@ namespace CapaDatos
                     cmd.Parameters.AddWithValue("idCE", idCE);
                     cmd.Parameters.AddWithValue("observaciones", observaciones);
 
+                    // Parámetros de salida
+                    SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);
+                    mensajeParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(mensajeParameter);
+
+                    SqlParameter registradoParameter = new SqlParameter("@Registrado", SqlDbType.Bit);
+                    registradoParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(registradoParameter);
+
                     con.Open();
 
-                    int res = cmd.ExecuteNonQuery();
-                    if (res > 0)
+                    cmd.ExecuteNonQuery();
+
+                    // Obtener resultados de los parámetros de salida
+                    string mensaje = mensajeParameter.Value.ToString();
+                    registro = Convert.ToBoolean(registradoParameter.Value);
+
+                    Console.WriteLine(mensaje);
+                    if (registro)
                     {
-                        registro = true;
+                        Console.WriteLine("El estudiante ha sido registrado correctamente.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No se pudo registrar al estudiante.");
                     }
                 }
             }
@@ -264,5 +283,6 @@ namespace CapaDatos
             }
             return registro;
         }
+
     }
 }
