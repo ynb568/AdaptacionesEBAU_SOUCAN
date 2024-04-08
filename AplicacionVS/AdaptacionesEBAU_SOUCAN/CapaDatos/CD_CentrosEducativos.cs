@@ -137,5 +137,52 @@ namespace CapaDatos
             }
             return ce;
         }
+
+        public bool registraCentroEducativo(string nombreCE, string telefonoCE,
+            string nombreOrientador, string apellidosOrientador, string telefonoOrientador, string correoOrientador,
+            string nombreEquipoDirectivo, string apellidosEquipoDirectivo, string telefonoEquipoDirectivo,
+            string direccion, int idMunicipio, int idSede,
+            string correo, string contrasenha, string repetirContrasenha)
+        {
+            bool registro = false;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_registraCentroEducativo", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("nombreCE", nombreCE);
+                    cmd.Parameters.AddWithValue("telefonoCE", telefonoCE);
+                    cmd.Parameters.AddWithValue("nombreOrientador", nombreOrientador);
+                    cmd.Parameters.AddWithValue("apellidosOrientador", apellidosOrientador);
+                    cmd.Parameters.AddWithValue("telefonoOrientador", telefonoOrientador);
+                    cmd.Parameters.AddWithValue("correoOrientador", correoOrientador);
+                    cmd.Parameters.AddWithValue("nombreEquipoDirectivo", nombreEquipoDirectivo);
+                    cmd.Parameters.AddWithValue("apellidosEquipoDirectivo", apellidosEquipoDirectivo);
+                    cmd.Parameters.AddWithValue("telefonoEquipoDirectivo", telefonoEquipoDirectivo);
+                    cmd.Parameters.AddWithValue("direccion", direccion);
+                    cmd.Parameters.AddWithValue("idMunicipio", idMunicipio);
+                    cmd.Parameters.AddWithValue("idSede", idSede);
+                    cmd.Parameters.AddWithValue("correo", correo);
+                    cmd.Parameters.AddWithValue("contrasenha", contrasenha);
+                    cmd.Parameters.AddWithValue("repetirContrasenha", repetirContrasenha);
+
+                    con.Open();
+
+                    int res = cmd.ExecuteNonQuery();
+                    if (res > 0)
+                    {
+                        registro = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error en CD_CentrosEducativos.registraCentroEducativo: " + ex.Message);
+            }
+            return registro;
+
+        }
     }
 }

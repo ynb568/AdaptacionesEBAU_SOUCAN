@@ -49,5 +49,34 @@ namespace CapaDatos
             }
             return documentos;
         }
+
+        public bool registraDocumentoEstudiante (int idEstudiante,int idDocumennto,string @rutaDocumento)
+        {
+            bool resultado = false;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_registraDocumentoEstudiante", con);
+                    cmd.Parameters.AddWithValue("idE", idEstudiante);
+                    cmd.Parameters.AddWithValue("idD", idDocumennto);
+                    cmd.Parameters.AddWithValue("rutaD", rutaDocumento);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    con.Open();
+
+                    int filas = cmd.ExecuteNonQuery();
+                    if (filas > 0)
+                    {
+                        resultado = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error en CD_Documentos.registraDocumentoEstudiante: " + ex.Message);
+            }
+            return resultado;
+        }
     }
 }

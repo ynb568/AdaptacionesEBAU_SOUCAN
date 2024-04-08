@@ -68,16 +68,12 @@ insert into Diagnostico (nombreDiagnostico, descripcion, activo)
 	values ('DiagTest', 'DescripDiagnostico Test', 1);
 go
 
-insert into DiagnosticoEstudiante (idDiagnostico, idEstudiante)
-	values (1, 1);
+insert into Adaptacion (nombreAdaptacion, descripcion, excepcional, descripcionExcepcional, activo)
+	values ('AdapTest', 'DescripAdaptacion Test', 1, 'DescripExcep Test', 1);
 go
 
-insert into Adaptacion (nombreAdaptacion, descripcion, activo)
-	values ('AdapTest', 'DescripAdaptacion Test', 1);
-go
-
-insert into AdaptacionDiagnostico (idAdaptacion, idDiagnostico, descripcion, excepcional, descripcionExcepcional)
-	values (1,1, 'DescripAdapDiag test', 1, 'DescripExcep Test');
+insert into AdaptacionDiagnostico (idAdaptacion, idDiagnostico)
+	values (1,1);
 go
 
 insert into AdaptacionDiagnosticoEstudiante (idAdaptacion, idDiagnostico, idEstudiante, 

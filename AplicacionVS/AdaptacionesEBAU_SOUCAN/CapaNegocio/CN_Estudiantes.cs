@@ -22,5 +22,14 @@ namespace CapaNegocio
         {
             return objCD.obtenEstudianteCentro(idCentro, idEstudiante);
         }
+
+        public bool registraEstudiante (string dniEstudiante, string nombreEstudiante, string ap1Estudiante, string ap2Estudiante,
+            string nombreCompletoT1, string telefonoT1, string nombreCompletoT2, string telefonoT2,
+            bool ordinaria, bool extraordinaria, int idCE, string observaciones)
+        {
+            return objCD.registraEstudiante(dniEstudiante, nombreEstudiante, ap1Estudiante, ap2Estudiante,
+            nombreCompletoT1, telefonoT1, nombreCompletoT2, telefonoT2,
+            ordinaria, extraordinaria, idCE, observaciones);
+        }
     }
 }

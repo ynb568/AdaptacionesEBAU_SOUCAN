@@ -69,6 +69,16 @@ namespace CapaDatos
                             List<Documento> documentos = cdDocumentos.listaDocumentosEstudiante(idEstudiante);
                             e.Documentos = documentos;
 
+                            CD_Diagnosticos cdDiagnosticos = new CD_Diagnosticos();
+                            List<Diagnostico> diagnosticos = cdDiagnosticos.listaDiagnosticosEstudiante(idEstudiante);
+                            e.Diagnosticos = diagnosticos;
+                            CD_Adaptaciones cdAdaptaciones = new CD_Adaptaciones();
+                            foreach (Diagnostico d in diagnosticos)
+                            {
+                                List<Adaptacion> adaptaciones = cdAdaptaciones.listaAdaptacionesDiagnosticoEstudiante(idEstudiante, d.IdDiagnostico);
+                            }
+
+
                             estudiantes.Add(e);
                         }
                     }
@@ -212,6 +222,47 @@ namespace CapaDatos
                     }
                 }
             }
+        }
+
+        public bool registraEstudiante (string dniEstudiante, string nombreEstudiante, string ap1Estudiante, string ap2Estudiante,
+            string nombreCompletoT1, string telefonoT1, string nombreCompletoT2, string telefonoT2,
+            bool ordinaria, bool extraordinaria, int idCE, string observaciones)
+        {
+            bool registro = false;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_registraEstudiante", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("dniE", dniEstudiante);
+                    cmd.Parameters.AddWithValue("nombreE", nombreEstudiante);
+                    cmd.Parameters.AddWithValue("ap1E", ap1Estudiante);
+                    cmd.Parameters.AddWithValue("ap2E", ap2Estudiante);
+                    cmd.Parameters.AddWithValue("nombreT1", nombreCompletoT1);
+                    cmd.Parameters.AddWithValue("telefonoT1", telefonoT1);
+                    cmd.Parameters.AddWithValue("nombreT2", nombreCompletoT2);
+                    cmd.Parameters.AddWithValue("telefonoT2", telefonoT2);
+                    cmd.Parameters.AddWithValue("ordinaria", ordinaria);
+                    cmd.Parameters.AddWithValue("extraordinaria", extraordinaria);
+                    cmd.Parameters.AddWithValue("idCE", idCE);
+                    cmd.Parameters.AddWithValue("observaciones", observaciones);
+
+                    con.Open();
+
+                    int res = cmd.ExecuteNonQuery();
+                    if (res > 0)
+                    {
+                        registro = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error en CD_Estudiantes.registraEstudiante: " + ex.Message);
+            }
+            return registro;
         }
     }
 }

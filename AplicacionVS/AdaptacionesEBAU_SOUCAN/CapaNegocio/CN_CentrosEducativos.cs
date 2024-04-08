@@ -24,5 +24,18 @@ namespace CapaNegocio
             return objCD.obtenCentro(idCentroEducativo);
         }
 
+        public bool registraCentroEducativo(string nombreCE, string telefonoCE,
+            string nombreOrientador, string apellidosOrientador, string telefonoOrientador, string correoOrientador,
+            string nombreEquipoDirectivo, string apellidosEquipoDirectivo, string telefonoEquipoDirectivo,
+            string direccion, int idMunicipio, int idSede,
+            string correo, string contrasenha, string repetirContrasenha)
+        {
+            return objCD.registraCentroEducativo(nombreCE, telefonoCE,
+            nombreOrientador, apellidosOrientador, telefonoOrientador, correoOrientador,
+            nombreEquipoDirectivo, apellidosEquipoDirectivo, telefonoEquipoDirectivo,
+            direccion, idMunicipio, idSede,
+            correo, contrasenha, repetirContrasenha);
+        }
+
     }
 }

@@ -136,5 +136,36 @@ namespace CapaDatos
             return listaAsignaturas;
         }
 
+        public bool registraAsignaturaPrevistaEstudiante (int idEstudiante,int idAasignatura, bool fase1,bool fase2)
+        {
+            bool registro = false;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_registraAsignaturaPrevistaEstudiante", con);
+                    cmd.Parameters.AddWithValue("idE", idEstudiante);
+                    cmd.Parameters.AddWithValue("idA", idAasignatura);
+                    cmd.Parameters.AddWithValue("fase1", fase1);
+                    cmd.Parameters.AddWithValue("fase2", fase2);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    con.Open();
+
+                    int filas = cmd.ExecuteNonQuery();
+                    if (filas > 0)
+                    {
+                        registro = true;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error en CD_Asignaturas.registraAsignaturaPrevistaEstudiante: " + ex.Message);
+            }
+            return registro;
+        }
+
     }
 }

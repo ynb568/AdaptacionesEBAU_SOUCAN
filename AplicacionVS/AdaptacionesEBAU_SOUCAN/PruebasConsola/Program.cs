@@ -12,6 +12,7 @@ namespace PruebasConsola
     {
         static void Main(string[] args)
         {
+            /*
             //ASIGNATURAS (CORRECTO)
             // Crear una instancia de la clase de lógica de negocio
             CN_Asignaturas cnAsignaturas = new CN_Asignaturas();
@@ -96,6 +97,7 @@ namespace PruebasConsola
                 }
             }
 
+            */
             //ESTUDIANTES
             CN_Estudiantes cnEstudiantes = new CN_Estudiantes();
             List<Estudiante> estudiantes = cnEstudiantes.listaEstudiantes(1);
@@ -141,7 +143,7 @@ namespace PruebasConsola
                     Console.WriteLine($"\t\tADAPTACIONES");
                     foreach (var a in d.Adaptaciones)
                     {
-                        Console.WriteLine($"\t\tNombre: {a.NombreAdaptacion}");
+                        Console.WriteLine($"\t\tNombre: {a.NombreAdaptacion}, Descipcion: {a.Descripcion}, Excepcional: {a.Excepcional}, DescripExcep: {a.DescripcionExcepcional}");
                     }
                 }
                 

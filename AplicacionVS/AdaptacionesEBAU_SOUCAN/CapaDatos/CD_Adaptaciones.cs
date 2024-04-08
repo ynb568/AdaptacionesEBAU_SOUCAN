@@ -34,7 +34,9 @@ namespace CapaDatos
                                     IdAdaptacion = Convert.ToInt32(dr["idAdaptacion"]),
                                     NombreAdaptacion = dr["nombreAdaptacion"].ToString(),
                                     Activo = Convert.ToBoolean(dr["activo"]),
-                                    Descripcion = dr["descripcion"].ToString()
+                                    Descripcion = dr["descripcion"].ToString(),
+                                    Excepcional = Convert.ToBoolean(dr["excepcional"]),
+                                    DescripcionExcepcional = dr["descripcionExcepcional"].ToString()
                                 }
                             );
                         }
@@ -74,7 +76,9 @@ namespace CapaDatos
                                     IdAdaptacion = Convert.ToInt32(dr["idAdaptacion"]),
                                     NombreAdaptacion = dr["nombreAdaptacion"].ToString(),
                                     Activo = Convert.ToBoolean(dr["activo"]),
-                                    Descripcion = dr["descripcion"].ToString()
+                                    Descripcion = dr["descripcion"].ToString(),
+                                    Excepcional = Convert.ToBoolean(dr["excepcional"]),
+                                    DescripcionExcepcional = dr["descripcionExcepcional"].ToString()
                                 }
                             );
                         }
@@ -116,7 +120,9 @@ namespace CapaDatos
                                     IdAdaptacion = Convert.ToInt32(dr["idAdaptacion"]),
                                     NombreAdaptacion = dr["nombreAdaptacion"].ToString(),
                                     Activo = Convert.ToBoolean(dr["activo"]),
-                                    Descripcion = dr["descripcion"].ToString()
+                                    Descripcion = dr["descripcion"].ToString(),
+                                    Excepcional = Convert.ToBoolean(dr["excepcional"]),
+                                    DescripcionExcepcional = dr["descripcionExcepcional"].ToString()
                                 }
                             );
                         }
@@ -129,6 +135,36 @@ namespace CapaDatos
                 Console.WriteLine("Error en CD_Adaptaciones.obtenAdaptacionesEstudiante: " + ex.Message);
             }
             return listaAdaptaciones;
+        }
+
+        public bool registraAdaptacionDiagnosticoEstudiante (int idEestudiante,int idDiagnostico,int idAdaptacion,string observaciones)
+        {
+            bool resultado = false;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_registraAdaptacionDiagnosticoEstudiante", con);
+                    cmd.Parameters.AddWithValue("idE", idEestudiante);
+                    cmd.Parameters.AddWithValue("idD", idDiagnostico);
+                    cmd.Parameters.AddWithValue("idA", idAdaptacion);
+                    cmd.Parameters.AddWithValue("observaciones", observaciones);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    con.Open();
+
+                    int filas = cmd.ExecuteNonQuery();
+                    if (filas > 0)
+                    {
+                        resultado = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error en CD_Adaptaciones.registraAdaptacionDiagnosticoEstudiante: " + ex.Message);
+            }
+            return resultado;
         }
     }
 }

@@ -69,6 +69,8 @@ as
 	end;
 go	
 
+
+
 create or alter procedure sp_obtenAdaptacionDiagnostico @idD int
 as
 	begin
@@ -95,11 +97,11 @@ as
 	begin
 		declare @Mensaje varchar(50);
 		declare @Completado bit;
-		if (exists (select * from DiagnosticoEstudiante where idEstudiante = @idE))
+		if (exists (select * from AdaptacionDiagnosticoEstudiante where idEstudiante = @idE))
 			begin
-				select * from Diagnostico d
-					inner join DiagnosticoEstudiante de on d.idDiagnostico = de.idDiagnostico
-					where de.idEstudiante = @idE
+				select d.* from Diagnostico d
+					inner join AdaptacionDiagnosticoEstudiante ade on d.idDiagnostico = ade.idDiagnostico
+					where ade.idEstudiante = @idE
 				set @Mensaje = ('Procedimiento correcto');
 				set @Completado = 1;
 			end
@@ -110,6 +112,7 @@ as
 			end
 	end;
 go
+
 create or alter procedure sp_listaAdaptacionesDiagnosticoEstudiante @idE int, @idD int
 as
 	begin
@@ -119,7 +122,7 @@ as
 			begin
 				if (exists (select * from AdaptacionDiagnosticoEstudiante where idDiagnostico = @idD and idEstudiante = @idE))
 					begin
-						select * from Adaptacion a
+						select a.* from Adaptacion a
 							inner join AdaptacionDiagnosticoEstudiante ade on a.idAdaptacion = ade.idAdaptacion
 							where ade.idDiagnostico = @idD and ade.idEstudiante = @idE
 						set @Mensaje = ('Procedimiento correcto');
@@ -181,7 +184,6 @@ as
 	end;
 go
 
-
 create or alter procedure sp_obtenCentro @idCE int
 as
 	begin
@@ -202,8 +204,6 @@ as
 			end
 	end;
 go	
-
-
 
 create or alter procedure obtenApunteEstudiante @idE int, @idA int
 as
@@ -332,6 +332,60 @@ as
 	end;
 go
 
+
+create or alter procedure sp_registraEstudiante @dniEstudiante varchar(20),
+	@nombreEstudiante varchar(50), @ap1Estudiante varchar(50), @ap2Estudiante varchar(50),
+	@nombreCompletoT1 varchar(100), @telefonoT1 varchar(9), @nombreCompletoT2 varchar(100), @telefonoT2 varchar(9),
+	@ordinaria bit, @extraordinaria bit, @idCE int, @observaciones varchar(500)
+as
+	begin
+		declare @Mensaje varchar(50);
+		declare @registrado bit;
+		declare @curso varchar(10);
+		begin try
+			begin transaction
+				--Comprobar existencia centroEducativo y que estï¿½ validado
+				--REVISAR
+				if (exists(select * from CentroEducativo
+								where idCE = @idCE))
+					begin
+						if (exists (select * from PlazosRegistro where activo = 1))
+							begin
+								--TODO: asegurar que únicamente haya 1 plazo activo
+								set @curso = (select top(1) cursoConvocatoria from PlazosRegistro where activo = 1) 
+								insert into Estudiante (dniEstudiante, nombreEstudiante, ap1Estudiante, ap2Estudiante, 
+									nombreCompletoTutor1, telefonoTutor1,  nombreCompletoTutor2, telefonoTutor2, 
+										ordinaria, extraordinaria, cursoConvocatoria, idCE, observaciones)
+									values (@dniEstudiante, @nombreEstudiante, @ap1Estudiante, @ap2Estudiante, 
+										@nombreCompletoT1, @telefonoT1, @nombreCompletoT2, @telefonoT2, 
+										@ordinaria, @extraordinaria, @curso, @idCE, @observaciones)
+		
+								set @Mensaje = ('Procedimiento correcto');
+								set @Registrado = 1;
+								commit transaction
+							end
+						else
+							begin
+								rollback transaction
+								set @Mensaje = 'No hay un curso académico activo';
+								set @Registrado = 0;
+							end
+					end
+				else
+					begin
+						rollback transaction
+						set @Mensaje = 'Centro educativo no existente';
+						set @Registrado = 0;
+					end		
+		end try
+
+		begin catch
+			rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+		end catch
+	end;
+go
+
 create or alter procedure sp_registraAsignaturaPrevistaEstudiante @idE int, @idA int, @fase1 bit, @fase2 bit
 as
 	begin 
@@ -411,51 +465,45 @@ as
 	end;
 go
 
-
-create or alter procedure sp_registraEstudiante @dniEstudiante varchar(20),
-	@nombreEstudiante varchar(50), @ap1Estudiante varchar(50), @ap2Estudiante varchar(50),
-	@nombreCompletoT1 varchar(100), @telefonoT1 varchar(9), @nombreCompletoT2 varchar(100), @telefonoT2 varchar(9),
-	@ordinaria bit, @extraordinaria bit, @idCE int, @observaciones varchar(500)
+create or alter procedure sp_registraAdaptacionDiagnosticoEstudiante @idE int, @idD int, @idA int, @observaciones varchar(500)
 as
 	begin
 		declare @Mensaje varchar(50);
 		declare @registrado bit;
-		declare @curso varchar(10);
 		begin try
 			begin transaction
-				--Comprobar existencia centroEducativo y que estï¿½ validado
-				--REVISAR
-				if (exists(select * from CentroEducativo
-								where idCE = @idCE))
+				if (exists (select * from Estudiante where idEstudiante = @idE))
 					begin
-						if (exists (select * from PlazosRegistro where activo = 1))
+						if (exists (select * from Diagnostico where idDiagnostico = @idD and activo = 1))
 							begin
-								--TODO: asegurar que únicamente haya 1 plazo activo
-								set @curso = (select top(1) cursoConvocatoria from PlazosRegistro where activo = 1) 
-								insert into Estudiante (dniEstudiante, nombreEstudiante, ap1Estudiante, ap2Estudiante, 
-									nombreCompletoTutor1, telefonoTutor1,  nombreCompletoTutor2, telefonoTutor2, 
-										ordinaria, extraordinaria, cursoConvocatoria, idCE, observaciones)
-									values (@dniEstudiante, @nombreEstudiante, @ap1Estudiante, @ap2Estudiante, 
-										@nombreCompletoT1, @telefonoT1, @nombreCompletoT2, @telefonoT2, 
-										@ordinaria, @extraordinaria, @curso, @idCE, @observaciones)
-		
-								set @Mensaje = ('Procedimiento correcto');
-								set @Registrado = 1;
-								commit transaction
-							end
+								if (exists (select * from Adaptacion a
+												inner join AdaptacionDiagnostico ad on a.idAdaptacion = ad.idAdaptacion 
+												where a.idAdaptacion = @idD and a.activo = 1 and ad.idDiagnostico = @idD))
+									begin
+										insert into AdaptacionDiagnosticoEstudiante (idEstudiante, idDiagnostico, idAdaptacion, observaciones)
+											values (@idE, @idD, @idA, @observaciones);
+									end
 						else
 							begin
 								rollback transaction
-								set @Mensaje = 'No hay un curso académico activo';
+								set @Mensaje = 'No existe el adaptacion activa asociado';
 								set @Registrado = 0;
-							end
+							end	
+						end
+					else
+						begin
+							rollback transaction
+							set @Mensaje = 'No existe el diagnostico activo asociado';
+							set @Registrado = 0;
+						end	
 					end
 				else
 					begin
 						rollback transaction
-						set @Mensaje = 'Centro educativo no existente';
+						set @Mensaje = 'No existe el estudiante asociado';
 						set @Registrado = 0;
-					end		
+					end	
+			commit transaction
 		end try
 
 		begin catch
@@ -464,6 +512,7 @@ as
 		end catch
 	end;
 go
+
 
 
 -----------------------------------------------------------------

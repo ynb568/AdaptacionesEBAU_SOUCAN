@@ -64,7 +64,7 @@ namespace CapaDatos
                 using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
                 {
                     SqlCommand cmd = new SqlCommand("sp_listaDiagnosticosEstudiante", con);
-                    cmd.Parameters.AddWithValue("idEstudiante", idEstudiante);
+                    cmd.Parameters.AddWithValue("idE", idEstudiante);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     con.Open();
@@ -78,12 +78,12 @@ namespace CapaDatos
                                 IdDiagnostico = Convert.ToInt32(dr["idDiagnostico"]),
                                 NombreDiagnostico = dr["nombreDiagnostico"].ToString(),
                                 Activo = Convert.ToBoolean(dr["activo"]),
-                                Descripcion = dr["descripcion"].ToString()
+                                Descripcion = dr["descripcion"].ToString()    
                             };
                             int idDiagnostico = d.IdDiagnostico;
 
                             CD_Adaptaciones cdAdaptaciones = new CD_Adaptaciones();
-                            List<Adaptacion> adaptaciones = cdAdaptaciones.listaAdaptacionesDiagnostico(idDiagnostico);
+                            List<Adaptacion> adaptaciones = cdAdaptaciones.listaAdaptacionesDiagnosticoEstudiante(idEstudiante, idDiagnostico);
                             d.Adaptaciones = adaptaciones;
                             listaDiagnosticos.Add(d);
                         }

@@ -6,5 +6,8 @@
         public string NombreAdaptacion { get; set; }
         public bool Activo { get; set; }
         public string Descripcion { get; set; }
+        public bool Excepcional { get; set; }
+        public string DescripcionExcepcional { get; set; }
+
     }
 }

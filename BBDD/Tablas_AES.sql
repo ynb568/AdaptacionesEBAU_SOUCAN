@@ -144,25 +144,28 @@ create table Diagnostico (
 	descripcion varchar(500) null
 );
 
+/*
 create table DiagnosticoEstudiante (
 	idDiagnostico int foreign key references Diagnostico(idDiagnostico),
 	idEstudiante int foreign key references Estudiante(idEstudiante),
 	primary key (idDiagnostico, idEstudiante)
 );
+*/
 
 create table Adaptacion (
 	idAdaptacion int primary key identity,
 	nombreAdaptacion varchar(100) not null,
 	activo bit default 1,
+	excepcional bit default 0,
+	descripcionExcepcional varchar(500) null,
 	descripcion varchar(500) null
 );
 
 create table AdaptacionDiagnostico (
 	idDiagnostico int foreign key references Diagnostico(idDiagnostico),
 	idAdaptacion int foreign key references Adaptacion(idAdaptacion),
-	descripcion varchar(500) null,
-	excepcional bit default 0,
-	descripcionExcepcional varchar(500) null,
+	--excepcional bit default 0,
+	--descripcionExcepcional varchar(500) null,
 	primary key (idDiagnostico, idAdaptacion)
 );
 
