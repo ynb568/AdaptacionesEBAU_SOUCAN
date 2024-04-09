@@ -1,0 +1,1 @@
+Esta semana se continuó con el mapeo de datos revisandolo en detalle

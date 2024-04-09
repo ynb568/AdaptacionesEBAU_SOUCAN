@@ -1,0 +1,8 @@
+-> App web MVP ASP.NET (.NET Framework)
+
+-> Cadena de conexion con la base de datos en web.config
+	-Permite establecer la conexión de una manera eficaz 
+
+-> CadenaCon en Conexion
+ - necesita System.Configuration: que permite comunicarse con el nodo de conexión añadido en el web.config
+ - Agregar/Referencia/Ensamblados/System.Configuration
