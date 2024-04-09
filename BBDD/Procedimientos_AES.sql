@@ -559,31 +559,33 @@ as
 							begin
 								if (exists (select * from Adaptacion a
 												inner join AdaptacionDiagnostico ad on a.idAdaptacion = ad.idAdaptacion 
-												where a.idAdaptacion = @idD and a.activo = 1 and ad.idDiagnostico = @idD))
+												where a.idAdaptacion = @idA and a.activo = 1 and ad.idDiagnostico = @idD))
 									begin
 										insert into AdaptacionDiagnosticoEstudiante (idEstudiante, idDiagnostico, idAdaptacion, observaciones)
 											values (@idE, @idD, @idA, @observaciones);
+										set @Mensaje = 'Procedimiento Correcto';
+										set @Registrado = 1;
 									end
+								else
+									begin
+										if @@trancount > 0
+											rollback transaction
+										set @Mensaje = 'No existe el adaptacion activa asociado';
+										set @Registrado = 0;
+									end	
+							end
 						else
 							begin
 								if @@trancount > 0
-								rollback transaction
-								set @Mensaje = 'No existe el adaptacion activa asociado';
+									rollback transaction
+								set @Mensaje = 'No existe el diagnostico activo asociado';
 								set @Registrado = 0;
 							end	
-						end
-					else
-						begin
-							if @@trancount > 0
-							rollback transaction
-							set @Mensaje = 'No existe el diagnostico activo asociado';
-							set @Registrado = 0;
-						end	
 					end
 				else
 					begin
 						if @@trancount > 0
-						rollback transaction
+							rollback transaction
 						set @Mensaje = 'No existe el estudiante asociado';
 						set @Registrado = 0;
 					end	
@@ -592,11 +594,13 @@ as
 
 		begin catch
 			if @@trancount > 0
-			rollback transaction
+				rollback transaction
 			set @Mensaje = ('Se ha producido un error');
+			set @Registrado = 0;
 		end catch
 	end;
-go
+GO
+
 
 /*
 EXEC sp_registraAdaptacionDiagnosticoEstudiante 
@@ -612,7 +616,48 @@ SELECT * FROM AdaptacionDiagnosticoEstudiante;
 GO
 */
 
+create or alter procedure sp_eliminaDiagnosticoEstudiante @idE int, @idD int,
+@Mensaje varchar(50) output, @Eliminado bit output
+as
+	begin
+		begin try
+			begin transaction
+				if (exists (select * from Estudiante where idEstudiante = @idE))
+					begin
+						if (exists (select * from AdaptacionDiagnosticoEstudiante 
+								where idEstudiante = @idE and idDiagnostico = @idD))
+							begin
+								delete from AdaptacionDiagnosticoEstudiante 
+									where idEstudiante = @idE and idDiagnostico = @idD;
+								set @Mensaje = 'Procedimiento Correcto';
+								set @Eliminado = 1;	
+							end
+						else
+							begin
+								if @@trancount > 0
+								rollback transaction
+								set @Mensaje = 'No existe el estudiante asociado';
+								set @Eliminado = 0;
+							end
+					end
+				else
+					begin
+						if @@trancount > 0
+							rollback transaction
+						set @Mensaje = 'No existe el estudiante asociado';
+						set @Eliminado = 0;
+					end	
+			commit transaction
+		end try
 
+		begin catch
+			if @@trancount > 0
+				rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+			set @Eliminado = 0;
+		end catch
+	end;
+GO
 
 
 -----------------------------------------------------------------
@@ -856,47 +901,10 @@ as
 	end;
 go
 
+
 --create or alter procedure sp_listaAdaptacionesDiagnosticoEstudiante @id
 
 
-
-create or alter procedure sp_eliminaDiagnosticoEstudiante @idE int, @idDiagnostico int
-as
-	begin
-		declare @Mensaje varchar(50);
-		declare @Completado bit;
-		begin try
-			begin transaction	
-				if (exists (select * from Estudiante where idEstudiante = @idE))
-					begin
-						if (exists(select * from AdaptacionDiagnosticoEstudiante))
-							begin
-								delete from AdaptacionDiagnosticoEstudiante
-									where idEstudiante = @idE and idDiagnostico = @idDiagnostico
-								set @Mensaje = ('Procedimiento correcto');
-								set @Completado = 1;
-								commit transaction
-							end
-						else
-							begin
-								rollback transaction
-								set @Mensaje = ('Adaptaci�n no asignada a estudiante previamente');
-								set @Completado = 0;
-							end
-					end
-				else 
-					begin
-						rollback transaction
-						set @Mensaje = ('No existe el estudiante asociado');
-						set @Completado = 0;
-					end
-		end try
-		begin catch
-			rollback transaction
-			set @Mensaje = ('Se ha producido un error');
-		end catch
-	end;
-go
 -----------------------------------------------------------------
 -----------------------------------------------------------------
 -------------- SECCION FUNCIONALIDADES SOUCAN -------------------

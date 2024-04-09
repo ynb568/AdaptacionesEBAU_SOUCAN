@@ -160,6 +160,7 @@ namespace PruebasConsola
             CN_Documentos cnDocumentos = new CN_Documentos();
             CN_Asignaturas cnAsignaturas = new CN_Asignaturas();
             CN_Adaptaciones cnAdaptaciones = new CN_Adaptaciones();
+            CN_Diagnosticos cnDiagnosticos = new CN_Diagnosticos();
 
             // Llamar a los métodos de registro
             /*
@@ -175,21 +176,23 @@ namespace PruebasConsola
 
             bool registroAsignatura = cnAsignaturas.registraAsignaturaPrevistaEstudiante(1, 1, true, false);
             
-
             bool registroDocumento = cnDocumentos.registraDocumentoEstudiante(1, 1, "rutaDocumento_REG");
-            */
+            
             bool registroAdaptacion = cnAdaptaciones.registraAdaptacionDiagnosticoEstudiante(1, 1, 1, "observaciones_REG");
 
             // Imprimir los resultados en la consola
-            /*
             Console.WriteLine($"Registro de centro educativo: {(registroCentro ? "Exitoso" : "Fallido")}"); //OK
             Console.WriteLine($"Registro de estudiante: {(registroEstudiante ? "Exitoso" : "Fallido")}"); //OK
             Console.WriteLine($"Registro de asignatura prevista: {(registroAsignatura ? "Exitoso" : "Fallido")}");//OK
-            Console.WriteLine($"Registro de documento: {(registroDocumento ? "Exitoso" : "Fallido")}"); //OK
-            */
+            Console.WriteLine($"Registro de documento: {(registroDocumento ? "Exitoso" : "Fallido")}"); 
             Console.WriteLine($"Registro de adaptación: {(registroAdaptacion ? "Exitoso" : "Fallido")}");
+            */
 
-            Console.ReadKey(); //
+            bool eliminaDiagnosticoEstudiante = cnDiagnosticos.eliminaDiagnosticoEstudiante(1, 1);
+
+            Console.WriteLine($"Eliminación de diagnóstico de estudiante: {(eliminaDiagnosticoEstudiante ? "Exitosa" : "Fallida")}");
+
+            Console.ReadKey(); 
 
             Console.ReadKey();
             }

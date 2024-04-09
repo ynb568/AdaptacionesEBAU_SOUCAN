@@ -186,6 +186,5 @@ namespace CapaDatos
             }
             return registro;
         }
-
     }
 }

@@ -28,5 +28,13 @@ namespace CapaNegocio
 
             return diagnosticosActivos;
         }
+
+        public bool eliminaDiagnosticoEstudiante(int idEstudiante, int idDiagnostico) 
+        { 
+            return objCD.eliminaDiagnosticoEstudiante(idEstudiante, idDiagnostico); 
+        }
+
+
+
     }
 }

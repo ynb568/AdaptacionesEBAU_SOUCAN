@@ -99,5 +99,53 @@ namespace CapaDatos
             }
             return listaDiagnosticos;
         }
+        public bool eliminaDiagnosticoEstudiante(int idEstudiante, int idDiagnostico)
+        {
+            bool eliminado = false;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_eliminaDiagnosticoEstudiante", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("idE", idEstudiante);
+                    cmd.Parameters.AddWithValue("idD", idDiagnostico);
+
+                    // Parámetros de salida
+                    SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);
+                    mensajeParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(mensajeParameter);
+
+                    SqlParameter eliminadoParameter = new SqlParameter("@Eliminado", SqlDbType.Bit);
+                    eliminadoParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(eliminadoParameter);
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+
+                    // Obtener resultados de los parámetros de salida
+                    string mensaje = mensajeParameter.Value.ToString();
+                    eliminado = eliminadoParameter.Value != DBNull.Value ? Convert.ToBoolean(eliminadoParameter.Value) : false;
+
+                    Console.WriteLine(mensaje);
+                    if (eliminado)
+                    {
+                        Console.WriteLine("El diagnóstico ha sido eliminado correctamente.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No se pudo eliminar el diagnóstico.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error en CD_Diagnosticos.eliminaDiagnosticoEstudiante: " + ex.Message);
+            }
+            return eliminado;
+        }
+
     }
 }
