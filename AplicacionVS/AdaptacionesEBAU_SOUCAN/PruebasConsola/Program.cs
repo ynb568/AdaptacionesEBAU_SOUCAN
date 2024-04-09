@@ -162,6 +162,7 @@ namespace PruebasConsola
             CN_Adaptaciones cnAdaptaciones = new CN_Adaptaciones();
 
             // Llamar a los métodos de registro
+            /*
             bool registroCentro = cnCentros.registraCentroEducativo("nombreCE_REG", "111222333",
                 "nombreOrientador_REG", "apellidosOrientador_REG", "444333555", "correoOrientador@REG.com",
                 "nombreEquipoDirectivo_REG", "apellidosEquipoDirectivo_REG", "222333444",
@@ -173,16 +174,19 @@ namespace PruebasConsola
                 true, false, 1, "observaciones_REG");
 
             bool registroAsignatura = cnAsignaturas.registraAsignaturaPrevistaEstudiante(1, 1, true, false);
+            
 
             bool registroDocumento = cnDocumentos.registraDocumentoEstudiante(1, 1, "rutaDocumento_REG");
-
+            */
             bool registroAdaptacion = cnAdaptaciones.registraAdaptacionDiagnosticoEstudiante(1, 1, 1, "observaciones_REG");
 
             // Imprimir los resultados en la consola
+            /*
             Console.WriteLine($"Registro de centro educativo: {(registroCentro ? "Exitoso" : "Fallido")}"); //OK
             Console.WriteLine($"Registro de estudiante: {(registroEstudiante ? "Exitoso" : "Fallido")}"); //OK
             Console.WriteLine($"Registro de asignatura prevista: {(registroAsignatura ? "Exitoso" : "Fallido")}");//OK
-            Console.WriteLine($"Registro de documento: {(registroDocumento ? "Exitoso" : "Fallido")}"); 
+            Console.WriteLine($"Registro de documento: {(registroDocumento ? "Exitoso" : "Fallido")}"); //OK
+            */
             Console.WriteLine($"Registro de adaptación: {(registroAdaptacion ? "Exitoso" : "Fallido")}");
 
             Console.ReadKey(); //

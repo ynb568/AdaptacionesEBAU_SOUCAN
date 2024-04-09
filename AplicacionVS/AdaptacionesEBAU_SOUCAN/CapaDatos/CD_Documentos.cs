@@ -60,9 +60,9 @@ namespace CapaDatos
                     SqlCommand cmd = new SqlCommand("sp_registraDocumentoEstudiante", con);
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@idE", idEstudiante);
-                    cmd.Parameters.AddWithValue("@idD", idDocumento);
-                    cmd.Parameters.AddWithValue("@rutaD", rutaDocumento);
+                    cmd.Parameters.AddWithValue("idE", idEstudiante);
+                    cmd.Parameters.AddWithValue("idD", idDocumento);
+                    cmd.Parameters.AddWithValue("rutaD", rutaDocumento);
 
                     // Parámetros de salida
                     SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);

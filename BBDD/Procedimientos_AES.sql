@@ -503,10 +503,14 @@ as
 										where idDocumento = @idD))
 							begin
 								insert into DocumentoEstudiante(idEstudiante, idDocumento, rutaDocumento)
-									values (@idE, @idD, @rutaD)
+									values (@idE, @idD, @rutaD);
+								set @Mensaje = 'Procedimiento Correcto';
+								set @Registrado = 1;
+
 							end
 						else
 							begin
+								if @@trancount > 0
 								rollback transaction
 								set @Mensaje = 'No existe el documento solicitado asociado';
 								set @Registrado = 0;
@@ -544,7 +548,7 @@ GO
 */
 
 create or alter procedure sp_registraAdaptacionDiagnosticoEstudiante @idE int, @idD int, @idA int, @observaciones varchar(500),
-@Mensaje varchar(50), @Registrado bit
+@Mensaje varchar(50) output, @Registrado bit output
 as
 	begin
 		begin try

@@ -147,10 +147,10 @@ namespace CapaDatos
                     SqlCommand cmd = new SqlCommand("sp_registraAdaptacionDiagnosticoEstudiante", con);
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@idE", idEstudiante);
-                    cmd.Parameters.AddWithValue("@idD", idDiagnostico);
-                    cmd.Parameters.AddWithValue("@idA", idAdaptacion);
-                    cmd.Parameters.AddWithValue("@observaciones", observaciones);
+                    cmd.Parameters.AddWithValue("idE", idEstudiante);
+                    cmd.Parameters.AddWithValue("idD", idDiagnostico);
+                    cmd.Parameters.AddWithValue("idA", idAdaptacion);
+                    cmd.Parameters.AddWithValue("observaciones", observaciones);
 
                     // Parámetros de salida
                     SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);
