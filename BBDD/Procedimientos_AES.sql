@@ -122,7 +122,7 @@ as
 			begin
 				if (exists (select * from AdaptacionDiagnosticoEstudiante where idDiagnostico = @idD and idEstudiante = @idE))
 					begin
-						select a.* from Adaptacion a
+						select a.*, ade.* from Adaptacion a
 							inner join AdaptacionDiagnosticoEstudiante ade on a.idAdaptacion = ade.idAdaptacion
 							where ade.idDiagnostico = @idD and ade.idEstudiante = @idE
 						set @Mensaje = ('Procedimiento correcto');
@@ -205,7 +205,7 @@ as
 	end;
 go	
 
-create or alter procedure obtenApunteEstudiante @idE int, @idA int
+create or alter procedure sp_obtenApunteEstudiante @idE int, @idA int
 as
 	begin
 		declare @Mensaje varchar(50);

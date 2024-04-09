@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CN_Adaptaciones.cs" />
+    <Compile Include="CN_AdaptacionesDiagnosticoEstudiante.cs" />
     <Compile Include="CN_Apuntes.cs" />
     <Compile Include="CN_Asignaturas.cs" />
     <Compile Include="CN_CentrosEducativos.cs" />

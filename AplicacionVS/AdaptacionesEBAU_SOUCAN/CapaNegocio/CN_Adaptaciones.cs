@@ -22,7 +22,8 @@ namespace CapaNegocio
             return objCD.listaAdaptacionesDiagnostico(idDiagnostico);
         }
 
-        public List<Adaptacion> listaAdaptacionesDiagnosticoActivas (int idDiagnostico) {
+        public List<Adaptacion> listaAdaptacionesDiagnosticoActivas(int idDiagnostico)
+        {
             List<Adaptacion> adaptaciones = objCD.listaAdaptacionesDiagnostico(idDiagnostico);
             List<Adaptacion> adaptacionesActivas = new List<Adaptacion>();
 
@@ -31,16 +32,6 @@ namespace CapaNegocio
                 .ToList();
 
             return adaptacionesActivas;
-        }
-
-        public List<Adaptacion> listaAdaptacionesDiagnosticoEstudiante(int idEstudiante, int idDiagnostico)
-        {
-            return objCD.listaAdaptacionesDiagnosticoEstudiante(idEstudiante, idDiagnostico);
-        }
-
-        public bool registraAdaptacionDiagnosticoEstudiante(int idEestudiante, int idDiagnostico, int idAdaptacion, string observaciones)
-        {
-            return objCD.registraAdaptacionDiagnosticoEstudiante(idEestudiante, idDiagnostico, idAdaptacion, observaciones);
         }
     }
 }

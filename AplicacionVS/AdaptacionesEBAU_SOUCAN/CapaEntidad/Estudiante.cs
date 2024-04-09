@@ -25,7 +25,7 @@ namespace CapaEntidad
 		public DateTime FechaRegistro { get; set; }
 
 		public List<Diagnostico> Diagnosticos { get; set; }
-		public List<Adaptacion> Adaptaciones { get; set; }
+		//public List<AdaptacionDiagnosticoEstudiante> AdaptacionesDE { get; set; }
         public List<Asignatura> AsignaturasPrevistas { get; set; }
         public List<Asignatura> AsignaturasMatriculadas { get; set; }
 		public List<Apunte> Apuntes { get; set; } 

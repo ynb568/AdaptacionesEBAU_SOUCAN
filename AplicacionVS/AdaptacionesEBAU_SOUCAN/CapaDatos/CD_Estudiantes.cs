@@ -72,12 +72,11 @@ namespace CapaDatos
                             CD_Diagnosticos cdDiagnosticos = new CD_Diagnosticos();
                             List<Diagnostico> diagnosticos = cdDiagnosticos.listaDiagnosticosEstudiante(idEstudiante);
                             e.Diagnosticos = diagnosticos;
-                            CD_Adaptaciones cdAdaptaciones = new CD_Adaptaciones();
+                            CD_AdaptacionesDiagnosticoEstudiante cdAdaptaciones = new CD_AdaptacionesDiagnosticoEstudiante();
                             foreach (Diagnostico d in diagnosticos)
                             {
-                                List<Adaptacion> adaptaciones = cdAdaptaciones.listaAdaptacionesDiagnosticoEstudiante(idEstudiante, d.IdDiagnostico);
+                                List<AdaptacionDiagnosticoEstudiante> adaptaciones = cdAdaptaciones.listaAdaptacionesDiagnosticoEstudiante(idEstudiante, d.IdDiagnostico);
                             }
-
 
                             estudiantes.Add(e);
                         }
@@ -154,10 +153,10 @@ namespace CapaDatos
                             CD_Diagnosticos cdDiagnosticos = new CD_Diagnosticos();
                             List<Diagnostico> diagnosticos = cdDiagnosticos.listaDiagnosticosEstudiante(idEstudiante);
                             e.Diagnosticos = diagnosticos;
-                            CD_Adaptaciones cdAdaptaciones = new CD_Adaptaciones();
+                            CD_AdaptacionesDiagnosticoEstudiante cdAdaptacionesDiagnosticoEstudiante = new CD_AdaptacionesDiagnosticoEstudiante();
                             foreach (Diagnostico d in diagnosticos)
                             {
-                                List<Adaptacion> adaptaciones = cdAdaptaciones.listaAdaptacionesDiagnosticoEstudiante(idEstudiante, d.IdDiagnostico);
+                                List<AdaptacionDiagnosticoEstudiante> adaptaciones = cdAdaptacionesDiagnosticoEstudiante.listaAdaptacionesDiagnosticoEstudiante(idEstudiante, d.IdDiagnostico);
                             }
                             
                         }

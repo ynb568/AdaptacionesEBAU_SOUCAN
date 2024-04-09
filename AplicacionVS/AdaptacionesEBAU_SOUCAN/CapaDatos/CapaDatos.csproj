@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CD_Adaptaciones.cs" />
+    <Compile Include="CD_AdaptacionesDiagnosticoEstudiante.cs" />
     <Compile Include="CD_Apuntes.cs" />
     <Compile Include="CD_Asignaturas.cs" />
     <Compile Include="CD_CentrosEducativos.cs" />

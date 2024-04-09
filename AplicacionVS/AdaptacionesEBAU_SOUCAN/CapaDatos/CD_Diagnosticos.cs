@@ -82,9 +82,9 @@ namespace CapaDatos
                             };
                             int idDiagnostico = d.IdDiagnostico;
 
-                            CD_Adaptaciones cdAdaptaciones = new CD_Adaptaciones();
-                            List<Adaptacion> adaptaciones = cdAdaptaciones.listaAdaptacionesDiagnosticoEstudiante(idEstudiante, idDiagnostico);
-                            d.Adaptaciones = adaptaciones;
+                            CD_AdaptacionesDiagnosticoEstudiante cdAdaptaciones = new CD_AdaptacionesDiagnosticoEstudiante();
+                            List<AdaptacionDiagnosticoEstudiante> adaptaciones = cdAdaptaciones.listaAdaptacionesDiagnosticoEstudiante(idEstudiante, idDiagnostico);
+                            d.AdaptacionesEstudiante = adaptaciones;
                             listaDiagnosticos.Add(d);
                         }
                     }

@@ -12,7 +12,7 @@ namespace PruebasConsola
     {
         static void Main(string[] args)
         {
-            /*
+            
             //ASIGNATURAS (CORRECTO)
             // Crear una instancia de la clase de lógica de negocio
             CN_Asignaturas cnAsignaturas = new CN_Asignaturas();
@@ -140,30 +140,29 @@ namespace PruebasConsola
                 {
                     Console.WriteLine($"\tNombre: {d.NombreDiagnostico}, Descripcion: {d.Descripcion}");
                     Console.WriteLine($"\t\tADAPTACIONES");
-                    foreach (var a in d.Adaptaciones)
-                    {
-                        Console.WriteLine($"\t\tNombre: {a.NombreAdaptacion}, Descipcion: {a.Descripcion}, Excepcional: {a.Excepcional}, DescripExcep: {a.DescripcionExcepcional}");
+                    foreach (var a in d.AdaptacionesEstudiante) { 
+                        Console.WriteLine($"\t\tAdaptacion: {a.Adaptacion.NombreAdaptacion}, Activo: {a.Adaptacion.Activo}, Descripcion: {a.Adaptacion.Descripcion}, Validado: {a.Validado}, Observaciones: {a.Observaciones}, Revision: {a.Revision}"); 
                     }
                 }
-                
             }
 
             Estudiante estudiante = cnEstudiantes.obtenEstudianteCentro(1,1);
             Console.WriteLine("obtenEstudianteCentro");
             Console.WriteLine($"ID: {estudiante.IdEstudiante}, DNI: {estudiante.DniEstudiante}, Nombre: {estudiante.NombreEstudiante} {estudiante.Ap1Estudiante} {estudiante.Ap2Estudiante}");
-            */
+            
 
             //PRUEVAS DE REGISTRO
             // Crear una instancia de las clases de lógica de negocio
+            /*
             CN_CentrosEducativos cnCentros = new CN_CentrosEducativos();
             CN_Estudiantes cnEstudiantes = new CN_Estudiantes();
             CN_Documentos cnDocumentos = new CN_Documentos();
             CN_Asignaturas cnAsignaturas = new CN_Asignaturas();
-            CN_Adaptaciones cnAdaptaciones = new CN_Adaptaciones();
             CN_Diagnosticos cnDiagnosticos = new CN_Diagnosticos();
+            CN_AdaptacionesDiagnosticoEstudiante cnAdaptacionesDE = new CN_AdaptacionesDiagnosticoEstudiante();
 
             // Llamar a los métodos de registro
-            /*
+            
             bool registroCentro = cnCentros.registraCentroEducativo("nombreCE_REG", "111222333",
                 "nombreOrientador_REG", "apellidosOrientador_REG", "444333555", "correoOrientador@REG.com",
                 "nombreEquipoDirectivo_REG", "apellidosEquipoDirectivo_REG", "222333444",
@@ -178,22 +177,22 @@ namespace PruebasConsola
             
             bool registroDocumento = cnDocumentos.registraDocumentoEstudiante(1, 1, "rutaDocumento_REG");
             
-            bool registroAdaptacion = cnAdaptaciones.registraAdaptacionDiagnosticoEstudiante(1, 1, 1, "observaciones_REG");
+            bool registroAdaptacion = cnAdaptacionesDE.registraAdaptacionDiagnosticoEstudiante(1, 1, 1, "observaciones_REG");
 
             // Imprimir los resultados en la consola
-            Console.WriteLine($"Registro de centro educativo: {(registroCentro ? "Exitoso" : "Fallido")}"); //OK
-            Console.WriteLine($"Registro de estudiante: {(registroEstudiante ? "Exitoso" : "Fallido")}"); //OK
-            Console.WriteLine($"Registro de asignatura prevista: {(registroAsignatura ? "Exitoso" : "Fallido")}");//OK
+            Console.WriteLine($"Registro de centro educativo: {(registroCentro ? "Exitoso" : "Fallido")}");
+            Console.WriteLine($"Registro de estudiante: {(registroEstudiante ? "Exitoso" : "Fallido")}");
+            Console.WriteLine($"Registro de asignatura prevista: {(registroAsignatura ? "Exitoso" : "Fallido")}");
             Console.WriteLine($"Registro de documento: {(registroDocumento ? "Exitoso" : "Fallido")}"); 
             Console.WriteLine($"Registro de adaptación: {(registroAdaptacion ? "Exitoso" : "Fallido")}");
-            */
+            
 
             bool eliminaDiagnosticoEstudiante = cnDiagnosticos.eliminaDiagnosticoEstudiante(1, 1);
 
             Console.WriteLine($"Eliminación de diagnóstico de estudiante: {(eliminaDiagnosticoEstudiante ? "Exitosa" : "Fallida")}");
 
             Console.ReadKey(); 
-
+            */
             Console.ReadKey();
             }
         }
