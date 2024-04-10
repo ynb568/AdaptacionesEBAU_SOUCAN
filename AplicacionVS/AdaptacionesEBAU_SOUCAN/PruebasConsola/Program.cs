@@ -1,4 +1,5 @@
-﻿using CapaEntidad;
+﻿using CapaDatos;
+using CapaEntidad;
 using CapaNegocio;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace PruebasConsola
     {
         static void Main(string[] args)
         {
-            
+            /*
             //ASIGNATURAS (CORRECTO)
             // Crear una instancia de la clase de lógica de negocio
             CN_Asignaturas cnAsignaturas = new CN_Asignaturas();
@@ -153,7 +154,7 @@ namespace PruebasConsola
 
             //PRUEVAS DE REGISTRO
             // Crear una instancia de las clases de lógica de negocio
-            /*
+            
             CN_CentrosEducativos cnCentros = new CN_CentrosEducativos();
             CN_Estudiantes cnEstudiantes = new CN_Estudiantes();
             CN_Documentos cnDocumentos = new CN_Documentos();
@@ -190,9 +191,30 @@ namespace PruebasConsola
             bool eliminaDiagnosticoEstudiante = cnDiagnosticos.eliminaDiagnosticoEstudiante(1, 1);
 
             Console.WriteLine($"Eliminación de diagnóstico de estudiante: {(eliminaDiagnosticoEstudiante ? "Exitosa" : "Fallida")}");
-
-            Console.ReadKey(); 
             */
+
+            //PRUEBAS MODIFICACION
+            // Prueba para modificaDatosCentro
+            var cnCentrosEducativos = new CN_CentrosEducativos();
+            bool resultadoCentro = cnCentrosEducativos.modificaDatosCentro(1, "345678923", "Juan", "Perez", "987654321", "juan.perez@example.com", "Ana", "Gomez", "987987987");
+            Console.WriteLine("Resultado de modificaDatosCentro: " + resultadoCentro);
+
+
+            var cnEstudiantes = new CN_Estudiantes();
+            bool resultadoEstudiante = cnEstudiantes.modificaDatosEstudiante(1, true, false, "Nuevas observaciones estudiante");
+            Console.WriteLine("Resultado de modificaDatosEstudiante: " + resultadoEstudiante);
+
+            // Prueba para eliminaDocumentosEstudiante
+            var cnDocumentos = new CN_Documentos();
+            bool resultadoDocumentos = cnDocumentos.eliminaDocumentosEstudiante(1);
+            Console.WriteLine("Resultado de eliminaDocumentosEstudiante: " + resultadoDocumentos);
+
+            // Prueba para eliminaAsignaturasPrevistasEstudiante
+            var cnAsignaturas = new CN_Asignaturas();
+            bool resultadoAsignaturas = cnAsignaturas.eliminaAsignaturasPrevistasEstudiante(1);
+            Console.WriteLine("Resultado de eliminaAsignaturasPrevistasEstudiante: " + resultadoAsignaturas);
+            Console.ReadKey(); 
+            
             Console.ReadKey();
             }
         }

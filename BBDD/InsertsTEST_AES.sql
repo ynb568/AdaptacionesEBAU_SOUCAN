@@ -35,7 +35,7 @@ insert into Estudiante (dniEstudiante, nombreEstudiante, ap1Estudiante, ap2Estud
 							ordinaria, extraordinaria, observaciones, validado, cursoConvocatoria, idCE)
 	values ('12345678A', 'NomETest', 'Ap1Test', 'Ap2Test',
 				'Tut1test', '444555666', 'Tut2Test', '555666777',
-				1, 0, 'Observaciones Estudiante Test 1', null, 'Curso 2024', 1);
+				0, 1, 'Observaciones Estudiante Test 1', null, 'Curso 2024', 1);
 go
 
 insert into Documento (nombreDocumento)

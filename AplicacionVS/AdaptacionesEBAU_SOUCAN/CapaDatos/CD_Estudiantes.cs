@@ -283,5 +283,56 @@ namespace CapaDatos
             return registro;
         }
 
+        public bool modificaDatosEstudiante(int idE, bool ordinaria, bool extraordinaria, string observaciones)
+        {
+            bool modificado = false;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_modificaDatosEstudiante", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("idE", idE);
+                    cmd.Parameters.AddWithValue("ordinaria", ordinaria);
+                    cmd.Parameters.AddWithValue("extraordinaria", extraordinaria);
+                    cmd.Parameters.AddWithValue("observaciones", observaciones);
+
+                    // Parámetros de salida
+                    SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);
+                    mensajeParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(mensajeParameter);
+
+                    SqlParameter modificadoParameter = new SqlParameter("@Modificado", SqlDbType.Bit);
+                    modificadoParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(modificadoParameter);
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+
+                    // Obtener resultados de los parámetros de salida
+                    string mensaje = mensajeParameter.Value.ToString();
+                    modificado = Convert.ToBoolean(modificadoParameter.Value);
+
+                    Console.WriteLine(mensaje);
+                    if (modificado)
+                    {
+                        Console.WriteLine("Los datos del estudiante han sido modificados correctamente.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No se pudieron modificar los datos del estudiante.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error en CD_Estudiantes.modificaDatosEstudiante: " + ex.Message);
+            }
+            return modificado;
+        }
+
+
     }
 }

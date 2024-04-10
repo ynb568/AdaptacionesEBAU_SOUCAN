@@ -273,7 +273,7 @@ go
 
 -----------------------------------------------------------------
 -----------------------------------------------------------------
------------------ INSERCION DE OBJETOS ---------------------------
+----------------- INSERCION DE OBJETOS --------------------------
 -----------------------------------------------------------------
 -----------------------------------------------------------------
 
@@ -616,6 +616,12 @@ SELECT * FROM AdaptacionDiagnosticoEstudiante;
 GO
 */
 
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+----------------- ELIMINACION DE OBJETOS ------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+
 create or alter procedure sp_eliminaDiagnosticoEstudiante @idE int, @idD int,
 @Mensaje varchar(50) output, @Eliminado bit output
 as
@@ -657,9 +663,168 @@ as
 			set @Eliminado = 0;
 		end catch
 	end;
-GO
+go
 
+create or alter procedure sp_eliminaAsignaturasPrevistasEstudiante @idE int,
+@Mensaje varchar(50) output, @Eliminado bit output
+as
+	begin
+		begin try
+			begin transaction
+				if (exists (select * from Estudiante where idEstudiante = @idE))
+					begin
+							delete AsignaturaEstudiantePrevista
+								where idEstudiante = @idE
+							set @Mensaje = 'Procedimiento Correcto';
+							set @Eliminado = 1;
+					end
+				else
+					begin
+						if @@trancount > 0
+							rollback transaction
+						set @Mensaje = 'No existe el estudiante asociado';
+						set @Eliminado = 0;
+					end	
+			commit transaction
+		end try
 
+		begin catch
+			if @@trancount > 0
+				rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+			set @Eliminado = 0;
+		end catch
+	end;
+go
+
+create or alter procedure sp_eliminaDocumentosEstudiante @idE int,
+@Mensaje varchar(50) output, @Eliminado bit output
+as
+	begin
+		begin try
+			begin transaction
+				if (exists (select * from Estudiante where idEstudiante = @idE))
+					begin
+							delete DocumentoEstudiante
+								where idEstudiante = @idE
+							set @Mensaje = 'Procedimiento Correcto';
+							set @Eliminado = 1;
+					end
+				else
+					begin
+						if @@trancount > 0
+							rollback transaction
+						set @Mensaje = 'No existe el estudiante asociado';
+						set @Eliminado = 0;
+					end	
+			commit transaction
+		end try
+
+		begin catch
+			if @@trancount > 0
+				rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+			set @Eliminado = 0;
+		end catch
+	end;
+go
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+--------------- MODIFICACION DE OBJETOS -------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+
+create or alter procedure sp_modificaDatosCentro @idCE int,
+@telefonoCE varchar(9), @nomO varchar(50), @apO varchar(100), @telefonoO varchar(9), @correoO varchar(100),
+@nomED varchar(50), @apED varchar(100), @telefonoED varchar(9),
+@Mensaje varchar(50) output, @Modificado bit output
+as
+	begin 
+		begin try
+			begin transaction
+				if (exists(select * from CentroEducativo
+								where idCE = @idCE))
+					begin
+						update CentroEducativo set telefonoCE = @telefonoCE, nombreOrientador = @nomO, apellidosOrientador = @apO,
+							correoOrientador = @correoO, nombreEquipoDirectivo = @nomED, apellidosEquipoDirectivo = @apED, telefonoEquipoDirectivo = @telefonoED
+							where idCE = @idCE;
+						set @Mensaje = 'Procedimiento Correcto';
+						set @Modificado = 1;	
+					end
+				else
+					begin
+						if @@trancount > 0
+						rollback transaction
+						set @Mensaje = 'No existe centro educativo asociado';
+						set @Modificado = 0;
+					end
+
+			commit transaction
+		end try
+
+		begin catch
+		if @@trancount > 0
+			rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+			set @Modificado = 0;
+		end catch
+	end;
+go
+/*
+exec sp_modificaDatosCentro 1, '345678923', 'Juan', 'Perez', '987654321', 'juan.perez@example.com', 'Ana', 'Gomez', '987987987', '', 0
+go
+select * from CentroEducativo;
+go
+*/
+
+--SUGERENCIA: CUANDO SE MODIFICA EL ESTUDIANTE, EL ESTADO DE VALIDADO CAMBIA A PENDIENTE
+create or alter procedure sp_modificaDatosEstudiante @idE int,
+@ordinaria bit, @extraordinaria bit, @observaciones varchar(500),
+@Mensaje varchar(50) output, @Modificado bit output
+as
+	begin 
+		begin try
+			begin transaction
+				if (exists(select * from Estudiante
+								where idEstudiante = @idE))
+					begin
+						update Estudiante set ordinaria = @ordinaria, extraordinaria = @extraordinaria, observaciones = @observaciones
+							where idEstudiante = @idE;
+						set @Mensaje = 'Procedimiento Correcto';
+						set @Modificado = 1;	
+					end
+				else
+					begin
+						if @@trancount > 0
+						rollback transaction
+						set @Mensaje = 'No existe estudiante asociado';
+						set @Modificado = 0;
+					end
+
+			commit transaction
+		end try
+
+		begin catch
+		if @@trancount > 0
+			rollback transaction
+			set @Mensaje = ('Se ha producido un error' + ERROR_MESSAGE());
+			set @Modificado = 0;
+		end catch
+	end;
+go
+
+/*
+exec sp_modificaDatosEstudiante 
+	@idE = 1, 
+	@ordinaria = 1, 
+	@extraordinaria = 0, 
+	@observaciones = 'Nuevas observaciones estudiante', 
+	@Mensaje = '', 
+	@Modificado = 0
+go
+
+select * from Estudiante
+*/
 -----------------------------------------------------------------
 -----------------------------------------------------------------
 --------- SECCION FUNCIONALIDADES CENTRO EDUCATIVO --------------
@@ -681,58 +846,7 @@ as
 	end;
 go
 
---REVISADO
 
---ARREGLAR: lo mejor va a ser eliminar todas las asignaturas previas y despues ir añadiendo una a una las nuevas
-/*
-create type AsignaturaType as table (idA int);
-go
-
-
-create or alter procedure sp_modificaEstudiante 
-	@idE int, @idCE int, @idA int
-	@nuevasAsignaturas AsignaturaType READONLY
-as
-	begin
-		declare @Mensaje varchar(50);
-		declare @registrado bit;
-		declare @curso varchar(10);
-		begin try
-			begin transaction
-				--Comprobar existencia centroEducativo y que estï¿½ validado
-				--REVISAR
-				if (exists(select * from CentroEducativo
-								where idCE = @idCE))
-					begin
-						if (exists (select * from Estudiante where idEstudiante = @idE))
-							begin
-								
-								set @Mensaje = ('Procedimiento correcto');
-								set @Registrado = 1;
-								commit transaction
-							end
-						else
-							begin
-								rollback transaction
-								set @Mensaje = 'Estudiante no existente';
-								set @Registrado = 0;
-							end
-					end
-				else
-					begin
-						rollback transaction
-						set @Mensaje = 'Centro educativo no existente';
-						set @Registrado = 0;
-					end		
-		end try
-
-		begin catch
-			rollback transaction
-			set @Mensaje = ('Se ha producido un error');
-		end catch
-	end;
-go
-*/
 
 
 

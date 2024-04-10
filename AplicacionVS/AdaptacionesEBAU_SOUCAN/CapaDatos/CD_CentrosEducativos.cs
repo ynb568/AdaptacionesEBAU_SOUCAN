@@ -203,5 +203,62 @@ namespace CapaDatos
             return registro;
         }
 
+        public bool modificaDatosCentro (int idCE, string telefonoCE, 
+               string nombreO, string apellidosO, string telefonoO, string correoO, 
+               string nombreED, string apellidosED, string telefonoED)
+        {
+            bool modificado = false;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_modificaDatosCentro", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("idCE", idCE);
+                    cmd.Parameters.AddWithValue("telefonoCE", telefonoCE);
+                    cmd.Parameters.AddWithValue("nomO", nombreO);
+                    cmd.Parameters.AddWithValue("apO", apellidosO);
+                    cmd.Parameters.AddWithValue("telefonoO", telefonoO);
+                    cmd.Parameters.AddWithValue("correoO", correoO);
+                    cmd.Parameters.AddWithValue("nomED", nombreED);
+                    cmd.Parameters.AddWithValue("apED", apellidosED);
+                    cmd.Parameters.AddWithValue("telefonoED", telefonoED);
+
+                    // Parámetros de salida
+                    SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);
+                    mensajeParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(mensajeParameter);
+
+                    SqlParameter modificadoParameter = new SqlParameter("@Modificado", SqlDbType.Bit);
+                    modificadoParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(modificadoParameter);
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+
+                    // Obtener resultados de los parámetros de salida
+                    string mensaje = mensajeParameter.Value.ToString();
+                    modificado = Convert.ToBoolean(modificadoParameter.Value);
+
+                    Console.WriteLine(mensaje);
+                    if (modificado)
+                    {
+                        Console.WriteLine("Los datos del centro educativo han sido modificados correctamente.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No se pudieron modificar los datos del centro educativo.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error en CD_CentrosEducativos.modificaDatosCentro: " + ex.Message);
+            }
+            return modificado;
+        }
+
     }
 }

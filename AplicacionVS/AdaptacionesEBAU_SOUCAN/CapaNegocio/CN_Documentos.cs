@@ -21,5 +21,10 @@ namespace CapaNegocio
         {
             return objCD.registraDocumentoEstudiante(idEstudiante, idDocumennto, rutaDocumento);
         }
+
+        public bool eliminaDocumentosEstudiante(int idEstudiante) 
+        { 
+            return objCD.eliminaDocumentosEstudiante(idEstudiante);
+        }
     }
 }

@@ -86,13 +86,12 @@ create table Estudiante (
 	validado bit null default null,
 	cursoConvocatoria varchar(10),
 	fechaRegistro datetime default getdate(),
-	--idDireccion int foreign key references Direccion(idDireccion),
 	idCE int foreign key references CentroEducativo (idCE) not null,
 	constraint ck_tlfnT1 check (telefonoTutor1 like ('[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')),
 	constraint ck_tlfnT2 check (telefonoTutor2 like ('[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')),
-	CONSTRAINT ck_convocatoria check (
-        (ordinaria = 1 AND extraordinaria = 0) OR
-        (ordinaria = 0 AND extraordinaria = 1))
+	--CONSTRAINT ck_convocatoria check (
+    --    (ordinaria = 1 AND extraordinaria = 0) OR
+    --    (ordinaria = 0 AND extraordinaria = 1))
 );
 
 create table Documento (

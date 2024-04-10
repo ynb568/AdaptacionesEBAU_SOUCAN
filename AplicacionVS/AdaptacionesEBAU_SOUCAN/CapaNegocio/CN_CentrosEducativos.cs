@@ -31,10 +31,18 @@ namespace CapaNegocio
             string correo, string contrasenha, string repetirContrasenha)
         {
             return objCD.registraCentroEducativo(nombreCE, telefonoCE,
-            nombreOrientador, apellidosOrientador, telefonoOrientador, correoOrientador,
-            nombreEquipoDirectivo, apellidosEquipoDirectivo, telefonoEquipoDirectivo,
-            direccion, idMunicipio, idSede,
-            correo, contrasenha, repetirContrasenha);
+                nombreOrientador, apellidosOrientador, telefonoOrientador, correoOrientador,
+                nombreEquipoDirectivo, apellidosEquipoDirectivo, telefonoEquipoDirectivo,
+                direccion, idMunicipio, idSede,
+                correo, contrasenha, repetirContrasenha);
+        }
+        public bool modificaDatosCentro(int idCE, string telefonoCE,
+            string nombreO, string apellidosO, string telefonoO, string correoO,
+            string nombreED, string apellidosED, string telefonoED)
+        {
+            return objCD.modificaDatosCentro(idCE, telefonoCE,
+                nombreO, apellidosO, telefonoO, correoO,
+                nombreED, apellidosED, telefonoED);
         }
 
     }
