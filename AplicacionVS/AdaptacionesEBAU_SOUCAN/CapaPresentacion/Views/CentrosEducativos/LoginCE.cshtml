@@ -1,6 +1,7 @@
-﻿@{
+﻿@model CapaEntidad.CentroEducativo
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "Iniciar sesión de Centro Educativo"; // Establecer el título de la página
+    ViewBag.Title = "Iniciar sesión en SOUCAN"; // Establecer el título de la página
 }
 
 <!DOCTYPE html>
@@ -33,10 +34,10 @@
                         <form accept-charset="UTF-8" role="form">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Correo" name="correo" required type="text">
+                                    @Html.TextBoxFor(model => model.Correo, new { @class = "form-control", placeholder = "Correo", @type= "email" })
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Contraseña" name="Contraseña" required type="text" value="">
+                                    @Html.TextBoxFor(model => model.Contrasenha, new { @class = "form-control", placeholder = "Contrasenha", @type = "password" })
                                 </div>
                                 <input class="btn btn-lg btn-custom btn-block" type="submit" value="Iniciar Sesión">
                             </fieldset>

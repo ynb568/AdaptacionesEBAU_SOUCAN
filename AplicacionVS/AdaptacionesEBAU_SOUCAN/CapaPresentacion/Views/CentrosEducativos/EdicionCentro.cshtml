@@ -1,0 +1,54 @@
+﻿@using CapaPresentacion.Controllers;
+@model CapaEntidad.CentroEducativo
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var centro = Model; // Asume que el modelo contiene los datos del centro educativo
+}
+
+
+<form method="post" action="@Url.Action(nameof(CentrosEducativosController.EdicionCentro), "CentrosEducativos")">
+
+    <div class="form-group">
+        <label>Nombre del centro educativo</label>
+        <p>@centro.NombreCE</p>
+    </div>
+    <div class="form-group">
+        <label>Dirección del centro educativo</label>
+        @Html.DisplayFor(m => m.Direccion.DisplayValue)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.TelefonoCE)   <!--Muestra el label con el nombre del campo -->
+        @Html.TextBoxFor(model => model.TelefonoCE, new { @class = "form-control", @type="tel"})
+    </div>
+    <div class="form-group">
+        <label>Nombre del orientador</label>
+        <input type="text" name="nombreO" value="@centro.NombreOrientador" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Apellidos del orientador</label>
+        <input type="text" name="ApellidosOrientador" value="@centro.ApellidosOrientador" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Teléfono del orientador</label>
+        <input type="text" name="telefonoO" value="@centro.TelefonoOrientador" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Correo del orientador</label>
+        <input type="text" name="correoO" value="@centro.CorreoOrientador" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Nombre del equipo directivo</label>
+        <input type="text" name="nombreED" value="@centro.NombreEquipoDirectivo" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Apellidos del equipo directivo</label>
+        <input type="text" name="apellidosED" value="@centro.ApellidosEquipoDirectivo" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Teléfono del equipo directivo</label>
+        <input type="text" name="telefonoED" value="@centro.TelefonoEquipoDirectivo" class="form-control" />
+    </div>
+    <div class="form-group">
+        <button name="submit" type="submit" class="btn btn-primary">Guardar cambios</button>
+    </div>
+</form>

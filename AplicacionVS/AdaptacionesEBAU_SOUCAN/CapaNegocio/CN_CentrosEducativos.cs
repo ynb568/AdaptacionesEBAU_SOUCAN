@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +46,64 @@ namespace CapaNegocio
                 nombreO, apellidosO, telefonoO, correoO,
                 nombreED, apellidosED, telefonoED);
         }
+
+        public int LoginCE(string correo, string contrasenha)
+        {
+            int idCE = 0;
+            contrasenha = CN_Recursos.convertirSha256(contrasenha);
+
+            using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+            {
+                SqlCommand cmd = new SqlCommand("sp_validarCentroEducativo", con);
+                cmd.Parameters.AddWithValue("correo", correo);
+                cmd.Parameters.AddWithValue("contrasenha", contrasenha);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                con.Open();
+
+                idCE = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+            }
+
+            return idCE;
+        }
+
+        public string CambioContrasenha(int idCE, string contrasenha, string repetirContrasenha, string nuevaContrasenha)
+        {
+            if (contrasenha == repetirContrasenha)
+            {
+                contrasenha = CN_Recursos.convertirSha256(contrasenha);
+                nuevaContrasenha = CN_Recursos.convertirSha256(nuevaContrasenha);
+
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_cambioContrasenha", con);
+                    cmd.Parameters.AddWithValue("idCE", idCE);
+                    cmd.Parameters.AddWithValue("contrasenha", contrasenha);
+                    cmd.Parameters.AddWithValue("nuevaContrasenha", nuevaContrasenha);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    con.Open();
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        return "Success";
+                    }
+                    else
+                    {
+                        return "No ha sido posible cambiar la contraseña";
+                    }
+                }
+            }
+            else
+            {
+                return "Las contraseñas no coinciden";
+            }
+        }
+
+
+
 
     }
 }

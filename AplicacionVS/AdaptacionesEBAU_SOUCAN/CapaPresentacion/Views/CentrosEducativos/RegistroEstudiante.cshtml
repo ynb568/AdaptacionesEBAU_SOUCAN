@@ -1,11 +1,16 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var idCentro = (int)Session["centro educativo"];
 }
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<form>
+<form method="post" action="@Url.Action("RegistrarEstudiante", "CentrosEducativos")">
+    <div class="form-group">
+        <label for="dniEstudiante">DNI</label>
+        <input id="dniEstudiante" name="dniEstudiante" type="text" required="required" class="form-control">
+    </div>
     <div class="form-group">
         <label for="nombreEstudiante">Nombre</label>
         <input id="nombreEstudiante" name="nombreEstudiante" type="text" required="required" class="form-control">
@@ -19,89 +24,36 @@
         <input id="Ap2Estudiante" name="Ap2Estudiante" type="text" class="form-control">
     </div>
     <div class="form-group">
-        <label for="Direccion">Domicilio</label>
-        <input id="Direccion" name="Direccion" type="text" required="required" class="form-control">
+        <label for="nombreCompletoT1">Nombre Completo Tutor 1</label>
+        <input id="nombreCompletoT1" name="nombreCompletoT1" type="text" required="required" class="form-control">
     </div>
     <div class="form-group">
-        <label for="Municipio">Municipio</label>
+        <label for="telefonoT1">Teléfono Tutor 1</label>
+        <input id="telefonoT1" name="telefonoT1" type="text" required="required" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="nombreCompletoT2">Nombre Completo Tutor 2</label>
+        <input id="nombreCompletoT2" name="nombreCompletoT2" type="text" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="telefonoT2">Teléfono Tutor 2</label>
+        <input id="telefonoT2" name="telefonoT2" type="text" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Convocatoria</label>
         <div>
-            <select id="Municipio" name="Municipio" required="required" class="custom-select">
-                <option value="1">Santander</option>
-                <option value="2">Torrelavega</option>
-                <option value="3">Camargo</option>
-            </select>
-        </div>
-    </div>
-    <div>
-        <div class="form-group">
-            <label>Asignaturas Fase 1</label>
-            <div>
-                <div class="custom-controls-stacked">
-                    <div class="custom-control custom-checkbox">
-                        <input name="AsignaturasFase1" id="AsignaturasFase1_0" type="checkbox" required="required" class="custom-control-input" value="1">
-                        <label for="AsignaturasFase1_0" class="custom-control-label">Matematicas II</label>
-                    </div>
-                </div>
-                <div class="custom-controls-stacked">
-                    <div class="custom-control custom-checkbox">
-                        <input name="AsignaturasFase1" id="AsignaturasFase1_1" type="checkbox" required="required" class="custom-control-input" value="2">
-                        <label for="AsignaturasFase1_1" class="custom-control-label">Historia de España</label>
-                    </div>
-                </div>
-                <div class="custom-controls-stacked">
-                    <div class="custom-control custom-checkbox">
-                        <input name="AsignaturasFase1" id="AsignaturasFase1_2" type="checkbox" required="required" class="custom-control-input" value="3">
-                        <label for="AsignaturasFase1_2" class="custom-control-label">Historia de la Filosofía</label>
-                    </div>
-                </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="convocatoria" id="ordinaria" value="ordinaria" checked>
+                <label class="form-check-label" for="ordinaria">
+                    Ordinaria
+                </label>
             </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label>Asignaturas Fase 2</label>
-        <div>
-            <div class="custom-controls-stacked">
-                <div class="custom-control custom-checkbox">
-                    <input name="AsignaturasFase2" id="AsignaturasFase2_0" type="checkbox" class="custom-control-input" value="1">
-                    <label for="AsignaturasFase2_0" class="custom-control-label">Dibujo Técnico II</label>
-                </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="convocatoria" id="extraordinaria" value="extraordinaria">
+                <label class="form-check-label" for="extraordinaria">
+                    Extraordinaria
+                </label>
             </div>
-            <div class="custom-controls-stacked">
-                <div class="custom-control custom-checkbox">
-                    <input name="AsignaturasFase2" id="AsignaturasFase2_1" type="checkbox" class="custom-control-input" value="2">
-                    <label for="AsignaturasFase2_1" class="custom-control-label">Latín II</label>
-                </div>
-            </div>
-            <div class="custom-controls-stacked">
-                <div class="custom-control custom-checkbox">
-                    <input name="AsignaturasFase2" id="AsignaturasFase2_2" type="checkbox" class="custom-control-input" value="3">
-                    <label for="AsignaturasFase2_2" class="custom-control-label">Matemáticas Aplicadas II</label>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Button -->
-    <div class="form-group">
-        <label class="col-md-4 control-label" for="AnhadirDiagnostico"></label>
-        <div class="col-md-4">
-            <button id="AnhadirDiagnostico" name="AnhadirDiagnostico" class="btn btn-primary">Añadir Diagnóstico</button>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="Diagnostico">Diagnóstico</label>
-        <div>
-            <select id="Diagnostico" name="Diagnostico" class="custom-select">
-                <option value="1">TDH</option>
-                <option value="2">Autismo</option>
-                <option value="3">TDA</option>
-            </select>
-        </div>
-    </div>
-    <!-- File Button -->
-    <div class="form-group">
-        <label class="col-md-4 control-label" for="DocDiagnostico">Documento de Acreditación de Diagnóstico</label>
-        <div class="col-md-4">
-            <input id="DocDiagnostico" name="DocDiagnostico" class="input-file" type="file">
         </div>
     </div>
     <div class="form-group">
@@ -109,18 +61,7 @@
         <textarea id="observacion" name="observacion" cols="40" rows="6" class="form-control"></textarea>
     </div>
     <div class="form-group">
-        <div>
-            <div class="custom-control custom-checkbox custom-control-inline">
-                <input name="checkbox" id="checkbox_0" type="checkbox" class="custom-control-input" value="TerminosDeServicioYPoliticaDeSeguridad">
-                <label for="checkbox_0" class="custom-control-label">Aceptar Términos de Servicio y Política de Seguridad</label>
-            </div>
-        </div>
+        <button name="submit" type="submit" class="btn btn-primary">Registrar</button>
     </div>
-    <div class="form-group">
-        <button name="submit" type="submit" class="btn btn-primary">Submit</button>
-    </div>
+    <input type="hidden" name="idCentro" value="@idCentro" />
 </form>
-
-
-
-

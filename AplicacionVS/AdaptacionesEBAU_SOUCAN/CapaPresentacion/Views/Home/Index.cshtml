@@ -1,4 +1,8 @@
-﻿@{
+﻿@using CapaEntidad;
+@model CapaPresentacion.ViewModels.IndexViewModel
+
+
+@{
     ViewBag.Title = "Home Gestion Adaptaciones";
 }
 <style>
@@ -25,7 +29,30 @@
             </div>
             <div class="col-md-6 d-flex justify-content-center">
                 @Html.ActionLink("CENTRO", "LoginCE", "Home", null, new { @class = "btn btn-info btn-lg-square" })
+                <!-- <a href='https:/localhost:XXXX/Home/LoginCe'>CENTRO</a> -->
+
+                @Url.Action("LoginCe", "Home")
+                <!-- https:/localhost:XXXX/Home/LoginCe -->
             </div>
         </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>a</th>
+                    <th>b</th>
+                    <th>c</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Estudiantes)
+                {
+                    <tr>
+                        <td>@item.Ap1Estudiante</td>
+                        <td>@item.CursoConvocatoria</td>
+                        <td>
+                        </td>
+                    </tr>
+                }
+        </table>
     </div>
 </main>

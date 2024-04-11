@@ -1,0 +1,62 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var idCentro = (int)Session["centro educativo"];
+    var estudiante = Model; // Asume que el modelo contiene los datos del estudiante
+}
+
+<form method="post" action="@Url.Action("EditarEstudiante", "CentrosEducativos")">
+    <input type="hidden" name="idE" value="@estudiante.Id" />
+    <div class="form-group">
+        <label>Nombre del estudiante</label>
+        <p>@estudiante.Nombre</p>
+    </div>
+    <div class="form-group">
+        <label>DNI</label>
+        <p>@estudiante.Dni</p>
+    </div>
+    <div class="form-group">
+        <label>Nombre del tutor 1</label>
+        <p>@estudiante.NombreCompletoT1</p>
+    </div>
+    <div class="form-group">
+        <label>Teléfono del tutor 1</label>
+        <p>@estudiante.TelefonoT1</p>
+    </div>
+    <div class="form-group">
+        <label>Nombre del tutor 2</label>
+        <p>@estudiante.NombreCompletoT2</p>
+    </div>
+    <div class="form-group">
+        <label>Teléfono del tutor 2</label>
+        <p>@estudiante.TelefonoT2</p>
+    </div>
+    <div class="form-group">
+        <label>Nombre del centro</label>
+        <p>@estudiante.NombreCentro</p>
+    </div>
+    <div class="form-group">
+        <label>Convocatoria</label>
+        <div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="convocatoria" id="ordinaria" value="ordinaria" @(estudiante.Ordinaria ? "checked" : "")>
+                <label class="form-check-label" for="ordinaria">
+                    Ordinaria
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="convocatoria" id="extraordinaria" value="extraordinaria" @(estudiante.Extraordinaria ? "checked" : "")>
+                <label class="form-check-label" for="extraordinaria">
+                    Extraordinaria
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="observacion">Observaciones</label>
+        <textarea id="observacion" name="observacion" cols="40" rows="6" class="form-control">@estudiante.Observaciones</textarea>
+    </div>
+    <div class="form-group">
+        <button name="submit" type="submit" class="btn btn-primary">Guardar cambios</button>
+    </div>
+    <input type="hidden" name="idCentro" value="@idCentro" />
+</form>

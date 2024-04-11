@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CapaEntidad;
+using CapaNegocio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,14 +10,25 @@ namespace CapaPresentacion.Controllers
 {
     public class HomeController : Controller
     {
+        private CN_Estudiantes cn_estudiantes = new CN_Estudiantes();
+
         public ActionResult Index()
         {
-            return View();
+             List<Estudiante> lista = cn_estudiantes.listaEstudiantes(1);
+            var i = 2;
+
+            var viewModel = new ViewModels.IndexViewModel
+            {
+                Estudiantes = lista,
+                i = i
+            };
+
+            return View(viewModel);
         }
 
         public ActionResult ApuntesFor()
         {
-            if(DateTime.Now.Date > new DateTime(2024, 03, 22))
+            if (DateTime.Now.Date > new DateTime(2024, 03, 22))
             {
                 return RedirectToAction(nameof(HomeController.Index));
             }
@@ -24,32 +37,13 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult LoginCE()
         {
-            return View("~/Views/CentrosEducativos/loginCE.cshtml"); // Ruta a la vista loginCE.cshtml
+            return RedirectToAction(nameof(CentrosEducativosController.LoginCE), nameof(CentrosEducativosController));
         }
 
+        //TODO: Implementar
         public ActionResult LoginSoucan()
         {
             return View("~/Views/Soucan/loginSoucan.cshtml");// Ruta a la vista loginSoucan.cshtml
-        }
-
-        public ActionResult WebUC()
-        {
-            return Redirect("https://web.unican.es/");
-        }
-
-        public ActionResult WebSoucan()
-        {
-            return Redirect("https://web.unican.es/unidades/soucan");
-        }
-
-        public ActionResult Preuniversitarios()
-        {
-            return Redirect("https://web.unican.es/unidades/soucan/preuniversitarios");
-        }
-
-        public ActionResult Estudiantes()
-        {
-            return Redirect("https://web.unican.es/unidades/soucan/estudiantes/universidad-y-discapacidad");
         }
     }
 }

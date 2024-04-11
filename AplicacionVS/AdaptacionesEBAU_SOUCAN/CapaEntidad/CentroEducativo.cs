@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace CapaEntidad
 {
@@ -16,9 +17,12 @@ namespace CapaEntidad
         public int IdCE { get; set; }
         public string Correo { get; set; }
 		public string Contrasenha { get; set; }
+		public string RepetirContrasenha { get; set; }
 		public string NombreCE {  get; set; }
 
 		public Sede Sede { get; set; }
+
+		[DisplayName("Teléfono del Centro Educativo")]
 		public string TelefonoCE { get; set; }
 		public string NombreOrientador { get; set; }
 		public string ApellidosOrientador { get; set; }
