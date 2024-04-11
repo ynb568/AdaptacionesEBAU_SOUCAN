@@ -1019,11 +1019,11 @@ go
 --create or alter procedure sp_listaAdaptacionesDiagnosticoEstudiante @id
 
 
------------------------------------------------------------------
------------------------------------------------------------------
--------------- SECCION FUNCIONALIDADES SOUCAN -------------------
------------------------------------------------------------------
------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------
+-------------- SECCION FUNCIONALIDADES SOUCAN ------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------
 
 --REVISADO
 create or alter procedure sp_inicioSesionSoucan @correo varchar(100), @contrasenha varchar(500)
@@ -1042,8 +1042,7 @@ go
 
 
 
-
---REVISADO
+--LISTADO DE OBJETOS
 
 
 create or alter procedure sp_listaMunicipios 
@@ -1053,14 +1052,284 @@ as
 	end;
 go
 
-
-
---REVISADO
-create or alter procedure sp_anhadeApunteEstudiante @descripcion varchar(5000), @idEstudiante int
+create or alter procedure sp_listaDiagnosticos
 as
 	begin
-		declare @Mensaje varchar(50);
-		declare @Completado bit
+		select * from Diagnostico
+	end;
+go
+
+create or alter procedure sp_listaAdaptaciones
+as
+	begin
+		select * from Adaptacion
+	end;
+go
+
+create or alter procedure sp_listaAsignaturas
+as
+	begin 
+		select * from Asignatura
+	end;
+go
+
+
+
+--GESTION DE ACTIVOS
+
+create or alter procedure sp_gestionaEstadoDiagnostico @idDiagnostico int, @activo bit,
+@Mensaje varchar(50) output, @Completado bit output 
+as
+	begin
+		begin try
+			begin transaction
+				--Comprobar que idAdaptacion existe
+				update Diagnostico set activo = @activo where idDiagnostico = @idDiagnostico 
+				set @Mensaje = ('Procedimiento correcto');
+				set @Completado = 1;
+			commit transaction
+		end try
+
+		begin catch
+			if @@trancount > 0
+			rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+			set @Completado = 0;
+		end catch
+	end;
+go
+
+create or alter procedure sp_gestionaEstadoAdaptacion @idAdaptacion int, @activo bit,
+@Mensaje varchar(50) output, @Completado bit output
+as
+	begin
+		begin try
+			begin transaction
+				--Comprobar que idAdaptacion existe
+				update Adaptacion set activo = @activo where idAdaptacion = @idAdaptacion 
+				set @Mensaje = ('Procedimiento correcto');
+				set @Completado = 1;
+			commit transaction
+		end try
+
+		begin catch
+			if @@trancount > 0
+			rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+			set @Completado = 0;
+		end catch
+	end;
+go
+
+create or alter procedure sp_gestionaEstadoAsignatura @idAsignatura int, @activo bit,
+@Mensaje varchar(50) output, @Completado bit output
+
+as
+	begin
+		begin try
+			begin transaction
+				update Asignatura set activo = @activo where idAsignatura = @idAsignatura 
+				set @Mensaje = ('Procedimiento correcto');
+				set @Completado = 1;
+			commit transaction
+		end try
+
+		begin catch
+			if @@trancount > 0
+			rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+			set @Completado = 0;
+		end catch
+	end;
+go
+
+create or alter procedure sp_gestionaEstadoSede @idS int, @activo bit,
+@Mensaje varchar(50) output, @Completado bit output
+
+as
+	begin
+		begin try
+			begin transaction
+				update Sede set activo = @activo where idSede = @idS;
+				set @Mensaje = ('Procedimiento correcto');
+				set @Completado = 1;
+			commit transaction
+		end try
+
+		begin catch
+			if @@trancount > 0
+			rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+			set @Completado = 0;
+		end catch
+	end;
+go
+
+--ASOCIAR ADAPTACION A DIAGNOSTICO
+create or alter procedure sp_asociaAdaptacionADiagnostico @idA int, @idD int,
+@Mensaje varchar(50) output, @Completado bit output
+as
+	begin
+		begin try
+			begin transaction
+				if (exists (select * from Diagnostico where idDiagnostico = @idD))
+					begin
+						if (exists (select * from Adaptacion where idAdaptacion = @idA))
+							begin
+								if (not exists (select * from AdaptacionDiagnostico where idDiagnostico = @idD and idAdaptacion = @idA))
+									begin
+										insert into AdaptacionDiagnostico (idDiagnostico, idAdaptacion)
+											values (@idD, @idA);
+										set @Mensaje = 'Procedimiento Correcto';
+										set @Completado = 1;
+										commit transaction;
+									end
+								else
+									begin
+										if @@trancount > 0
+										rollback transaction
+										set @Mensaje = 'Adaptacion ya asociada a diagnostico';
+										set @Completado = 0;
+									end
+							end
+						else
+							begin
+								if @@trancount > 0
+								rollback transaction
+								set @Mensaje = 'No existe adaptacion asociada';
+								set @Completado = 0;
+							end
+					end
+				else
+					begin
+						if @@trancount > 0
+						rollback transaction
+						set @Mensaje = 'No existe diagnostico asociado';
+						set @Completado = 0;
+					end
+		end try
+		begin catch
+			rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+		end catch
+	end;
+go
+
+--ANHADIR ELEMENTOS A LISTAS
+create or alter procedure sp_anhadeDiagnostico @nombreDiagnostico varchar(100), @descripcion varchar(500),
+@Mensaje varchar(50) output, @Completado bit output
+as
+	begin
+		begin try
+			begin transaction
+				if (not exists (select * from Diagnostico where nombreDiagnostico = @nombreDiagnostico))
+					begin
+						insert into Diagnostico (nombreDiagnostico, descripcion) values (@nombreDiagnostico, @descripcion)
+						set @Mensaje = ('Procedimiento correcto');
+						set @Completado = 1;
+						commit transaction;
+					end
+				else
+					begin
+						if @@trancount > 0
+						rollback transaction
+						set @Mensaje = ('Diagnostico ya existente');
+						set @Completado = 0
+					end
+			
+		end try
+
+		begin catch
+			if @@trancount > 0
+			rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+		end catch
+	end;
+go
+
+create or alter procedure sp_anhadeAdaptacion @nombreAdaptacion varchar(100), @descipcion varchar(500), 
+@excepcional bit, @descipcionExcepcional varchar(500),
+@Mensaje varchar(50) output, @Completado bit output
+as
+	begin
+		begin try
+			begin transaction
+				if (not exists (select * from Adaptacion where nombreAdaptacion = @nombreAdaptacion))
+					begin
+						if (not (@excepcional = 0 and @descipcion != null))
+							begin
+								insert into Adaptacion (nombreAdaptacion, descripcion, excepcional, descripcionExcepcional)
+									values (@nombreAdaptacion, @descipcion, @excepcional, @descipcionExcepcional);
+								set @Mensaje = ('Procedimiento correcto');
+								set @Completado = 1;
+								commit transaction;
+							end
+						else
+							begin
+								if @@trancount > 0
+								rollback transaction
+								set @Mensaje = ('Si no es excepciopnal no puyede tener descripcion expcepcional');
+								set @Completado = 0
+							end
+					end
+				else
+					begin
+						if @@trancount > 0
+						rollback transaction
+						set @Mensaje = ('Adaptacion ya existente');
+						set @Completado = 0
+					end
+			
+		end try
+
+		begin catch
+			if @@trancount > 0
+			rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+		end catch
+	end;
+go
+
+create or alter procedure sp_anhadeAsigantura @nombreAsignatura varchar(100), @fase1 bit, @fase2 bit,
+@Mensaje varchar(50) output, @Completado bit output
+as
+	begin 
+		begin try
+			begin transaction
+				if (not exists (select * from Asignatura where nombreAsignatura = @nombreAsignatura))
+					begin
+						insert into Asignatura(nombreAsignatura, fase1, fase2) values (@nombreAsignatura, @fase1, @fase2)
+						set @Mensaje = ('Procedimiento correcto');
+						set @Completado = 1;
+						commit transaction
+					end
+				else
+					begin
+						if @@trancount > 0
+						rollback transaction
+						set @Mensaje = ('La asignatura ya existe');
+						set @Completado = 0;
+					end
+		end try
+
+		begin catch
+			if @@trancount > 0
+			rollback transaction
+			set @Mensaje = ('Se ha producido un error');
+		end catch
+	end;
+go
+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+--REVISADO
+create or alter procedure sp_anhadeApunteEstudiante @descripcion varchar(5000), @idEstudiante int,
+@Mensaje varchar(50) output, @Completado bit output
+as
+	begin
 		begin try
 			begin transaction
 				if (exists (select * from Estudiante where idEstudiante = @idEstudiante))
@@ -1082,6 +1351,7 @@ as
 					end
 				else
 					begin
+						if @@trancount > 0
 						rollback transaction
 						set @Mensaje = ('No existe el estudiante asociado');
 						set @Completado = 0;
@@ -1089,6 +1359,7 @@ as
 		end try
 
 		begin catch
+			if @@trancount > 0
 			rollback transaction
 			set @Mensaje = ('Se ha producido un error');
 		end catch
@@ -1145,168 +1416,8 @@ insert into CentroEducativo (idCE) values
 go
 */
 
---REVISADO
-create or alter procedure sp_listaCentrosEducativos
-as
-	begin
-		select u.correo, u.contrasenha, ce.* from CentroEducativo ce
-			inner join Usuario u on ce.idCE = u.idUsuario
-	end;
-go
 
 
---REVISADO
-create or alter procedure sp_anhadeAsigantura @nombreAsignatura varchar(100), @fase1 bit, @fase2 bit
-as
-	begin
-		declare @Mensaje varchar(50);
-		declare @Completado bit 
-		begin try
-			begin transaction
-				if (not exists (select * from Asignatura where nombreAsignatura = @nombreAsignatura))
-					begin
-						insert into Asignatura(nombreAsignatura, fase1, fase2) values (@nombreAsignatura, @fase1, @fase2)
-						set @Mensaje = ('Procedimiento correcto');
-						set @Completado = 1;
-						commit transaction
-					end
-				else
-					begin
-						rollback transaction
-						set @Mensaje = ('La asignatura ya existe');
-						set @Completado = 0;
-					end
-		end try
-
-		begin catch
-			rollback transaction
-			set @Mensaje = ('Se ha producido un error');
-		end catch
-	end;
-go
-
---REVISADO
-create or alter procedure sp_gestionaEstadoAsignatura @idAsignatura int, @activo bit
-as
-	begin
-		declare @Mensaje varchar(50);
-		declare @Completado bit;
-		begin try
-			begin transaction
-				update Asignatura set activo = @activo where idAsignatura = @idAsignatura 
-				set @Mensaje = ('Procedimiento correcto');
-				set @Completado = 1;
-			commit transaction
-		end try
-
-		begin catch
-			rollback transaction
-			set @Mensaje = ('Se ha producido un error');
-			set @Completado = 0;
-		end catch
-	end;
-go
-
---REVISADO
-create or alter procedure sp_listaAsignaturas
-as
-	begin 
-		select * from Asignatura
-	end;
-go
-
---RETOCAR PARA ADAPTACIONES DETALLE
-create or alter procedure sp_anhadeAdaptacion @nombreAdaptacion varchar(100)
-as
-	begin
-		declare @Mensaje varchar(50);
-		begin try
-			begin transaction
-				--Comprobar que no existe un diagnostico con el mismo nombre
-				insert into Adaptacion(nombreAdaptacion) values (@nombreAdaptacion)
-				set @Mensaje = ('Procedimiento correcto');
-			commit transaction
-		end try
-
-		begin catch
-			rollback transaction
-			set @Mensaje = ('Se ha producido un error');
-		end catch
-	end;
-go
-
-create or alter procedure sp_gestionaEstadoAdaptacion @idAdaptacion int, @activo bit
-as
-	begin
-		declare @Mensaje varchar(50);
-		begin try
-			begin transaction
-				--Comprobar que idAdaptacion existe
-				update Adaptacion set activo = @activo where idAdaptacion = @idAdaptacion 
-				set @Mensaje = ('Procedimiento correcto');
-			commit transaction
-		end try
-
-		begin catch
-			rollback transaction
-			set @Mensaje = ('Se ha producido un error');
-		end catch
-	end;
-go
-
-create or alter procedure sp_listaAdaptaciones
-as
-	begin
-		select * from Adaptacion
-	end;
-go
-
-
-
-create or alter procedure sp_anhadeDiagnostico @nombreDiagnostico varchar(100)
-as
-	begin
-		declare @Mensaje varchar(50);
-		begin try
-			begin transaction
-				--Comprobar que no existe un diagnostico con el mismo nombre
-				insert into Diagnostico (nombreDiagnostico) values (@nombreDiagnostico)
-				set @Mensaje = ('Procedimiento correcto');
-			commit transaction
-		end try
-
-		begin catch
-			rollback transaction
-			set @Mensaje = ('Se ha producido un error');
-		end catch
-	end;
-go
-
-create or alter procedure sp_gestionaEstadoDiagnostico @idDiagnostico int, @activo bit
-as
-	begin
-		declare @Mensaje varchar(50);
-		begin try
-			begin transaction
-				--Comprobar que idAdaptacion existe
-				update Diagnostico set activo = @activo where idDiagnostico = @idDiagnostico 
-				set @Mensaje = ('Procedimiento correcto');
-			commit transaction
-		end try
-
-		begin catch
-			rollback transaction
-			set @Mensaje = ('Se ha producido un error');
-		end catch
-	end;
-go
-
-create or alter procedure sp_listaDiagnosticos
-as
-	begin
-		select * from Diagnostico
-	end;
-go
 
 create or alter procedure sp_registraAsignaturaMatriculadaEstudiante @idE int, @idA int, @fase1 bit, @fase2 bit
 as
