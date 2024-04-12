@@ -143,14 +143,6 @@ create table Diagnostico (
 	descripcion varchar(500) null
 );
 
-/*
-create table DiagnosticoEstudiante (
-	idDiagnostico int foreign key references Diagnostico(idDiagnostico),
-	idEstudiante int foreign key references Estudiante(idEstudiante),
-	primary key (idDiagnostico, idEstudiante)
-);
-*/
-
 create table Adaptacion (
 	idAdaptacion int primary key identity,
 	nombreAdaptacion varchar(100) not null,

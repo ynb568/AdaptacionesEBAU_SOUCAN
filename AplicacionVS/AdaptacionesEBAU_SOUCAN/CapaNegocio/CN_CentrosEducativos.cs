@@ -47,9 +47,10 @@ namespace CapaNegocio
                 nombreED, apellidosED, telefonoED);
         }
 
+        /*
         public int LoginCE(string correo, string contrasenha)
         {
-            int idCE = 0;
+            int idCE = -1;
             contrasenha = CN_Recursos.convertirSha256(contrasenha);
 
             using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
@@ -57,15 +58,57 @@ namespace CapaNegocio
                 SqlCommand cmd = new SqlCommand("sp_validarCentroEducativo", con);
                 cmd.Parameters.AddWithValue("correo", correo);
                 cmd.Parameters.AddWithValue("contrasenha", contrasenha);
+                cmd.Parameters.Add("@Completado", SqlDbType.Bit).Direction = ParameterDirection.Output;
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 con.Open();
 
-                idCE = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+                bool completado = Convert.ToBoolean(cmd.Parameters["@Completado"].Value);
+
+
+                if (completado)
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            idCE = Convert.ToInt32(reader["idCE"].ToString());
+                        }
+                    }
+                }
             }
 
             return idCE;
         }
+        */
+
+        public int LoginCE(string correo, string contrasenha)
+        {
+            int idCE = -1;
+            contrasenha = CN_Recursos.convertirSha256(contrasenha);
+
+            using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+            {
+                SqlCommand cmd = new SqlCommand("sp_validarCentroEducativo", con);
+                cmd.Parameters.AddWithValue("@correo", correo);
+                cmd.Parameters.AddWithValue("@contrasenha", contrasenha);
+                cmd.Parameters.Add("@idCE", SqlDbType.Int).Direction = ParameterDirection.Output;
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+
+                if (cmd.Parameters["@idCE"].Value != DBNull.Value)
+                {
+                    idCE = Convert.ToInt32(cmd.Parameters["@idCE"].Value);
+                }
+            }
+
+            return idCE;
+        }
+
+
+
 
         public string CambioContrasenha(int idCE, string contrasenha, string repetirContrasenha, string nuevaContrasenha)
         {

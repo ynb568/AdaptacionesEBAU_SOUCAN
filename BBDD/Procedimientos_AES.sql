@@ -776,6 +776,7 @@ go
 select * from CentroEducativo;
 go
 */
+--select * from CentroEducativo
 
 --SUGERENCIA: CUANDO SE MODIFICA EL ESTUDIANTE, EL ESTADO DE VALIDADO CAMBIA A PENDIENTE
 create or alter procedure sp_modificaDatosEstudiante @idE int,
@@ -832,19 +833,7 @@ select * from Estudiante
 -----------------------------------------------------------------
 
 --REVISADO
-create or alter procedure sp_inicioSesionCentroEducativo @correo varchar(100), @contrasenha varchar(500)
-as
-	begin
-		if (exists(select * from CentroEducativo ce
-						inner join Usuario u on ce.idCE = u.idUsuario
-							where u.correo = @correo and u.contrasenha = @contrasenha))
-			select idCE from CentroEducativo ce
-						inner join Usuario u on ce.idCE = u.idUsuario
-							where u.correo = @correo and u.contrasenha = @contrasenha 
-		else 
-			select '0'
-	end;
-go
+
 
 
 
@@ -870,12 +859,58 @@ as
 	end;
 go
 
---REVISADO
-create or alter procedure sp_cambiaContrasenhaCentro @idCE int, @contrasenhaPrevia varchar(500), @contrasenhaNueva varchar(500)
+/*
+create or alter procedure sp_validarCentroEducativo @correo varchar(100), @contrasenha varchar(500),
+@Completado bit output
+
 as
 	begin
-		declare @Mensaje varchar(50);
-		declare @Completado bit;
+		if (exists(select * from CentroEducativo ce
+						inner join Usuario u on ce.idCE = u.idUsuario
+							where u.correo = @correo and u.contrasenha = @contrasenha))
+			begin				
+				select idCE from CentroEducativo ce
+						inner join Usuario u on ce.idCE = u.idUsuario
+							where u.correo = @correo and u.contrasenha = @contrasenha;
+				set @Completado = 1;
+			end
+		else 
+			begin
+				set @Completado = 0;
+			end	end;
+go
+*/
+
+create or alter procedure sp_validarCentroEducativo @correo varchar(100), @contrasenha varchar(500),
+@idCE int output
+
+as
+    begin
+        if (exists(select * from CentroEducativo ce
+                        inner join Usuario u on ce.idCE = u.idUsuario
+                            where u.correo = @correo and u.contrasenha = @contrasenha))
+            begin                
+                select @idCE = idCE from CentroEducativo ce
+                        inner join Usuario u on ce.idCE = u.idUsuario
+                            where u.correo = @correo and u.contrasenha = @contrasenha;
+            end
+        else 
+            begin
+                set @idCE = -1;
+            end
+    end;
+go
+
+
+
+exec sp_validarCentroEducativo 'test@gmail.com', '9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08', 0;
+go
+
+--REVISADO
+create or alter procedure sp_cambiaContrasenhaCentro @idCE int, @contrasenhaPrevia varchar(500), @contrasenhaNueva varchar(500),
+@Mensaje varchar(50) output, @Completado bit output
+as
+	begin
 		begin try
 			begin transaction	
 				if (exists (select * from CentroEducativo where idCE = @idCE))
@@ -1070,6 +1105,13 @@ create or alter procedure sp_listaAsignaturas
 as
 	begin 
 		select * from Asignatura
+	end;
+go
+
+create or alter procedure sp_listaDocumentos
+as
+	begin
+		select * from Documento
 	end;
 go
 

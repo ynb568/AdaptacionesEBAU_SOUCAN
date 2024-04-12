@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 using CapaEntidad;
 using CapaNegocio;
+using System.Collections;
 
 
 namespace CapaPresentacion.Controllers
@@ -17,6 +18,8 @@ namespace CapaPresentacion.Controllers
 
         private CN_CentrosEducativos cnCentrosEducativos = new CN_CentrosEducativos();
         private CN_Estudiantes cnEstudiantes = new CN_Estudiantes();
+        private CN_Diagnosticos cnDiagnosticos = new CN_Diagnosticos();
+        private CN_Documentos cnDocumentos = new CN_Documentos();
 
 
         [HttpGet]
@@ -26,16 +29,16 @@ namespace CapaPresentacion.Controllers
         }
 
         [HttpPost]
-        public ActionResult LoginCE(CentroEducativo ce)
+        public ActionResult LoginCE(string correo, string contrasenha)
         {
-            ce.IdCE = cnCentrosEducativos.LoginCE(ce.Correo, ce.Contrasenha);
+            int idCE = cnCentrosEducativos.LoginCE(correo, contrasenha);
 
-            if (ce.IdCE != 0)
+            if (idCE > 0)
             {
                 //Crea una sesion para el centro educativo que se logea
-                Session["centro educativo"] = ce.IdCE;
+                Session["centro educativo"] = idCE;
 
-                return RedirectToAction(nameof(CentrosEducativosController.ControladorCentro), nameof(HomeController));
+                return RedirectToAction(nameof(CentrosEducativosController.ControladorCentro), "CentrosEducativos");
             }
             else
             {
@@ -51,38 +54,48 @@ namespace CapaPresentacion.Controllers
         }
 
 
-
-
-
         [HttpGet]
         public ActionResult EdicionCentro()
         {
-            var Id = 1;//(int)Session["centro educativo"];
-            var centro = cnCentrosEducativos.obtenCentro(Id);
+            int id = (int)Session["centro educativo"];
+            var centro = cnCentrosEducativos.obtenCentro(id);
             if (centro == null)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(nameof(HomeController.LoginCE), "Home");
             }
             return View(centro);
         }
-
+        
+        //TODO: investigar como poner para mensaje de error y ok
+        //  No recupera los datos que no son editables
         [HttpPost]
-        public ActionResult EdicionCentro(CentroEducativo modelo)
+        public ActionResult EdicionCentro(CentroEducativo ce)
         {
             var Id = (int)Session["centro educativo"];
-            
+                        
             var success = cnCentrosEducativos.modificaDatosCentro(
                 Id,
-                modelo.TelefonoCE,
-                modelo.NombreOrientador,
-                modelo.ApellidosOrientador,
-                modelo.TelefonoOrientador,
-                modelo.CorreoOrientador,
-                modelo.NombreEquipoDirectivo,
-                modelo.ApellidosEquipoDirectivo,
-                modelo.TelefonoEquipoDirectivo);
-            
-            return View();
+                ce.TelefonoCE,
+                ce.NombreOrientador,
+                ce.ApellidosOrientador,
+                ce.TelefonoOrientador,
+                ce.CorreoOrientador,
+                ce.NombreEquipoDirectivo,
+                ce.ApellidosEquipoDirectivo,
+                ce.TelefonoEquipoDirectivo);
+
+            if (success)
+            {
+
+                ViewData["MensajeOk"] = "Cambios realizados correctamente";
+                return RedirectToAction(nameof(CentrosEducativosController.ControladorCentro), "CentrosEducativos");
+                //return View(ce);
+            }
+            else
+            {
+                ViewData["Mensaje"] = "Error al modificar los datos";
+                return View(ce);
+            }
         }
 
 
@@ -106,18 +119,35 @@ namespace CapaPresentacion.Controllers
 
 
 
-        [HttpPost]
-        public ActionResult RegistroEstudiante(int Identificador)
+        [HttpGet]
+        public ActionResult RegistroEstudiante()
         {
-            return View();
+            int id = (int)Session["centro educativo"];
+            var centro = cnCentrosEducativos.obtenCentro(id);
+
+            if (centro == null)
+            {
+                return RedirectToAction(nameof(HomeController.LoginCE), "Home");
+            }
+
+            var viewModel = new ViewModels.EstudianteViewModel
+            {
+                CE = centro,
+                Estudiante = new Estudiante(),
+                Diagnosticos = cnDiagnosticos.listaDiagnosticosActivos(),
+                Documentos = cnDocumentos.listaDocumentos()
+
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
-        public ActionResult RegistrarEstudiante(string dniEstudiante, string nombreEstudiante, string ap1Estudiante, string ap2Estudiante,
+        public ActionResult RegistroEstudiante(string dniEstudiante, string nombreEstudiante, string ap1Estudiante, string ap2Estudiante,
        string nombreCompletoT1, string telefonoT1, string nombreCompletoT2, string telefonoT2,
-       string convocatoria, int idCentro, string observaciones)
+       string convocatoria, string observaciones)
         {
-
+            int idCentro = (int)Session["centro educativo"];
             bool ordinaria = convocatoria == "ordinaria";
             bool extraordinaria = convocatoria == "extraordinaria";
 

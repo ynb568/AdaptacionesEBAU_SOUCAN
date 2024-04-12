@@ -1,7 +1,6 @@
-﻿@model CapaEntidad.CentroEducativo
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "Iniciar sesión en SOUCAN"; // Establecer el título de la página
+    ViewBag.Title = "Iniciar sesión en Centro Educativo"; // Establecer el título de la página
 }
 
 <!DOCTYPE html>
@@ -11,15 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title> <!-- Usar el ViewBag.Title como título de la página -->
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" /> <!-- Bootstrap CSS -->
-
-    <style>
-        /* Estilos personalizados */
-        .btn-custom {
-            background-color: #005c64; /* Color de fondo */
-            color: #fff; /* Color del texto */
-            border-color: #005c64; /* Color del borde */
-        }
-    </style>
 </head>
 <body>
     <!-- Contenido de la página -->
@@ -31,17 +21,24 @@
                         <h3 class="panel-title">Introduzca su usuario de Centro</h3>
                     </div>
                     <div class="panel-body">
-                        <form accept-charset="UTF-8" role="form">
+                        @using (Html.BeginForm("LoginCE", "CentrosEducativos", FormMethod.Post))
+                        {
                             <fieldset>
                                 <div class="form-group">
-                                    @Html.TextBoxFor(model => model.Correo, new { @class = "form-control", placeholder = "Correo", @type= "email" })
+                                    @Html.TextBox("correo", null, new { @class = "form-control", placeholder = "Correo", @type = "email" })
                                 </div>
                                 <div class="form-group">
-                                    @Html.TextBoxFor(model => model.Contrasenha, new { @class = "form-control", placeholder = "Contrasenha", @type = "password" })
+                                    @Html.TextBox("contrasenha", null, new { @class = "form-control", placeholder = "Contrasenha", @type = "password" })
                                 </div>
                                 <input class="btn btn-lg btn-custom btn-block" type="submit" value="Iniciar Sesión">
                             </fieldset>
-                        </form>
+                        }
+                        @if (!String.IsNullOrEmpty(ViewData["Mensaje"] as string))
+                        {
+                            <div class="alert alert-danger">
+                                @Html.Raw(ViewData["Mensaje"])
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

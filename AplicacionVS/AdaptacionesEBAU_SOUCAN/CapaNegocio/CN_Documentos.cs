@@ -12,6 +12,11 @@ namespace CapaNegocio
     {
         private CD_Documentos objCD = new CD_Documentos();
 
+        public List<Documento> listaDocumentos()
+        {
+            return objCD.listaDocumentos();
+        }
+
         public List<Documento> listaDocumentosEstudiante (int idEstudiante)
         {
             return objCD.listaDocumentosEstudiante(idEstudiante);

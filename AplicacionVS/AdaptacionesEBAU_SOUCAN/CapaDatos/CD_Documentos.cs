@@ -12,6 +12,44 @@ namespace CapaDatos
 {
     public class CD_Documentos
     {
+        public List<Documento> listaDocumentos ()
+        {
+            List<Documento> documentos = new List<Documento>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_listaDocumentos", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    con.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        //Para leer múltiples filas
+                        while (dr.Read())
+                        {
+                            documentos.Add(
+                                new Documento()
+                                {
+                                    IdDocumento = Convert.ToInt32(dr["idDocumento"]),
+                                    NombreDocumento = dr["nombreDocumento"].ToString()
+                                }
+                                                                                          );
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                documentos = new List<Documento>();
+                Console.WriteLine("Error en CD_Documentos.listaDocumentos: " + ex.Message);
+            }
+            return documentos;
+        }
+
+
+
         public List<Documento> listaDocumentosEstudiante(int idEstudiante)
         {
             List<Documento> documentos = new List<Documento>();
