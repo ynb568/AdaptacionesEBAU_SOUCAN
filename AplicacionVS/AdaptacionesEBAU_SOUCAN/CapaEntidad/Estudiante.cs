@@ -15,7 +15,28 @@ namespace CapaEntidad
 		public string Ap1Estudiante { get; set; }
 		[DisplayName("Segundo Apellido Estudiante:")]
 		public string Ap2Estudiante { get;set; }
-		[DisplayName("Nombre Completo Primer Tutor:")]
+
+		//Propiedad para mostrar el nombre completo del estudiante en la vista
+		[DisplayName("Nombre Completo:")]
+        public string NombreCompleto
+        {
+            get
+            {
+                return $"{NombreEstudiante} {Ap1Estudiante} {Ap2Estudiante}";
+            }
+        }
+
+        [DisplayName("Convocatoria:")]
+        public string Convocatoria
+        {
+            get
+            {
+                return Ordinaria == true && ExtraOrdinaria == false ? "Ordinaria" : "Extraordinaria";
+            }
+        }
+
+
+        [DisplayName("Nombre Completo Primer Tutor:")]
 		public string NombreCompletoTutor1 { get; set; }
 		[DisplayName("Teléfono Primer Tutor:")]
 		public string TelefonoTutor1 { get; set; }
@@ -33,7 +54,6 @@ namespace CapaEntidad
 		public DateTime FechaRegistro { get; set; }
 
 		public List<Diagnostico> Diagnosticos { get; set; }
-		//public List<AdaptacionDiagnosticoEstudiante> AdaptacionesDE { get; set; }
         public List<Asignatura> AsignaturasPrevistas { get; set; }
         public List<Asignatura> AsignaturasMatriculadas { get; set; }
 		public List<Apunte> Apuntes { get; set; } 

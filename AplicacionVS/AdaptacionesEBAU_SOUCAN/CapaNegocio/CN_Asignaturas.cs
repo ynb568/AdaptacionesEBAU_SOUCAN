@@ -76,6 +76,30 @@ namespace CapaNegocio
             return objCD.listaAsignaturasPrevistasEstudiante(idEstudiante);
         }
 
+        public List<Asignatura> listaAsignaturasPrevistasEstudiantePorFase (int idEstudiante, int fase)
+        {
+            List<Asignatura> asignaturas = listaAsignaturasPrevistasEstudiante(idEstudiante);
+            List<Asignatura> asignaturasFase = new List<Asignatura>();
+
+            if (fase == 1)
+            {
+                asignaturasFase = asignaturas
+                    .Where(a => a.Fase1)
+                    .ToList();
+            }
+            else if (fase == 2)
+            {
+                asignaturasFase = asignaturas
+                    .Where(a => a.Fase2)
+                    .ToList();
+            }
+            else
+            {
+                throw new ArgumentException("La fase debe ser 1 o 2", nameof(fase));
+            }
+            return asignaturasFase;
+        }
+
         public List<Asignatura> listaAsignaturasMatriculadasEstudiante(int idEstudiante)
         {
             return objCD.listaAsignaturasMatriculadasEstudiante(idEstudiante);

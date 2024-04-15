@@ -62,6 +62,33 @@
             </div>
         </div>
     </div>
+    <h5>ASIGNATURAS PREVISTAS A PRESENTAR EN LA EBAU</h5>
+    <div class="form-group m-3">
+        <h6>FASE 1:</h6>
+        @foreach (var asignatura in Model.AsignaturasFase1)
+        {
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.AsignaturasFase1[asignatura.IdAsignatura].IsSelected, new { @class = "form-check-input" })
+                @Html.LabelFor(m => m.AsignaturasFase1[asignatura.IdAsignatura].IsSelected, Model.AsignaturasFase1[asignatura.IdAsignatura].NombreAsignatura, new { @class = "form-check-label" })
+            </div>
+        }
+        <h6>FASE 2 (Opcional):</h6>
+        @foreach (var asignatura in Model.AsignaturasFase2)
+        {
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.AsignaturasFase2[asignatura.IdAsignatura].IsSelected, new { @class = "form-check-input" })
+                @Html.LabelFor(m => m.AsignaturasFase2[asignatura.IdAsignatura].IsSelected, Model.AsignaturasFase2[asignatura.IdAsignatura].NombreAsignatura, new { @class = "form-check-label" })
+            </div>
+        }
+    </div>
+    <h5>DIAGNÓSTICOS</h5>
+    <div class="form-group m-3">
+        <button id="btnAddDiagnostico" type="button" class="btn btn-custom">Añadir Diagnóstico</button>
+    </div>
+    <div id="diagnosticosDropdown" class="form-group" style="display: none;">
+        @Html.Label("SelectedDiagnostico", "Diagnóstico")
+        @Html.DropDownListFor(m => m.SelectedDiagnostico, new SelectList(Model.Diagnosticos, "IdDiagnostico", "NombreDiagnostico"), "Seleccione un diagnóstico", new { @class = "form-control", id = "selectDiagnostico" })
+    </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Estudiante.Observaciones)
         @Html.TextAreaFor(m => m.Estudiante.Observaciones, new { @class = "form-control" })
@@ -70,3 +97,22 @@
         <button name="submit" type="submit" class="btn btn-primary">Registrar</button>
     </div>
 </form>
+
+<script>
+    $(document).ready(function() {
+        // Función para manejar el clic en el botón "Añadir Diagnóstico"
+        $("#btnAddDiagnostico").click(function() {
+            // Mostrar el desplegable con los diagnósticos
+            $("#diagnosticosDropdown").show();
+        });
+
+        // Función para manejar el cambio en el desplegable de diagnósticos
+        $("#selectDiagnostico").change(function() {
+            // Obtener el diagnóstico seleccionado
+            var selectedDiagnostico = $(this).val();
+            // Mostrar las adaptaciones activas correspondientes al diagnóstico seleccionado
+            // Puedes implementar esta parte según la lógica específica de tu aplicación
+        });
+    });
+</script>
+

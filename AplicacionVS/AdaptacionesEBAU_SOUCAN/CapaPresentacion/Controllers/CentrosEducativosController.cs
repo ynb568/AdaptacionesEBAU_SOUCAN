@@ -19,7 +19,9 @@ namespace CapaPresentacion.Controllers
         private CN_CentrosEducativos cnCentrosEducativos = new CN_CentrosEducativos();
         private CN_Estudiantes cnEstudiantes = new CN_Estudiantes();
         private CN_Diagnosticos cnDiagnosticos = new CN_Diagnosticos();
+        private CN_Adaptaciones cnAdaptaciones = new CN_Adaptaciones();
         private CN_Documentos cnDocumentos = new CN_Documentos();
+        private CN_Asignaturas cnAsignaturas = new CN_Asignaturas();
 
 
         [HttpGet]
@@ -99,21 +101,28 @@ namespace CapaPresentacion.Controllers
         }
 
 
+        //TODO: CAMBIAR PARA QUE LA CONTRASEÑA A REPETIR SEA LA NUEVA
         [HttpPost]
-        public ActionResult CambioContrasenha(CentroEducativo ce, string nuevaContrasenha)
+        public ActionResult CambioContrasenha(string ContrasenaActual, string NuevaContrasena, string ConfirmarNuevaContrasena)
         {
-            CN_CentrosEducativos cnCentrosEducativos = new CN_CentrosEducativos();
+            int idCentro = (int)Session["centro educativo"];
 
-            string result = cnCentrosEducativos.CambioContrasenha(ce.IdCE, ce.Contrasenha, ce.RepetirContrasenha, nuevaContrasenha);
+            if (NuevaContrasena != ConfirmarNuevaContrasena)
+            {
+                ViewData["Mensaje"] = "La nueva contraseña y la confirmación no coinciden.";
+                return View("ControladorCentro");
+            }
+
+            string result = cnCentrosEducativos.CambioContrasenha(idCentro, ContrasenaActual, NuevaContrasena);
 
             if (result == "Success")
             {
-                return RedirectToAction("LoginCE", "CentrosEducativos");
+                return RedirectToAction("LoginCE", "CentrosEducativos ");
             }
             else
             {
                 ViewData["Mensaje"] = result;
-                return View();
+                return View("ControladorCentro");
             }
         }
 
@@ -134,7 +143,14 @@ namespace CapaPresentacion.Controllers
             {
                 CE = centro,
                 Estudiante = new Estudiante(),
+                AsignaturasFase1 = cnAsignaturas.listaAsignaturasPorFase(1),
+                AsignaturasFase2 = cnAsignaturas.listaAsignaturasPorFase(2),
                 Diagnosticos = cnDiagnosticos.listaDiagnosticosActivos(),
+                //foreach (var d in Diagnosticos)
+                //{
+                //    d.Adaptaciones = cnAdaptaciones.listaAdaptacionesDiagnosticoActivas(d.);
+                //},
+                adaptacionDiagnosticoEstudiantes = new List<AdaptacionDiagnosticoEstudiante>(),
                 Documentos = cnDocumentos.listaDocumentos()
 
             };
@@ -158,15 +174,62 @@ namespace CapaPresentacion.Controllers
             return RedirectToAction("EstudiantesCentro");
         }
 
-        public ActionResult EditarEstudiante(int idE)
-        {
+        [HttpGet]
+        public ActionResult EstudiantesCentro()
+        { 
             var idCentro = (int)Session["centro educativo"];
-            var estudiante = cnEstudiantes.obtenEstudianteCentro(idCentro, idE);
-            return View(estudiante);
+            var estudiantes = cnEstudiantes.listaEstudiantes(idCentro);
+            return View(estudiantes);
+        }
+
+
+        [HttpGet]
+        public ActionResult InfoEstudiante(int idE)
+        {
+            int id = (int)Session["centro educativo"];
+            var centro = cnCentrosEducativos.obtenCentro(id);
+            var estudiante = cnEstudiantes.obtenEstudianteCentro(id, idE);
+
+            if (centro == null || estudiante == null) 
+            {
+                return RedirectToAction(nameof(HomeController.LoginCE), "Home");
+            }
+
+            var viewModel = new ViewModels.EstudianteViewModel
+            {
+                CE = centro,
+                Estudiante = estudiante, 
+                AsignaturasFase1 = cnAsignaturas.listaAsignaturasPrevistasEstudiantePorFase(idE, 1),
+                AsignaturasFase2 = cnAsignaturas.listaAsignaturasPrevistasEstudiantePorFase(idE, 2),
+            };
+
+            return View(viewModel);
+        }
+
+        public ActionResult EdicionEstudiante(int idE)
+        {
+            int id = (int)Session["centro educativo"];
+            var centro = cnCentrosEducativos.obtenCentro(id);
+            var estudiante = cnEstudiantes.obtenEstudianteCentro(id, idE);
+
+            if (centro == null || estudiante == null)
+            {
+                return RedirectToAction(nameof(HomeController.LoginCE), "Home");
+            }
+
+            var viewModel = new ViewModels.EstudianteViewModel
+            {
+                CE = centro,
+                Estudiante = estudiante,
+                AsignaturasFase1 = cnAsignaturas.listaAsignaturasPrevistasEstudiantePorFase(idE, 1),
+                AsignaturasFase2 = cnAsignaturas.listaAsignaturasPrevistasEstudiantePorFase(idE, 2),
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
-        public ActionResult EditarEstudiante(int idE, string convocatoria, string observaciones)
+        public ActionResult EdicionEstudiante(int idE, string convocatoria, string observaciones)
         {
             bool ordinaria = convocatoria == "ordinaria";
             bool extraordinaria = convocatoria == "extraordinaria";
@@ -176,27 +239,6 @@ namespace CapaPresentacion.Controllers
             return RedirectToAction("EstudiantesCentro");
         }
 
-        public JsonResult listaEstudiantes()
-        {
-            //Crear una variable de sesión
-            var IdCentro = (int)Session["centro educativo"];
-            List<Estudiante> listaE = new List<Estudiante> ();
-
-            listaE = new CN_Estudiantes().listaEstudiantes(IdCentro);
-
-            return Json(listaE, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public ActionResult EstudiantesCentro()
-        { 
-            return View();
-        }
-        [HttpGet]
-        public ActionResult InfoCE()
-        {
-            return View();
-        }
 
 
 

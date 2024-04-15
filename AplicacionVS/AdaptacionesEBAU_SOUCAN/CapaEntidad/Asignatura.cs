@@ -13,6 +13,7 @@ namespace CapaEntidad
         public bool Activo { get; set; }
         public bool Fase1 { get; set; }
         public bool Fase2 { get; set;}
+        public bool IsSelected { get; set; } //Propiedad para saber si la asignatura ha sido seleccionada en el formulario
 
     }
 }

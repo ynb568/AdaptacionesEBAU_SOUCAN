@@ -1,53 +1,43 @@
-﻿@{
+﻿@using CapaPresentacion.Controllers;
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var estudiantes = Model;
 }
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Category Table</title>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <style>
-        .custab {
-            border: 1px solid #ccc;
-            padding: 5px;
-            margin: 5% 0;
-            box-shadow: 3px 3px 2px #ccc;
+<style>
+    .custab {
+        border: 1px solid #ccc;
+        padding: 5px;
+        margin: 5% 0;
+        box-shadow: 3px 3px 2px #ccc;
+        transition: 0.5s;
+    }
+
+        .custab:hover {
+            box-shadow: 3px 3px 0px transparent;
             transition: 0.5s;
         }
-
-            .custab:hover {
-                box-shadow: 3px 3px 0px transparent;
-                transition: 0.5s;
-            }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="row col-md-6 col-md-offset-2 custyle">
-            <table class="table table-striped custab">
-                <thead>
-                    <!-- Resto del código del encabezado de la tabla -->
-                </thead>
-                <tbody>
-                    @foreach (var estudiante in estudiantes) // Itera sobre la lista de estudiantes
-                    {
-                        <tr>
-                            <td>@estudiante.IdEstudiante</td> // Muestra el id del estudiante
-                            <td>@estudiante.NombreEstudiante</td> // Muestra el nombre del estudiante
-                            <td class="text-center">
-                                <a class='btn btn-info btn-xs' href="#"><span class="glyphicon glyphicon-edit"></span> Edit</a>
-                                <a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-</body>
-</html>
-
+</style>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre Estudiante</th>
+            <th>Ver</th>
+            <th>Editar</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Lista de estudiantes procedentes del modelo-->
+        @foreach (var e in estudiantes)
+        {
+            <tr>
+                <td>@e.NombreCompleto</td>
+                <td>@Html.ActionLink("VER", nameof(CentrosEducativosController.InfoEstudiante), "CentrosEducativos", new { idE = e.IdEstudiante }, new { @class = "btn btn-custom" })</td>
+                <td>@Html.ActionLink("EDITAR", nameof(CentrosEducativosController.EdicionEstudiante), "CentrosEducativos", new { idE = e.IdEstudiante }, new { @class = "btn btn-custom" })</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="form-group">
+    <p>@Html.ActionLink("Volver", nameof(CentrosEducativosController.ControladorCentro), "CentrosEducativos", null, new { @class = "btn btn-custom" })</p>
+</div>
 

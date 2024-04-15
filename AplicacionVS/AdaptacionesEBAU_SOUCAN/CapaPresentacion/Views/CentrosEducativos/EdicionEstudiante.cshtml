@@ -1,62 +1,85 @@
-﻿@{
+﻿@using CapaPresentacion.Controllers;
+@model CapaPresentacion.ViewModels.EstudianteViewModel
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var idCentro = (int)Session["centro educativo"];
-    var estudiante = Model; // Asume que el modelo contiene los datos del estudiante
 }
 
-<form method="post" action="@Url.Action("EditarEstudiante", "CentrosEducativos")">
-    <input type="hidden" name="idE" value="@estudiante.Id" />
+<form method="post" action="@Url.Action(nameof(CentrosEducativosController.EdicionEstudiante), "CentrosEducativos")">
+    @Html.Hidden("IdE", Model.Estudiante.IdEstudiante)
+    <h2>
+        @Html.DisplayFor(m => m.Estudiante.CursoConvocatoria)
+    </h2>
     <div class="form-group">
-        <label>Nombre del estudiante</label>
-        <p>@estudiante.Nombre</p>
+
+        @Html.LabelFor(m => m.Estudiante.CursoConvocatoria)
+        @Html.TextBoxFor(m => m.Estudiante.CursoConvocatoria, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        <label>DNI</label>
-        <p>@estudiante.Dni</p>
+        @Html.LabelFor(m => m.Estudiante.NombreEstudiante)
+        @Html.TextBoxFor(m => m.Estudiante.NombreEstudiante, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        <label>Nombre del tutor 1</label>
-        <p>@estudiante.NombreCompletoT1</p>
+        @Html.LabelFor(m => m.Estudiante.Ap1Estudiante)
+        @Html.TextBoxFor(m => m.Estudiante.Ap1Estudiante, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        <label>Teléfono del tutor 1</label>
-        <p>@estudiante.TelefonoT1</p>
+        @Html.LabelFor(m => m.Estudiante.Ap2Estudiante)
+        @Html.TextBoxFor(m => m.Estudiante.Ap2Estudiante, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        <label>Nombre del tutor 2</label>
-        <p>@estudiante.NombreCompletoT2</p>
+        @Html.LabelFor(m => m.Estudiante.NombreCompletoTutor1)
+        @Html.TextBoxFor(m => m.Estudiante.NombreCompletoTutor1, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        <label>Teléfono del tutor 2</label>
-        <p>@estudiante.TelefonoT2</p>
+        @Html.LabelFor(m => m.Estudiante.TelefonoTutor1)
+        @Html.TextBoxFor(m => m.Estudiante.TelefonoTutor1, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        <label>Nombre del centro</label>
-        <p>@estudiante.NombreCentro</p>
+        @Html.LabelFor(m => m.Estudiante.NombreCompletoTutor2)
+        @Html.TextBoxFor(m => m.Estudiante.NombreCompletoTutor2, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        <label>Convocatoria</label>
+        @Html.LabelFor(m => m.Estudiante.TelefonoTutor2)
+        @Html.TextBoxFor(m => m.Estudiante.TelefonoTutor2, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Estudiante.Convocatoria)
         <div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="convocatoria" id="ordinaria" value="ordinaria" @(estudiante.Ordinaria ? "checked" : "")>
-                <label class="form-check-label" for="ordinaria">
-                    Ordinaria
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="convocatoria" id="extraordinaria" value="extraordinaria" @(estudiante.Extraordinaria ? "checked" : "")>
-                <label class="form-check-label" for="extraordinaria">
-                    Extraordinaria
-                </label>
-            </div>
+            @Html.RadioButton("Convocatoria", "Ordinaria", Model.Estudiante.Convocatoria == "Ordinaria", new { id = "ordinaria" }) <label for="ordinaria">Ordinaria</label>
+            @Html.RadioButton("Convocatoria", "Extraordinaria", Model.Estudiante.Convocatoria == "Extraordinaria", new { id = "extraordinaria" }) <label for="extraordinaria">Extraordinaria</label>
         </div>
     </div>
     <div class="form-group">
-        <label for="observacion">Observaciones</label>
-        <textarea id="observacion" name="observacion" cols="40" rows="6" class="form-control">@estudiante.Observaciones</textarea>
+        @Html.LabelFor(m => m.Estudiante.Observaciones)
+        @Html.TextBoxFor(m => m.Estudiante.Observaciones, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        <button name="submit" type="submit" class="btn btn-primary">Guardar cambios</button>
+        <button name="submit" type="submit" class="btn btn-custom">Guardar cambios</button>
     </div>
-    <input type="hidden" name="idCentro" value="@idCentro" />
+    <div class="form-group">
+        <p>@Html.ActionLink("Volver", nameof(CentrosEducativosController.EstudiantesCentro), "CentrosEducativos", null, new { @class = "btn btn-custom" })</p>
+    </div>
 </form>
+<script>
+
+    document.querySelector('form').addEventListener('submit', function() {
+        var ordinaria = document.getElementById('ordinaria');
+        var extraordinaria = document.getElementById('extraordinaria');
+
+        if (!ordinaria.checked) {
+            var hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = 'Ordinaria';
+            hiddenField.value = 'false';
+            this.appendChild(hiddenField);
+        }
+
+        if (!extraordinaria.checked) {
+            var hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = 'Extraordinaria';
+            hiddenField.value = 'false';
+            this.appendChild(hiddenField);
+        }
+    });
+</script>
