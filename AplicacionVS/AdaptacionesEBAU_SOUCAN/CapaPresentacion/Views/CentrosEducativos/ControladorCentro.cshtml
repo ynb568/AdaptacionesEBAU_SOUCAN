@@ -9,48 +9,24 @@
 <p>@Html.ActionLink("REGISTRAR ESTUDIANTE", nameof(CentrosEducativosController.RegistroEstudiante), "CentrosEducativos", null, new { @class = "btn btn-custom" })</p>
 <p>@Html.ActionLink("VER ESTUDIANTES REGISTRADOS", nameof(CentrosEducativosController.EstudiantesCentro), "CentrosEducativos", null, new { @class = "btn btn-custom" })</p>
 <p>@Html.ActionLink("EDITAR INFORMACIÓN CENTRO", nameof(CentrosEducativosController.EdicionCentro), "CentrosEducativos", null, new { @class = "btn btn-custom" })</p>
-<button type="button" class="btn btn-custom" data-toggle="modal" data-target="#cambioContrasenhaModal">
+<button type="button" class="btn btn-custom" data-toggle="modal" data-target="#cambioContrasenaModal">
     CAMBIAR CONTRASEÑA
 </button>
 
-<!-- Modal -->
-<!-- Modal -->
-<div class="modal fade" id="cambioContrasenaModal" tabindex="-1" role="dialog" aria-labelledby="cambioContrasenaModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="cambioContrasenaModalLabel">Cambiar contraseña</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @using (Html.BeginForm("CambioContrasena", "CentrosEducativos", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                <div class="modal-body">
-                    <div class="form-group">
-                        @Html.Label("Contraseña actual", new { @class = "control-label" })
-                        @Html.Password("ContrasenaActual", new { @class = "form-control" })
-                    </div>
+@Html.Partial("_CambioContrasenhaModal")
 
-                    <div class="form-group">
-                        @Html.Label("Nueva contraseña", new { @class = "control-label" })
-                        @Html.Password("NuevaContrasena", new { @class = "form-control" })
-                    </div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#cambioContrasenaModal').on('show.bs.modal', function () {
+                $(this).find('input[type=password]').val('');
+            });
+        });
+    </script>
+}
 
-                    <div class="form-group">
-                        @Html.Label("Confirmar nueva contraseña", new { @class = "control-label" })
-                        @Html.Password("ConfirmarNuevaContrasena", new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                </div>
-            }
-        </div>
-    </div>
-</div>
+
+
 
 
 

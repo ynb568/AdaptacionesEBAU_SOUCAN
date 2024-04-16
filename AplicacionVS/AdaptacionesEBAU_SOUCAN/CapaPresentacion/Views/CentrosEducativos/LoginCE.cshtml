@@ -21,7 +21,7 @@
                         <h3 class="panel-title">Introduzca su usuario de Centro</h3>
                     </div>
                     <div class="panel-body">
-                        @using (Html.BeginForm("LoginCE", "CentrosEducativos", FormMethod.Post))
+                        @using (Html.BeginForm(nameof(CapaPresentacion.Controllers.CentrosEducativosController.LoginCE), "CentrosEducativos", FormMethod.Post))
                         {
                             <fieldset>
                                 <div class="form-group">

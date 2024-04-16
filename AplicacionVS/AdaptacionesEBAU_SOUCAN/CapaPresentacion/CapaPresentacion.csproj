@@ -189,6 +189,7 @@
     <Content Include="Views\CentrosEducativos\EdicionCentro.cshtml" />
     <Content Include="Views\CentrosEducativos\ControladorCentro.cshtml" />
     <Content Include="Views\CentrosEducativos\InfoEstudiante.cshtml" />
+    <Content Include="Views\CentrosEducativos\_CambioContrasenhaModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -9,14 +9,14 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <form method="post" action="@Url.Action(nameof(CentrosEducativosController.RegistroEstudiante), "CentrosEducativos")">
-    <h2>
-        @Html.DisplayFor(m => m.Estudiante.CursoConvocatoria)
-    </h2>
-    <div class="form-group">
-
-        @Html.LabelFor(m => m.Estudiante.CursoConvocatoria)
-        @Html.TextBoxFor(m => m.Estudiante.CursoConvocatoria, new { @class = "form-control" })
+    <div>
+        @Html.LabelFor(m => m.PlazoRegistroActivo.CursoConvocatoria)
+        <p>@Html.DisplayFor(m => m.PlazoRegistroActivo.CursoConvocatoria)</p>
+        <p>@Html.DisplayFor(m => m.PlazoRegistroActivo.FechaIni)</p>
+        <p>@Html.DisplayFor(m => m.PlazoRegistroActivo.FechaFin)</p>
     </div>
+
+
     <div class="form-group">
         @Html.LabelFor(m => m.Estudiante.NombreEstudiante)
         @Html.TextBoxFor(m => m.Estudiante.NombreEstudiante, new { @class = "form-control" })
@@ -46,73 +46,104 @@
         @Html.TextBoxFor(m => m.Estudiante.TelefonoTutor2, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        <label>Convocatoria</label>
+        @Html.LabelFor(m => m.Estudiante.Convocatoria)
         <div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="convocatoria" id="ordinaria" value="ordinaria" checked>
-                <label class="form-check-label" for="ordinaria">
-                    Ordinaria
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="convocatoria" id="extraordinaria" value="extraordinaria">
-                <label class="form-check-label" for="extraordinaria">
-                    Extraordinaria
-                </label>
-            </div>
+            @Html.RadioButton("Convocatoria", "Ordinaria", Model.Estudiante.Convocatoria == "Ordinaria", new { id = "ordinaria" }) <label for="ordinaria">Ordinaria</label>
+            @Html.RadioButton("Convocatoria", "Extraordinaria", Model.Estudiante.Convocatoria == "Extraordinaria", new { id = "extraordinaria" }) <label for="extraordinaria">Extraordinaria</label>
         </div>
     </div>
     <h5>ASIGNATURAS PREVISTAS A PRESENTAR EN LA EBAU</h5>
     <div class="form-group m-3">
         <h6>FASE 1:</h6>
-        @foreach (var asignatura in Model.AsignaturasFase1)
+        @for (int i = 0; i < Model.AsignaturasFase1.Count; i++)
         {
             <div class="form-check">
-                @Html.CheckBoxFor(m => m.AsignaturasFase1[asignatura.IdAsignatura].IsSelected, new { @class = "form-check-input" })
-                @Html.LabelFor(m => m.AsignaturasFase1[asignatura.IdAsignatura].IsSelected, Model.AsignaturasFase1[asignatura.IdAsignatura].NombreAsignatura, new { @class = "form-check-label" })
+                @Html.CheckBoxFor(m => m.AsignaturasFase1[i].IsSelected, new { @class = "form-check-input" })
+                @Html.LabelFor(m => m.AsignaturasFase1[i].IsSelected, Model.AsignaturasFase1[i].NombreAsignatura, new { @class = "form-check-label" })
             </div>
         }
         <h6>FASE 2 (Opcional):</h6>
-        @foreach (var asignatura in Model.AsignaturasFase2)
+        @for (int i = 0; i < Model.AsignaturasFase2.Count; i++)
         {
             <div class="form-check">
-                @Html.CheckBoxFor(m => m.AsignaturasFase2[asignatura.IdAsignatura].IsSelected, new { @class = "form-check-input" })
-                @Html.LabelFor(m => m.AsignaturasFase2[asignatura.IdAsignatura].IsSelected, Model.AsignaturasFase2[asignatura.IdAsignatura].NombreAsignatura, new { @class = "form-check-label" })
+                @Html.CheckBoxFor(m => m.AsignaturasFase2[i].IsSelected, new { @class = "form-check-input" })
+                @Html.LabelFor(m => m.AsignaturasFase2[i].IsSelected, Model.AsignaturasFase2[i].NombreAsignatura, new { @class = "form-check-label" })
             </div>
         }
     </div>
+
+
+
     <h5>DIAGNÓSTICOS</h5>
     <div class="form-group m-3">
         <button id="btnAddDiagnostico" type="button" class="btn btn-custom">Añadir Diagnóstico</button>
     </div>
     <div id="diagnosticosDropdown" class="form-group" style="display: none;">
-        @Html.Label("SelectedDiagnostico", "Diagnóstico")
+        
         @Html.DropDownListFor(m => m.SelectedDiagnostico, new SelectList(Model.Diagnosticos, "IdDiagnostico", "NombreDiagnostico"), "Seleccione un diagnóstico", new { @class = "form-control", id = "selectDiagnostico" })
     </div>
+    <div id="adaptacionesContainer">
+        
+    </div>
+
+
+
     <div class="form-group">
         @Html.LabelFor(m => m.Estudiante.Observaciones)
         @Html.TextAreaFor(m => m.Estudiante.Observaciones, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        <button name="submit" type="submit" class="btn btn-primary">Registrar</button>
+        <button name="submit" type="submit" class="btn btn-custom">Registrar</button>
     </div>
 </form>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Función para manejar el clic en el botón "Añadir Diagnóstico"
-        $("#btnAddDiagnostico").click(function() {
+        $("#btnAddDiagnostico").click(function () {
             // Mostrar el desplegable con los diagnósticos
             $("#diagnosticosDropdown").show();
         });
 
         // Función para manejar el cambio en el desplegable de diagnósticos
-        $("#selectDiagnostico").change(function() {
+        $("#selectDiagnostico").change(function () {
             // Obtener el diagnóstico seleccionado
             var selectedDiagnostico = $(this).val();
             // Mostrar las adaptaciones activas correspondientes al diagnóstico seleccionado
             // Puedes implementar esta parte según la lógica específica de tu aplicación
+
+            GetAdaptacions();
         });
     });
 </script>
+
+<script>
+
+    function GetAdaptacions() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action(nameof(CentrosEducativosController.GetAdaptaciones), "CentrosEducativos")",
+            dataType: 'json',
+            contentType: 'application/json',
+            data: {
+                idDiagnostico: $("#selectDiagnostico").val()
+            },
+            success: function(adaptaciones) {
+                // Vaciar el contenedor de adaptaciones
+                $("#adaptacionesContainer").empty();
+
+                // Crear un checkbox para cada adaptación
+                $.each(adaptaciones, function (i, adaptacion) {
+                    var checkbox = $('<input>').attr('type', 'checkbox').attr('name', 'Adaptaciones').attr('value', adaptacion.IdAdaptacion);
+                    var label = $('<label>').text(adaptacion.NombreAdaptacion);
+                    $("#adaptacionesContainer").append(checkbox).append(label).append('<br>');
+                });
+            }
+        })
+    }
+
+
+
+</script>
+
 

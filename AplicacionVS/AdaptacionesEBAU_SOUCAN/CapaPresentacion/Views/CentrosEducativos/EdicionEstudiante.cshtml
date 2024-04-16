@@ -5,7 +5,7 @@
 }
 
 <form method="post" action="@Url.Action(nameof(CentrosEducativosController.EdicionEstudiante), "CentrosEducativos")">
-    @Html.Hidden("IdE", Model.Estudiante.IdEstudiante)
+    @Html.HiddenFor(m => m.Estudiante.IdEstudiante, Model.Estudiante.IdEstudiante)
     <h2>
         @Html.DisplayFor(m => m.Estudiante.CursoConvocatoria)
     </h2>
@@ -45,8 +45,8 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Estudiante.Convocatoria)
         <div>
-            @Html.RadioButton("Convocatoria", "Ordinaria", Model.Estudiante.Convocatoria == "Ordinaria", new { id = "ordinaria" }) <label for="ordinaria">Ordinaria</label>
-            @Html.RadioButton("Convocatoria", "Extraordinaria", Model.Estudiante.Convocatoria == "Extraordinaria", new { id = "extraordinaria" }) <label for="extraordinaria">Extraordinaria</label>
+            @Html.RadioButtonFor(m => m.isOrdinaria, true, new { id = "ordinaria" }) <label for="ordinaria">Ordinaria</label>
+            @Html.RadioButtonFor(m => m.isOrdinaria, false, new { id = "extraordinaria" }) <label for="extraordinaria">Extraordinaria</label>
         </div>
     </div>
     <div class="form-group">
@@ -60,26 +60,4 @@
         <p>@Html.ActionLink("Volver", nameof(CentrosEducativosController.EstudiantesCentro), "CentrosEducativos", null, new { @class = "btn btn-custom" })</p>
     </div>
 </form>
-<script>
-
-    document.querySelector('form').addEventListener('submit', function() {
-        var ordinaria = document.getElementById('ordinaria');
-        var extraordinaria = document.getElementById('extraordinaria');
-
-        if (!ordinaria.checked) {
-            var hiddenField = document.createElement('input');
-            hiddenField.type = 'hidden';
-            hiddenField.name = 'Ordinaria';
-            hiddenField.value = 'false';
-            this.appendChild(hiddenField);
-        }
-
-        if (!extraordinaria.checked) {
-            var hiddenField = document.createElement('input');
-            hiddenField.type = 'hidden';
-            hiddenField.name = 'Extraordinaria';
-            hiddenField.value = 'false';
-            this.appendChild(hiddenField);
-        }
-    });
-</script>
+<!-- Script de gestion de radio button de convocatoria-->

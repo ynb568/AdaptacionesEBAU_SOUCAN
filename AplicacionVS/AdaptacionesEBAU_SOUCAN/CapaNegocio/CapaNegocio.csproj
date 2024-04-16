@@ -50,6 +50,7 @@
     <Compile Include="CN_Documentos.cs" />
     <Compile Include="CN_Estudiantes.cs" />
     <Compile Include="CN_Municipios.cs" />
+    <Compile Include="CN_PlazosRegistro.cs" />
     <Compile Include="CN_Recursos.cs" />
     <Compile Include="CN_Sedes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

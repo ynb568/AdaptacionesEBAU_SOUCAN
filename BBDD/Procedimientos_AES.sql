@@ -6,6 +6,13 @@ go
 ----------------- MAPEADOS DE OBJETOS ---------------------------
 -----------------------------------------------------------------
 -----------------------------------------------------------------
+create or alter procedure sp_obtenPlazoRegistroActivo
+as
+	begin
+		select top(1)* from PlazosRegistro where activo = 1
+	end
+go
+
 create or alter procedure sp_obtenMunicipioDireccion @idD int
 as
 	begin

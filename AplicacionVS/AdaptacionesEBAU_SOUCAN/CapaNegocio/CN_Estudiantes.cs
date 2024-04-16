@@ -38,7 +38,7 @@ namespace CapaNegocio
                 throw new ArgumentException("El id del estudiante no puede ser 0.");
             if (ordinaria == false && extraordinaria == false)
                 throw new ArgumentException("El estudiante debe tener al menos una convocatoria.");
-            if (ordinaria = true && extraordinaria == true)
+            if (ordinaria == true && extraordinaria == true)
                 throw new ArgumentException("El estudiante no puede tener ambas convocatorias.");
 
             return objCD.modificaDatosEstudiante(idE, ordinaria, extraordinaria, observaciones);

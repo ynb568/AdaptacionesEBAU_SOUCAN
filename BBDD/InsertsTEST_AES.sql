@@ -1,8 +1,8 @@
 use AdaptacionesEBAU_SOUCAN;
 go
 
-insert into PlazosRegistro (fechaIni, fechaFin, cursoConvocatoria)
-	values ('2024-01-01','2024-12-31','Curso 2024');
+insert into PlazosRegistro (fechaIni, fechaFin, cursoConvocatoria, activo)
+	values ('2024-01-01','2024-12-31','Curso 2024', 1);
 go
 
 insert into Municipio (nombreMunicipio)

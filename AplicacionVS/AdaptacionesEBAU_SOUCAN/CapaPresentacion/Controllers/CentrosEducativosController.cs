@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using CapaEntidad;
 using CapaNegocio;
 using System.Collections;
+using CapaPresentacion.ViewModels;
 
 
 namespace CapaPresentacion.Controllers
@@ -22,6 +23,7 @@ namespace CapaPresentacion.Controllers
         private CN_Adaptaciones cnAdaptaciones = new CN_Adaptaciones();
         private CN_Documentos cnDocumentos = new CN_Documentos();
         private CN_Asignaturas cnAsignaturas = new CN_Asignaturas();
+        private CN_PlazosRegistro cnPlazosRegistro = new CN_PlazosRegistro();
 
 
         [HttpGet]
@@ -101,7 +103,7 @@ namespace CapaPresentacion.Controllers
         }
 
 
-        //TODO: CAMBIAR PARA QUE LA CONTRASEÑA A REPETIR SEA LA NUEVA
+        //TODO: ARREGLAS PARA QUE LOS CAMPOS APAREZCAN VACIOS AL ABRIRLO
         [HttpPost]
         public ActionResult CambioContrasenha(string ContrasenaActual, string NuevaContrasena, string ConfirmarNuevaContrasena)
         {
@@ -112,11 +114,12 @@ namespace CapaPresentacion.Controllers
                 ViewData["Mensaje"] = "La nueva contraseña y la confirmación no coinciden.";
                 return View("ControladorCentro");
             }
-            /*
-            string result = cnCentrosEducativos.CambioContrasenha(idCentro, ContrasenaActual, NuevaContrasena);
+            
+            string result = cnCentrosEducativos.CambioContrasenha(idCentro, ContrasenaActual, NuevaContrasena, ConfirmarNuevaContrasena);
 
             if (result == "Success")
             {
+                Session.Clear();
                 return RedirectToAction("LoginCE", "CentrosEducativos ");
             }
             else
@@ -124,8 +127,6 @@ namespace CapaPresentacion.Controllers
                 ViewData["Mensaje"] = result;
                 return View("ControladorCentro");
             }
-            */
-            return View("ControladorCentro"); //PRUEBA
         }
 
 
@@ -143,15 +144,12 @@ namespace CapaPresentacion.Controllers
 
             var viewModel = new ViewModels.EstudianteViewModel
             {
+                PlazoRegistroActivo = cnPlazosRegistro.obtenPlazoRegistroActivo(),
                 CE = centro,
                 Estudiante = new Estudiante(),
                 AsignaturasFase1 = cnAsignaturas.listaAsignaturasPorFase(1),
                 AsignaturasFase2 = cnAsignaturas.listaAsignaturasPorFase(2),
                 Diagnosticos = cnDiagnosticos.listaDiagnosticosActivos(),
-                //foreach (var d in Diagnosticos)
-                //{
-                //    d.Adaptaciones = cnAdaptaciones.listaAdaptacionesDiagnosticoActivas(d.);
-                //},
                 adaptacionDiagnosticoEstudiantes = new List<AdaptacionDiagnosticoEstudiante>(),
                 Documentos = cnDocumentos.listaDocumentos()
 
@@ -159,6 +157,15 @@ namespace CapaPresentacion.Controllers
 
             return View(viewModel);
         }
+
+        [HttpGet]
+        public ActionResult GetAdaptaciones(int idDiagnostico)
+        {
+            CN_Adaptaciones cnAdaptaciones = new CN_Adaptaciones();
+            var adaptaciones = cnAdaptaciones.listaAdaptacionesDiagnostico(idDiagnostico);
+            return Json(adaptaciones);
+        }
+
 
         [HttpPost]
         public ActionResult RegistroEstudiante(string dniEstudiante, string nombreEstudiante, string ap1Estudiante, string ap2Estudiante,
@@ -225,18 +232,18 @@ namespace CapaPresentacion.Controllers
                 Estudiante = estudiante,
                 AsignaturasFase1 = cnAsignaturas.listaAsignaturasPrevistasEstudiantePorFase(idE, 1),
                 AsignaturasFase2 = cnAsignaturas.listaAsignaturasPrevistasEstudiantePorFase(idE, 2),
+                isOrdinaria = (estudiante.Convocatoria == "Ordinaria")
             };
 
             return View(viewModel);
         }
 
         [HttpPost]
-        public ActionResult EdicionEstudiante(int idE, string convocatoria, string observaciones)
+        public ActionResult EdicionEstudiante(EstudianteViewModel model)
         {
-            bool ordinaria = convocatoria == "ordinaria";
-            bool extraordinaria = convocatoria == "extraordinaria";
+            bool ordinaria = model.isOrdinaria;
 
-            cnEstudiantes.modificaDatosEstudiante(idE, ordinaria, extraordinaria, observaciones);
+            cnEstudiantes.modificaDatosEstudiante(model.Estudiante.IdEstudiante, ordinaria, !ordinaria, model.Estudiante.Observaciones);
 
             return RedirectToAction("EstudiantesCentro");
         }
