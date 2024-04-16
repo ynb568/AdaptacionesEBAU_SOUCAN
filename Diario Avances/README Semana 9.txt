@@ -5,3 +5,7 @@ Fecha: 08-04-24
 -> Se mueven los campos excepcional y descirpcion excepcional
 	de la tabla AdaptaciónDiagnóstico a Adaptación.
 -> COrregidos algunos métodos de la CapaDatos
+
+
+Resto de la semana:
+-> Finalizacion del mapeo

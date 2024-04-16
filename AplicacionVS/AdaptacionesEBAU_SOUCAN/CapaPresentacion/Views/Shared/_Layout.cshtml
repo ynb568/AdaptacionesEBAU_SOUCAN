@@ -8,19 +8,19 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
-<style>
-    .nav-link-uc {
-        width: 60px; /* Ancho del logo */
-        height: 60px; /* Altura del logo */
-        display: inline-block;
-        text-indent: -9999px; /* Oculta el texto del enlace */
-    }
+    <style>
+        .nav-link-uc {
+            width: 60px; /* Ancho del logo */
+            height: 60px; /* Altura del logo */
+            display: inline-block;
+            text-indent: -9999px; /* Oculta el texto del enlace */
+        }
 
-    .btn-custom {
-        background-color: #005c64; /* Color de fondo */
-        color: #fff; /* Color del texto */
-        border-color: #005c64; /* Color del borde */
-    }
+        .btn-custom {
+            background-color: #005c64; /* Color de fondo */
+            color: #fff; /* Color del texto */
+            border-color: #005c64; /* Color del borde */
+        }
     </style>
 </head>
 <body>
@@ -31,12 +31,12 @@
                     <li>
                         <a href="https://web.unican.es">
                             <img src="@Url.Content("~/Images/UC_LogotipoVReducida-1_verde.png")" alt="Logo UC" class="nav-link-uc" />
-                            
+
                         </a>
                     </li>
                     <li>
                         <a target="_blank" href="https://web.unican.es/unidades/soucan" class="nav-link">
-                        SOUCAN (Sistema de Orientación de la UC)
+                            SOUCAN (Sistema de Orientación de la UC)
                         </a>
                     </li>
 
@@ -52,7 +52,8 @@
                         <a href="https://web.unican.es/unidades/soucan/estudiantes/universidad-y-discapacidad" class="nav-link">
                             Inclusión en la UC
                         </a>
-                   )</li>
+                        )
+                    </li>
                 </ul>
             </div>
         </div>
@@ -69,4 +70,9 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
+
+<!---->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
 </html>

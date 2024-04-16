@@ -112,7 +112,7 @@ namespace CapaPresentacion.Controllers
                 ViewData["Mensaje"] = "La nueva contraseña y la confirmación no coinciden.";
                 return View("ControladorCentro");
             }
-
+            /*
             string result = cnCentrosEducativos.CambioContrasenha(idCentro, ContrasenaActual, NuevaContrasena);
 
             if (result == "Success")
@@ -124,6 +124,8 @@ namespace CapaPresentacion.Controllers
                 ViewData["Mensaje"] = result;
                 return View("ControladorCentro");
             }
+            */
+            return View("ControladorCentro"); //PRUEBA
         }
 
 
