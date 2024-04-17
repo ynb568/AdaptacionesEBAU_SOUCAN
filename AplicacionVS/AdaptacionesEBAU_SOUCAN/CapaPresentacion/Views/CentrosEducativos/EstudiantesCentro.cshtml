@@ -21,6 +21,7 @@
     <thead>
         <tr>
             <th>Nombre Estudiante</th>
+            <th>Validado</th>
             <th>Ver</th>
             <th>Editar</th>
         </tr>
@@ -31,6 +32,20 @@
         {
             <tr>
                 <td>@e.NombreCompleto</td>
+                <td>
+                    @if (e.Validado == true)
+                    {
+                        <img src="~/CapaPresentacion/Images/green-check-mark.png" alt="Validado" />
+                    }
+                    else if (e.Validado == false)
+                    {
+                        <img src="~/CapaPresentacion/Images/red-cross.png" alt="No validado" />
+                    }
+                    else
+                    {
+                        <a>Pendiente</a>
+                    }
+                </td>
                 <td>@Html.ActionLink("VER", nameof(CentrosEducativosController.InfoEstudiante), "CentrosEducativos", new { idE = e.IdEstudiante }, new { @class = "btn btn-custom" })</td>
                 <td>@Html.ActionLink("EDITAR", nameof(CentrosEducativosController.EdicionEstudiante), "CentrosEducativos", new { idE = e.IdEstudiante }, new { @class = "btn btn-custom" })</td>
             </tr>

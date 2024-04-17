@@ -908,13 +908,8 @@ as
     end;
 go
 
-
-
-exec sp_validarCentroEducativo 'test@gmail.com', '9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08', 0;
-go
-
 --REVISADO
-create or alter procedure sp_cambiaContrasenhaCentro @idCE int, @contrasenhaPrevia varchar(500), @contrasenhaNueva varchar(500),
+create or alter procedure sp_cambiaContrasenha @idCE int, @contrasenha varchar(500), @nuevaContrasenha varchar(500),
 @Mensaje varchar(50) output, @Completado bit output
 as
 	begin
@@ -924,11 +919,11 @@ as
 					begin
 						if (exists (select * from CentroEducativo ce
 										inner join Usuario u on ce.idCE = u.idUsuario
-										where u.contrasenha = @contrasenhaPrevia))
+										where u.contrasenha = @contrasenha))
 							begin
-								update Usuario set contrasenha = @contrasenhaNueva
+								update Usuario set contrasenha = @nuevaContrasenha
 									where idUsuario = @idCE;
-								set @Mensaje = ('Procedimiento correcto');
+								set @Mensaje = ('Cambio contrasenha correcto');
 								set @Completado = 1;
 								commit transaction					
 							end

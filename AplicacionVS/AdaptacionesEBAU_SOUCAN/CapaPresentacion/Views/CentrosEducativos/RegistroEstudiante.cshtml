@@ -83,7 +83,6 @@
         @Html.DropDownListFor(m => m.SelectedDiagnostico, new SelectList(Model.Diagnosticos, "IdDiagnostico", "NombreDiagnostico"), "Seleccione un diagnóstico", new { @class = "form-control", id = "selectDiagnostico" })
     </div>
     <div id="adaptacionesContainer">
-        
     </div>
 
 
@@ -96,6 +95,9 @@
         <button name="submit" type="submit" class="btn btn-custom">Registrar</button>
     </div>
 </form>
+<div class="form-group">
+    <p>@Html.ActionLink("Volver", nameof(CentrosEducativosController.ControladorCentro), "CentrosEducativos", null, new { @class = "btn btn-custom" })</p>
+</div>
 
 <script>
     $(document).ready(function () {
@@ -131,19 +133,30 @@
             success: function(adaptaciones) {
                 // Vaciar el contenedor de adaptaciones
                 $("#adaptacionesContainer").empty();
-
+                /*
                 // Crear un checkbox para cada adaptación
                 $.each(adaptaciones, function (i, adaptacion) {
                     var checkbox = $('<input>').attr('type', 'checkbox').attr('name', 'Adaptaciones').attr('value', adaptacion.IdAdaptacion);
                     var label = $('<label>').text(adaptacion.NombreAdaptacion);
                     $("#adaptacionesContainer").append(checkbox).append(label).append('<br>');
                 });
+                */
+                // Crear un dropdownlist para las adaptaciones
+                var dropdown = $('<select>').attr('name', 'Adaptaciones').attr('id', 'selectAdaptacion').attr('class', 'form-control');
+
+                // Añadir una opción por defecto
+                dropdown.append($('<option>').text('Seleccione una adaptación').val(''));
+
+                // Añadir una opción para cada adaptación
+                $.each(adaptaciones, function (i, adaptacion) {
+                    dropdown.append($('<option>').text(adaptacion.NombreAdaptacion).val(adaptacion.IdAdaptacion));
+                });
+
+                // Añadir el dropdownlist al contenedor de adaptaciones
+                $("#adaptacionesContainer").append(dropdown);
             }
         })
     }
-
-
-
 </script>
 
 

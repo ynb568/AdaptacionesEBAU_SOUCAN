@@ -110,40 +110,39 @@ namespace CapaNegocio
 
 
 
-        public string CambioContrasenha(int idCE, string contrasenha, string repetirContrasenha, string nuevaContrasenha)
+        public bool CambioContrasenha(int idCE, string contrasenha, string nuevaContrasenha, string repetirContrasenha)
         {
-            if (contrasenha == repetirContrasenha)
+            bool completado = false;
+
+            if (nuevaContrasenha == repetirContrasenha)
             {
                 contrasenha = CN_Recursos.convertirSha256(contrasenha);
                 nuevaContrasenha = CN_Recursos.convertirSha256(nuevaContrasenha);
 
                 using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
                 {
-                    SqlCommand cmd = new SqlCommand("sp_cambioContrasenha", con);
-                    cmd.Parameters.AddWithValue("idCE", idCE);
-                    cmd.Parameters.AddWithValue("contrasenha", contrasenha);
-                    cmd.Parameters.AddWithValue("nuevaContrasenha", nuevaContrasenha);
+                    SqlCommand cmd = new SqlCommand("sp_cambiaContrasenha", con);
+                    cmd.Parameters.AddWithValue("@idCE", idCE);
+                    cmd.Parameters.AddWithValue("@contrasenha", contrasenha);
+                    cmd.Parameters.AddWithValue("@nuevaContrasenha", nuevaContrasenha);
+                    cmd.Parameters.Add("@Mensaje", SqlDbType.NVarChar, 100).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("@Completado", SqlDbType.Bit).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     con.Open();
+                    cmd.ExecuteNonQuery();
 
-                    int rowsAffected = cmd.ExecuteNonQuery();
-
-                    if (rowsAffected > 0)
+                    if (cmd.Parameters["@Completado"].Value != DBNull.Value)
                     {
-                        return "Success";
-                    }
-                    else
-                    {
-                        return "No ha sido posible cambiar la contraseña";
+                        completado = Convert.ToBoolean(cmd.Parameters["@Completado"].Value);
                     }
                 }
             }
-            else
-            {
-                return "Las contraseñas no coinciden";
-            }
+
+            return completado;
         }
+
+
 
 
 

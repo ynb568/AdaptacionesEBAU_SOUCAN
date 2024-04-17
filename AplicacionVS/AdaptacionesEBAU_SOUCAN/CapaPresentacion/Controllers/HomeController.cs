@@ -26,18 +26,9 @@ namespace CapaPresentacion.Controllers
             return View(viewModel);
         }
 
-        public ActionResult ApuntesFor()
-        {
-            if (DateTime.Now.Date > new DateTime(2024, 03, 22))
-            {
-                return RedirectToAction(nameof(HomeController.Index));
-            }
-            return View();
-        }
-
         public ActionResult LoginCE()
         {
-            return RedirectToAction(nameof(CentrosEducativosController.LoginCE), nameof(CentrosEducativosController));
+            return RedirectToAction(nameof(CentrosEducativosController.LoginCE), "CentrosEducativosController");
         }
 
         //TODO: Implementar

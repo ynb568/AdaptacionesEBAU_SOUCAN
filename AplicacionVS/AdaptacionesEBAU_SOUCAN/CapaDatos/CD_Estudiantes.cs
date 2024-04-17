@@ -174,7 +174,8 @@ namespace CapaDatos
             }
             return e;
         }
-         
+        
+        /*
         public void RegistrarEstudiante(Estudiante e, int idCentro)
         {
             using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
@@ -222,6 +223,7 @@ namespace CapaDatos
                 }
             }
         }
+        */
 
         public bool registraEstudiante(string dniEstudiante, string nombreEstudiante, string ap1Estudiante, string ap2Estudiante,
             string nombreCompletoT1, string telefonoT1, string nombreCompletoT2, string telefonoT2,

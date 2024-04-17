@@ -103,11 +103,22 @@ namespace CapaPresentacion.Controllers
         }
 
 
-        //TODO: ARREGLAS PARA QUE LOS CAMPOS APAREZCAN VACIOS AL ABRIRLO
         [HttpPost]
         public ActionResult CambioContrasenha(string ContrasenaActual, string NuevaContrasena, string ConfirmarNuevaContrasena)
         {
             int idCentro = (int)Session["centro educativo"];
+
+            if (ContrasenaActual == null || NuevaContrasena == null || ConfirmarNuevaContrasena == null)
+            {
+                ViewData["Mensaje"] = "Debe rellenar todos los campos";
+                return View("ControladorCentro");
+            }
+
+            if (ContrasenaActual == NuevaContrasena)
+            {
+                ViewData["Mensaje"] = "La nueva contraseña y la anterior coinciden";
+                return View("ControladorCentro");
+            }
 
             if (NuevaContrasena != ConfirmarNuevaContrasena)
             {
@@ -115,16 +126,16 @@ namespace CapaPresentacion.Controllers
                 return View("ControladorCentro");
             }
             
-            string result = cnCentrosEducativos.CambioContrasenha(idCentro, ContrasenaActual, NuevaContrasena, ConfirmarNuevaContrasena);
+            bool result = cnCentrosEducativos.CambioContrasenha(idCentro, ContrasenaActual, NuevaContrasena, ConfirmarNuevaContrasena);
 
-            if (result == "Success")
+            if (result)
             {
                 Session.Clear();
-                return RedirectToAction("LoginCE", "CentrosEducativos ");
+                return RedirectToAction(nameof(CentrosEducativosController.LoginCE), "CentrosEducativos");
             }
             else
             {
-                ViewData["Mensaje"] = result;
+                ViewData["Mensaje"] = "No se pudo realizar el cambio de contraseña";
                 return View("ControladorCentro");
             }
         }
@@ -142,7 +153,7 @@ namespace CapaPresentacion.Controllers
                 return RedirectToAction(nameof(HomeController.LoginCE), "Home");
             }
 
-            var viewModel = new ViewModels.EstudianteViewModel
+            var viewModel = new EstudianteViewModel
             {
                 PlazoRegistroActivo = cnPlazosRegistro.obtenPlazoRegistroActivo(),
                 CE = centro,
@@ -158,6 +169,7 @@ namespace CapaPresentacion.Controllers
             return View(viewModel);
         }
 
+        //METODO AUXILIAR PARA OBTENER LAS ADAPTACIONES DE UN DIAGNOSTICO EN EL REGISTRO DE ESTUDIANTE
         [HttpGet]
         public ActionResult GetAdaptaciones(int idDiagnostico)
         {
