@@ -8,22 +8,13 @@ using System.Web.Mvc;
 
 namespace CapaPresentacion.Controllers
 {
+    [OverrideActionFilters]
     public class HomeController : Controller
     {
-        private CN_Estudiantes cn_estudiantes = new CN_Estudiantes();
 
         public ActionResult Index()
         {
-             List<Estudiante> lista = cn_estudiantes.listaEstudiantes(1);
-            var i = 2;
-
-            var viewModel = new ViewModels.IndexViewModel
-            {
-                Estudiantes = lista,
-                i = i
-            };
-
-            return View(viewModel);
+            return View();
         }
 
         public ActionResult LoginCE()

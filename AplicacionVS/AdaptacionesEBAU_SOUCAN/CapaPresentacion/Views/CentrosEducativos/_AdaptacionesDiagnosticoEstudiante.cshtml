@@ -1,0 +1,27 @@
+﻿@using HtmlHelpers.BeginCollectionItem;
+@using CapaPresentacion.ViewModels;
+@model AdptacionDiagnosticoViewModel
+
+@using (Html.BeginCollectionItem("AdaptacionesEstudiante"))
+{
+    <div>
+        @Html.HiddenFor(m => m.DiagnosticoId)
+        @Html.HiddenFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion)
+
+        <div>
+            @Html.LabelFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.Descripcion)
+            @Html.TextBoxFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.Descripcion)
+        </div>
+        @if (Model.AdaptacionDiagnosticoEstudiante.Adaptacion.Excepcional)
+        {
+            <div>
+                @Html.LabelFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.DescripcionExcepcional)
+                @Html.TextBoxFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.DescripcionExcepcional)
+            </div>
+        }
+        <div>
+            @Html.LabelFor(m => m.AdaptacionDiagnosticoEstudiante.Observaciones)
+            @Html.TextAreaFor(m => m.AdaptacionDiagnosticoEstudiante.Observaciones)
+        </div>
+    </div>
+}

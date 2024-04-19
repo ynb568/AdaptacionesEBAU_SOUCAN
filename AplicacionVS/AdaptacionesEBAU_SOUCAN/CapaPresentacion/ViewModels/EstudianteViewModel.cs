@@ -16,8 +16,7 @@ namespace CapaPresentacion.ViewModels
         public List<Diagnostico> Diagnosticos { get; set; }
         public int SelectedDiagnostico { get; set; }
         public List<Adaptacion> Adaptaciones { get; set; }
-        public int SelectedAdaptacion { get; set;}
-        public List<AdaptacionDiagnosticoEstudiante> adaptacionDiagnosticoEstudiantes { get; set; }
+        public List<AdaptacionDiagnosticoEstudiante> AdaptacionDiagnosticoEstudiantes { get; set; }
         public List<Documento> Documentos { get; set; }
         public PlazosRegistro Plazos { get; set; }
         public bool isOrdinaria { get; set; } 

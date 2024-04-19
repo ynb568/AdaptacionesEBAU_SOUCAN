@@ -73,6 +73,24 @@
         </footer>
     </div>
 
+    <!-- Toast para mostrar mensaje de sesión expirada -->
+    @if (TempData["ShowSessionExpiredToast"] != null && (bool)TempData["ShowSessionExpiredToast"])
+    {
+        <div class="toast bg-danger text-white" role="alert" aria-live="assertive" aria-atomic="true" 
+             style="position: absolute; top: 10%; left: 50%; transform: translateX(-50%);">
+            <div class="toast-body" style="text-align: center">
+                Sesión Expirada
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $('.toast').toast({ delay: 3000 });
+                $('.toast').toast('show');
+            });
+        </script>
+    }
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

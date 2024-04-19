@@ -17,6 +17,11 @@ namespace CapaNegocio
             return objCD.listaAdaptaciones();
         }
 
+        public Adaptacion obtenAdaptacion(int idAdaptacion)
+        {
+            return objCD.obtenAdaptacion(idAdaptacion);
+        }
+
         public List<Adaptacion> listaAdaptacionesDiagnostico(int idDiagnostico)
         {
             return objCD.listaAdaptacionesDiagnostico(idDiagnostico);

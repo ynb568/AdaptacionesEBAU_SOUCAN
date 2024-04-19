@@ -1,0 +1,15 @@
+﻿@using HtmlHelpers.BeginCollectionItem;
+@model CapaEntidad.Diagnostico
+
+@using (Html.BeginCollectionItem("Diagnosticos"))
+{
+    <div class="col-md-auto">
+        @Html.DropDownListFor(m => m.SelectedAdaptacion, new SelectList(Model.Adaptaciones, "IdAdaptacion", "NombreAdaptacion"), "Seleccione select", new { @class = "form-select", id="selectAdaptacion" })
+    </div>
+    <div class="col-md-auto my-auto">
+        <button class="btn btn-sm btn-primary" type="button" onclick="SetAdaptacion()">
+            Añadir
+        </button>
+    </div>
+
+}

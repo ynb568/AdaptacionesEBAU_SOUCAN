@@ -1,5 +1,6 @@
 ﻿@using CapaPresentacion.Controllers;
 @{
+    ViewBag.Title = "Estudiantes Centro";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var estudiantes = Model;
 }
@@ -35,19 +36,28 @@
                 <td>
                     @if (e.Validado == true)
                     {
-                        <img src="~/CapaPresentacion/Images/green-check-mark.png" alt="Validado" />
+                        <span class="badge text-bg-success">Validado</span>
                     }
                     else if (e.Validado == false)
                     {
-                        <img src="~/CapaPresentacion/Images/red-cross.png" alt="No validado" />
+                        <span class="badge text-bg-danger">>Rechazado</span>
                     }
                     else
                     {
-                        <a>Pendiente</a>
+                        <span class="badge text-bg-primary">Pendiente</span>
                     }
                 </td>
                 <td>@Html.ActionLink("VER", nameof(CentrosEducativosController.InfoEstudiante), "CentrosEducativos", new { idE = e.IdEstudiante }, new { @class = "btn btn-custom" })</td>
-                <td>@Html.ActionLink("EDITAR", nameof(CentrosEducativosController.EdicionEstudiante), "CentrosEducativos", new { idE = e.IdEstudiante }, new { @class = "btn btn-custom" })</td>
+                <td>
+                    @if (e.Validado == true)
+                    {
+                        <button class="btn btn-custom" disabled>EDITAR</button>
+                    }
+                    else
+                    {
+                        @Html.ActionLink("EDITAR", nameof(CentrosEducativosController.EdicionEstudiante), "CentrosEducativos", new { idE = e.IdEstudiante }, new { @class = "btn btn-custom" })
+                    }
+                </td>
             </tr>
         }
     </tbody>

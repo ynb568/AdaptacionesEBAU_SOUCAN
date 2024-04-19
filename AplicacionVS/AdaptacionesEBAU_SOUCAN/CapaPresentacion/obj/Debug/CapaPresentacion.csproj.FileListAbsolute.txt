@@ -84,8 +84,6 @@ C:\Users\navay\Desktop\DesarrolloAppWeb\AplicacionVS\AdaptacionesEBAU_SOUCAN\Cap
 C:\Users\navay\Desktop\DesarrolloAppWeb\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\obj\Debug\CapaPres.61CA7C38.Up2Date
 C:\Users\navay\Desktop\DesarrolloAppWeb\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\obj\Debug\CapaPresentacion.dll
 C:\Users\navay\Desktop\DesarrolloAppWeb\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\obj\Debug\CapaPresentacion.pdb
-C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\obj\Debug\CapaPresentacion.csproj.AssemblyReference.cache
-C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\obj\Debug\CapaPresentacion.csproj.CoreCompileInputs.cache
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\bin\CapaPresentacion.dll.config
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\bin\CapaPresentacion.dll
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\bin\CapaPresentacion.pdb
@@ -139,6 +137,7 @@ C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\Aplicacio
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\bin\roslyn\VBCSCompiler.exe
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\bin\roslyn\VBCSCompiler.exe.config
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\bin\Antlr3.Runtime.dll
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\bin\BeginCollectionItem.dll
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\bin\CapaEntidad.dll
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\bin\CapaNegocio.dll
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
@@ -173,6 +172,8 @@ C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\Aplicacio
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\bin\es\System.Web.WebPages.resources.dll
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\bin\es\System.Web.WebPages.Deployment.resources.dll
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\bin\es\System.Web.WebPages.Razor.resources.dll
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\obj\Debug\CapaPresentacion.csproj.AssemblyReference.cache
+C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\obj\Debug\CapaPresentacion.csproj.CoreCompileInputs.cache
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\obj\Debug\CapaPres.61CA7C38.Up2Date
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\obj\Debug\CapaPresentacion.dll
 C:\Users\navay\Desktop\DesarrolloAppWeb\GestionAdaptacionesEBAU_SOUCAN\AplicacionVS\AdaptacionesEBAU_SOUCAN\CapaPresentacion\obj\Debug\CapaPresentacion.pdb

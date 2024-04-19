@@ -17,6 +17,11 @@ namespace CapaNegocio
             return objCD.listaDiagnosticos();
         }
 
+        public Diagnostico obtenDiagnostico(int idDiagnostico)
+        {
+            return objCD.obtenDiagnostico(idDiagnostico);
+        }
+
         public List<Diagnostico> listaDiagnosticosActivos()
         {
             List<Diagnostico> diagnosticos = objCD.listaDiagnosticos();
@@ -27,6 +32,10 @@ namespace CapaNegocio
                 .ToList();
 
             return diagnosticosActivos;
+        }
+        public List<Diagnostico> listaDiagnosticosEstudiante(int idEstudiante)
+        {
+            return objCD.listaDiagnosticosEstudiante(idEstudiante);
         }
 
         public bool eliminaDiagnosticoEstudiante(int idEstudiante, int idDiagnostico) 

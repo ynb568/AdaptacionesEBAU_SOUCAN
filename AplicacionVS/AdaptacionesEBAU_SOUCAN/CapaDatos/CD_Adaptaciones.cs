@@ -52,6 +52,47 @@ namespace CapaDatos
             return listaAdaptaciones;
         }
 
+        public Adaptacion obtenAdaptacion (int idAdaptacion)
+        {
+            Adaptacion a = null;
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_obtenAdaptacion", con);
+                    cmd.Parameters.AddWithValue("idA", idAdaptacion);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    con.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            a = new Adaptacion()
+                            {
+                                IdAdaptacion = Convert.ToInt32(dr["idAdaptacion"]),
+                                NombreAdaptacion = dr["nombreAdaptacion"].ToString(),
+                                Activo = Convert.ToBoolean(dr["activo"]),
+                                Descripcion = dr["descripcion"].ToString(),
+                                Excepcional = Convert.ToBoolean(dr["excepcional"]),
+                                DescripcionExcepcional = dr["descripcionExcepcional"].ToString()
+                            };
+                        }
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                a = new Adaptacion();
+                Console.WriteLine("Error en CD_Adaptaciones.obtenAdaptacion: " + ex.Message);
+            }
+            return a;
+        }
+
         public List<Adaptacion> listaAdaptacionesDiagnostico(int idDiagnostico)
         {
             List<Adaptacion> listaAdaptaciones = new List<Adaptacion>();

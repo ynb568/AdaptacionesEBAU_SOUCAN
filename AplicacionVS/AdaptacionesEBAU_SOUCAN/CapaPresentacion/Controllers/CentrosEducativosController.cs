@@ -24,14 +24,16 @@ namespace CapaPresentacion.Controllers
         private CN_Documentos cnDocumentos = new CN_Documentos();
         private CN_Asignaturas cnAsignaturas = new CN_Asignaturas();
         private CN_PlazosRegistro cnPlazosRegistro = new CN_PlazosRegistro();
+        private CN_AdaptacionesDiagnosticoEstudiante cnAdaptacionesDiagnosticoEstudiante = new CN_AdaptacionesDiagnosticoEstudiante();
 
-
+        [OverrideActionFilters] //Filtro para que no se aplique el filtro de CheckSessionFilter
         [HttpGet]
         public ActionResult LoginCE()
         {
             return View();
         }
 
+        [OverrideActionFilters]
         [HttpPost]
         public ActionResult LoginCE(string correo, string contrasenha)
         {
@@ -51,10 +53,20 @@ namespace CapaPresentacion.Controllers
             }
         }
 
+        
         [HttpGet]
         public ActionResult ControladorCentro()
         {
-            return View();
+            /*
+            var id = (int)Session["centro educativo"];
+            var centro = cnCentrosEducativos.obtenCentro(id);
+            if (centro == null)
+            {
+                return RedirectToAction(nameof(HomeController.LoginCE), "Home");
+            }
+            */
+            PlazosRegistro plazosRegistro = cnPlazosRegistro.obtenPlazoRegistroActivo();
+            return View(plazosRegistro);
         }
 
 
@@ -145,7 +157,7 @@ namespace CapaPresentacion.Controllers
         [HttpGet]
         public ActionResult RegistroEstudiante()
         {
-            int id = (int)Session["centro educativo"];
+            int id = 1;//(int)Session["centro educativo"];
             var centro = cnCentrosEducativos.obtenCentro(id);
 
             if (centro == null)
@@ -161,7 +173,8 @@ namespace CapaPresentacion.Controllers
                 AsignaturasFase1 = cnAsignaturas.listaAsignaturasPorFase(1),
                 AsignaturasFase2 = cnAsignaturas.listaAsignaturasPorFase(2),
                 Diagnosticos = cnDiagnosticos.listaDiagnosticosActivos(),
-                adaptacionDiagnosticoEstudiantes = new List<AdaptacionDiagnosticoEstudiante>(),
+                Adaptaciones = new List<Adaptacion>(),
+                AdaptacionDiagnosticoEstudiantes = new List<AdaptacionDiagnosticoEstudiante>(),
                 Documentos = cnDocumentos.listaDocumentos()
 
             };
@@ -170,27 +183,82 @@ namespace CapaPresentacion.Controllers
         }
 
         //METODO AUXILIAR PARA OBTENER LAS ADAPTACIONES DE UN DIAGNOSTICO EN EL REGISTRO DE ESTUDIANTE
-        [HttpGet]
-        public ActionResult GetAdaptaciones(int idDiagnostico)
+        [HttpPost]
+        public ActionResult SetDiagnostico(int idDiagnostico)
         {
             CN_Adaptaciones cnAdaptaciones = new CN_Adaptaciones();
             var adaptaciones = cnAdaptaciones.listaAdaptacionesDiagnostico(idDiagnostico);
-            return Json(adaptaciones);
+            //return Json(adaptaciones, JsonRequestBehavior.AllowGet);
+
+            var diagnostico = new Diagnostico()
+            {
+                IdDiagnostico = idDiagnostico,
+                Adaptaciones = adaptaciones
+            };
+
+            return PartialView("_Diagnostico", diagnostico);
         }
 
+        [HttpPost]
+        public ActionResult SetAdaptacion(int idAdaptacion, int idDiagnostico)
+        {
+            var adaptacionDiagnosticoEstudiante = new AdaptacionDiagnosticoEstudiante()
+            {
+                Adaptacion = new Adaptacion() { Excepcional = true}
+            };
+
+            var viewModel = new AdaptacionDiagnosticoViewModel()
+            {
+                AdaptacionDiagnosticoEstudiante = adaptacionDiagnosticoEstudiante,
+                DiagnosticoId = idDiagnostico
+            };
+            return PartialView("_AdaptacionesDiagnosticoEstudiante", viewModel);
+        }
 
         [HttpPost]
-        public ActionResult RegistroEstudiante(string dniEstudiante, string nombreEstudiante, string ap1Estudiante, string ap2Estudiante,
-       string nombreCompletoT1, string telefonoT1, string nombreCompletoT2, string telefonoT2,
-       string convocatoria, string observaciones)
+        public ActionResult RegistroEstudiante(EstudianteViewModel model)
         {
-            int idCentro = (int)Session["centro educativo"];
-            bool ordinaria = convocatoria == "ordinaria";
-            bool extraordinaria = convocatoria == "extraordinaria";
+            int idCentro = 1;// (int)Session["centro educativo"];
+            bool ordinaria = model.isOrdinaria;
 
-            cnEstudiantes.registraEstudiante(dniEstudiante, nombreEstudiante, ap1Estudiante, ap2Estudiante,
-                nombreCompletoT1, telefonoT1, nombreCompletoT2, telefonoT2,
-                ordinaria, extraordinaria, idCentro, observaciones);
+            cnEstudiantes.registraEstudiante(
+                model.Estudiante.DniEstudiante, model.Estudiante.NombreEstudiante, 
+                model.Estudiante.Ap1Estudiante, model.Estudiante.Ap2Estudiante,
+                model.Estudiante.NombreCompletoTutor1, model.Estudiante.TelefonoTutor1, 
+                model.Estudiante.NombreCompletoTutor2, model.Estudiante.TelefonoTutor2,
+                ordinaria, !ordinaria, idCentro, model.Estudiante.Observaciones);
+            for (int i = 0; i < model.AsignaturasFase1.Count; i++)
+            {
+                if (model.AsignaturasFase1[i].IsSelected)
+                {
+                    cnAsignaturas.registraAsignaturaPrevistaEstudiante(model.Estudiante.IdEstudiante, 
+                        model.AsignaturasFase1[i].IdAsignatura, true, false);
+
+                }
+            }
+            for (int i = 0; i < model.AsignaturasFase2.Count; i++)
+            {
+                if (model.AsignaturasFase2[i].IsSelected)
+                {
+                    cnAsignaturas.registraAsignaturaPrevistaEstudiante(model.Estudiante.IdEstudiante, 
+                        model.AsignaturasFase2[i].IdAsignatura, false, true);
+                }
+            }
+            for (int i = 0; i < model.AdaptacionDiagnosticoEstudiantes.Count; i++)
+            {
+                cnAdaptacionesDiagnosticoEstudiante.registraAdaptacionDiagnosticoEstudiante(model.Estudiante.IdEstudiante,
+                    model.Diagnosticos[0].IdDiagnostico,
+                                       model.AdaptacionDiagnosticoEstudiantes[i].Adaptacion.IdAdaptacion,
+                                                          model.AdaptacionDiagnosticoEstudiantes[i].Observaciones);            
+            }
+            for (int i = 0; i < model.Documentos.Count; i++)
+            {
+                if (model.Documentos[i].RutaDocumento != null)
+                {
+                    cnDocumentos.registraDocumentoEstudiante(model.Estudiante.IdEstudiante, model.Documentos[i].IdDocumento,
+                        model.Documentos[i].RutaDocumento);
+                }
+            }
 
             return RedirectToAction("EstudiantesCentro");
         }
@@ -211,18 +279,21 @@ namespace CapaPresentacion.Controllers
             var centro = cnCentrosEducativos.obtenCentro(id);
             var estudiante = cnEstudiantes.obtenEstudianteCentro(id, idE);
 
-            if (centro == null || estudiante == null) 
-            {
-                return RedirectToAction(nameof(HomeController.LoginCE), "Home");
-            }
-
-            var viewModel = new ViewModels.EstudianteViewModel
+            var viewModel = new EstudianteViewModel
             {
                 CE = centro,
-                Estudiante = estudiante, 
+                Estudiante = estudiante,
                 AsignaturasFase1 = cnAsignaturas.listaAsignaturasPrevistasEstudiantePorFase(idE, 1),
                 AsignaturasFase2 = cnAsignaturas.listaAsignaturasPrevistasEstudiantePorFase(idE, 2),
+                Diagnosticos = cnDiagnosticos.listaDiagnosticosEstudiante(idE),
+                Documentos = cnDocumentos.listaDocumentosEstudiante(idE)
+
             };
+            foreach (Diagnostico d in viewModel.Diagnosticos)
+            {
+                viewModel.AdaptacionDiagnosticoEstudiantes = cnAdaptacionesDiagnosticoEstudiante.listaAdaptacionesDiagnosticoEstudiante(idE, d.IdDiagnostico);
+            }
+            
 
             return View(viewModel);
         }
@@ -238,7 +309,7 @@ namespace CapaPresentacion.Controllers
                 return RedirectToAction(nameof(HomeController.LoginCE), "Home");
             }
 
-            var viewModel = new ViewModels.EstudianteViewModel
+            var viewModel = new EstudianteViewModel
             {
                 CE = centro,
                 Estudiante = estudiante,

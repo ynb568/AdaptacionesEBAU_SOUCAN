@@ -1,12 +1,28 @@
 ﻿@using CapaPresentacion.Controllers;
 @model CapaPresentacion.ViewModels.EstudianteViewModel
 @{
+    ViewBag.Title = "Información Estudiante";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <form method="post" action="@Url.Action(nameof(CentrosEducativosController.InfoEstudiante), "CentrosEducativos")">
     <h2>
         @Html.DisplayFor(m => m.Estudiante.CursoConvocatoria)
+    </h2>
+    <h2>
+        Estado de la Solicitud:
+        @if (Model.Estudiante.Validado == true)
+        {
+            <span class="badge text-success">VALIDADO</span>
+        }
+        else if (Model.Estudiante.Validado == false)
+        {
+            <span class="badge text-danger">RECHAZADO</span>
+        }
+        else
+        {
+            <span class="badge text-primary">PENDIENTE</span>
+        }
     </h2>
     <div class="form-group">
 
@@ -74,6 +90,20 @@
             {
                 <div class="form-group m-3">
                     @Html.DisplayFor(m => adaptacion.Adaptacion.NombreAdaptacion)
+                    @Html.DisplayFor(m => adaptacion.Observaciones)
+                    @Html.DisplayFor(m => adaptacion.Revision)
+                    @if (adaptacion.Validado == true)
+                    {
+                        <span class="badge text-bg-success">Validado</span>
+                    }
+                    else if (adaptacion.Validado == false)
+                    {
+                <span class="badge text-bg-danger">Rechazado</span>
+                    }
+                    else
+                    {
+                        <span class="badge text-bg-primary">Pendiente</span>
+                    }
                 </div>
             }
         }
@@ -85,6 +115,18 @@
 
             <div class="form-group">
                 @Html.DisplayFor(m => documento.NombreDocumento)
+                @if (documento.Validado == true)
+                {
+                    <span class="badge text-bg-success">Validado</span>
+                }
+                else if (documento.Validado == false)
+                {
+            <span class="badge text-bg-danger">Rechazado</span>
+                }
+                else
+                {
+                    <span class="badge text-bg-primary">Pendiente</span>
+                }
             </div>
         }
     </div>

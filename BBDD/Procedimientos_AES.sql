@@ -278,6 +278,44 @@ as
 	end;
 go
 
+create or alter procedure sp_obtenDiagnostico @idD int,
+	@Mensaje varchar(50) output, @Completado bit output
+as
+	begin
+		if (exists (select * from Diagnostico where idDiagnostico = @idD))
+			begin
+				select top(1)* from Diagnostico
+					where idDiagnostico = @idD
+				set @Mensaje = 'Procedimiento completado'
+				set @Completado = 1
+			end
+		else
+			begin
+				set @Mensaje = 'No existe el diagnostico'
+				set @Completado = 0
+			end
+	end;
+go
+
+create or alter procedure sp_obtenAdaptacion @idA int,
+	@Mensaje varchar(50) output, @Completado bit output
+as
+	begin
+		if (exists (select * from Adaptacion where idAdaptacion = @idA))
+			begin
+				select top(1)* from Adaptacion
+					where idAdaptacion = @idA
+				set @Mensaje = 'Procedimiento completado'
+				set @Completado = 1
+			end
+		else
+			begin
+				set @Mensaje = 'No existe la adaptacion'
+				set @Completado = 0
+			end
+	end;
+go
+
 -----------------------------------------------------------------
 -----------------------------------------------------------------
 ----------------- INSERCION DE OBJETOS --------------------------

@@ -2,6 +2,7 @@
 @model CapaPresentacion.ViewModels.EstudianteViewModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Registro Estudiante";
     var modelo = Model;
 }
 
@@ -9,6 +10,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <form method="post" action="@Url.Action(nameof(CentrosEducativosController.RegistroEstudiante), "CentrosEducativos")">
+    @Html.HiddenFor(m => m.Estudiante.IdEstudiante)
     <div>
         @Html.LabelFor(m => m.PlazoRegistroActivo.CursoConvocatoria)
         <p>@Html.DisplayFor(m => m.PlazoRegistroActivo.CursoConvocatoria)</p>
@@ -48,8 +50,8 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Estudiante.Convocatoria)
         <div>
-            @Html.RadioButton("Convocatoria", "Ordinaria", Model.Estudiante.Convocatoria == "Ordinaria", new { id = "ordinaria" }) <label for="ordinaria">Ordinaria</label>
-            @Html.RadioButton("Convocatoria", "Extraordinaria", Model.Estudiante.Convocatoria == "Extraordinaria", new { id = "extraordinaria" }) <label for="extraordinaria">Extraordinaria</label>
+            @Html.RadioButtonFor(m => m.isOrdinaria, true, new { id = "ordinaria" }) <label for="ordinaria">Ordinaria</label>
+            @Html.RadioButtonFor(m => m.isOrdinaria, false, new { id = "extraordinaria" }) <label for="extraordinaria">Extraordinaria</label>
         </div>
     </div>
     <h5>ASIGNATURAS PREVISTAS A PRESENTAR EN LA EBAU</h5>
@@ -75,18 +77,29 @@
 
 
     <h5>DIAGNÓSTICOS</h5>
+    <div class="row" id="diagnosticosDropdown" >
+        <div class="col-md-auto">
+            @Html.DropDownListFor(m => m.SelectedDiagnostico, new SelectList(Model.Diagnosticos, "IdDiagnostico", "NombreDiagnostico"), "Seleccione select", new { @class = "form-select", id = "selectDiagnostico" })
+        </div>
+        <div class="col-md-auto my-auto">
+            <button class="btn btn-sm btn-primary" type="button" onclick="SetDiagnostico()">
+                Añadir
+            </button>
+        </div>
+    </div>
+    <div id="diagnosticosBody">
+
+    </div>
+
+
+    <h5>DOCUMENTOS</h5> 
     <div class="form-group m-3">
-        <button id="btnAddDiagnostico" type="button" class="btn btn-custom">Añadir Diagnóstico</button>
+        @for (int i = 0; i < Model.Documentos.Count; i++)
+        {
+            @Html.LabelFor(m => m.Documentos[i].NombreDocumento)
+            <input type="file" id="fileUpload@i" name="Documentos[@i].RutaDocumento" accept="application/pdf"/>
+        }
     </div>
-    <div id="diagnosticosDropdown" class="form-group" style="display: none;">
-        
-        @Html.DropDownListFor(m => m.SelectedDiagnostico, new SelectList(Model.Diagnosticos, "IdDiagnostico", "NombreDiagnostico"), "Seleccione un diagnóstico", new { @class = "form-control", id = "selectDiagnostico" })
-    </div>
-    <div id="adaptacionesContainer">
-    </div>
-
-
-
     <div class="form-group">
         @Html.LabelFor(m => m.Estudiante.Observaciones)
         @Html.TextAreaFor(m => m.Estudiante.Observaciones, new { @class = "form-control" })
@@ -101,12 +114,6 @@
 
 <script>
     $(document).ready(function () {
-        // Función para manejar el clic en el botón "Añadir Diagnóstico"
-        $("#btnAddDiagnostico").click(function () {
-            // Mostrar el desplegable con los diagnósticos
-            $("#diagnosticosDropdown").show();
-        });
-
         // Función para manejar el cambio en el desplegable de diagnósticos
         $("#selectDiagnostico").change(function () {
             // Obtener el diagnóstico seleccionado
@@ -121,39 +128,29 @@
 
 <script>
 
-    function GetAdaptacions() {
+    function SetDiagnostico() {
         $.ajax({
-            type: "GET",
-            url: "@Url.Action(nameof(CentrosEducativosController.GetAdaptaciones), "CentrosEducativos")",
-            dataType: 'json',
-            contentType: 'application/json',
+            type: "POST",
+            url: "@Url.Action(nameof(CentrosEducativosController.SetDiagnostico), "CentrosEducativos")",
             data: {
                 idDiagnostico: $("#selectDiagnostico").val()
             },
-            success: function(adaptaciones) {
-                // Vaciar el contenedor de adaptaciones
-                $("#adaptacionesContainer").empty();
-                /*
-                // Crear un checkbox para cada adaptación
-                $.each(adaptaciones, function (i, adaptacion) {
-                    var checkbox = $('<input>').attr('type', 'checkbox').attr('name', 'Adaptaciones').attr('value', adaptacion.IdAdaptacion);
-                    var label = $('<label>').text(adaptacion.NombreAdaptacion);
-                    $("#adaptacionesContainer").append(checkbox).append(label).append('<br>');
-                });
-                */
-                // Crear un dropdownlist para las adaptaciones
-                var dropdown = $('<select>').attr('name', 'Adaptaciones').attr('id', 'selectAdaptacion').attr('class', 'form-control');
+            success: function(partialView) {
+                $("#diagnosticosBody").append(partialView);
+            }
+        })
+    }
 
-                // Añadir una opción por defecto
-                dropdown.append($('<option>').text('Seleccione una adaptación').val(''));
-
-                // Añadir una opción para cada adaptación
-                $.each(adaptaciones, function (i, adaptacion) {
-                    dropdown.append($('<option>').text(adaptacion.NombreAdaptacion).val(adaptacion.IdAdaptacion));
-                });
-
-                // Añadir el dropdownlist al contenedor de adaptaciones
-                $("#adaptacionesContainer").append(dropdown);
+    function SetAdaptacion() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action(nameof(CentrosEducativosController.SetAdaptacion), "CentrosEducativos")",
+            data: {
+                idAdaptacion: $("#selectAdaptacion").val(),
+                idDiagnostico: $("#selectDiagnostico").val()
+            },
+            success: function(partialView) {
+                $("#adaptacionesBody").append(partialView);
             }
         })
     }
