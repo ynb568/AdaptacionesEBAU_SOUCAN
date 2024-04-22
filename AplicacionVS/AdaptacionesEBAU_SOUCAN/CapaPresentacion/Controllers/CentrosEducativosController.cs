@@ -186,15 +186,17 @@ namespace CapaPresentacion.Controllers
         [HttpPost]
         public ActionResult SetDiagnostico(int idDiagnostico)
         {
+            Diagnostico diagnostico = cnDiagnosticos.obtenDiagnostico(idDiagnostico);
+            /*
             CN_Adaptaciones cnAdaptaciones = new CN_Adaptaciones();
             var adaptaciones = cnAdaptaciones.listaAdaptacionesDiagnostico(idDiagnostico);
-            //return Json(adaptaciones, JsonRequestBehavior.AllowGet);
 
             var diagnostico = new Diagnostico()
             {
                 IdDiagnostico = idDiagnostico,
                 Adaptaciones = adaptaciones
             };
+            */
 
             return PartialView("_Diagnostico", diagnostico);
         }
@@ -204,7 +206,7 @@ namespace CapaPresentacion.Controllers
         {
             var adaptacionDiagnosticoEstudiante = new AdaptacionDiagnosticoEstudiante()
             {
-                Adaptacion = new Adaptacion() { Excepcional = true}
+                Adaptacion = cnAdaptaciones.obtenAdaptacion(idAdaptacion)
             };
 
             var viewModel = new AdaptacionDiagnosticoViewModel()

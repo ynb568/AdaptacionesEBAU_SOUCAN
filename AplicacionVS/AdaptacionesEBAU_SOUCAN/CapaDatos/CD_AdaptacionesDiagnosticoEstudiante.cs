@@ -11,8 +11,6 @@ namespace CapaDatos
 {
     public class CD_AdaptacionesDiagnosticoEstudiante
     {
-
-
         public List<AdaptacionDiagnosticoEstudiante> listaAdaptacionesDiagnosticoEstudiante(int idEstudiante, int idDiagnostico)
         {
             List<AdaptacionDiagnosticoEstudiante> listaAdaptacionesDE = new List<AdaptacionDiagnosticoEstudiante>();
@@ -55,7 +53,6 @@ namespace CapaDatos
             }
             catch (Exception ex)
             {
-                listaAdaptacionesDE = new List<AdaptacionDiagnosticoEstudiante>();
                 Console.WriteLine("Error en CD_Adaptaciones.obtenAdaptacionesEstudiante: " + ex.Message);
             }
             return listaAdaptacionesDE;

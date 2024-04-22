@@ -85,7 +85,6 @@ namespace CapaDatos
             } 
             catch (Exception ex)
             {
-                estudiantes = new List<Estudiante>();
                 Console.WriteLine("Error en CD_Estudiantes.listaEstudiantes: " + ex.Message);
             }
 
@@ -169,7 +168,6 @@ namespace CapaDatos
             }
             catch (Exception ex)
             {
-                e = new Estudiante();
                 Console.WriteLine("Error en CD_Estudiantes.obtenEstudianteCentro: " + ex.Message);
             }
             return e;

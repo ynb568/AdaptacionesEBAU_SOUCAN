@@ -11,9 +11,6 @@ namespace CapaEntidad
 		{
 
 		}
-        //public CentroEducativo(string correo, string contrasenha) : base(correo, contrasenha)
-        //{
-        //}
         public int IdCE { get; set; }
 		[DisplayName("Correo del Centro:")]
         public string Correo { get; set; }

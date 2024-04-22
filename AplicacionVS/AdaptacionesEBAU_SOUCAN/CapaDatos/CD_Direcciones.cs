@@ -43,7 +43,6 @@ namespace CapaDatos
             }
             catch (Exception ex)
             {
-                direccion = new Direccion();
                 Console.WriteLine("Error en CD_Direcciones.obtenDireccionCentro: " + ex.Message);
             }
             return direccion;

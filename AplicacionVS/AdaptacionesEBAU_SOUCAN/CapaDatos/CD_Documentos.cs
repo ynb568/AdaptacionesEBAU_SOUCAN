@@ -35,14 +35,13 @@ namespace CapaDatos
                                     IdDocumento = Convert.ToInt32(dr["idDocumento"]),
                                     NombreDocumento = dr["nombreDocumento"].ToString()
                                 }
-                                                                                          );
+                            );
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                documentos = new List<Documento>();
                 Console.WriteLine("Error en CD_Documentos.listaDocumentos: " + ex.Message);
             }
             return documentos;
@@ -83,7 +82,6 @@ namespace CapaDatos
             }
             catch (Exception ex)
             {
-                documentos = new List<Documento>();
                 Console.WriteLine("Error en CD_Documentos.listaDocumentosEstudiante: " + ex.Message);
             }
             return documentos;

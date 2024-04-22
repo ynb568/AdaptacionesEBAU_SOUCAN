@@ -15,7 +15,7 @@ namespace CapaNegocio
         /*
          * Obtiene una lista de todos los apuntes de un estudiante
          * 
-         * @param idEstudiante: estudiante del que se quiere obtener la lista
+         * @param idEstudiante: identificador del estudiante
          * @return lista de apuntes de un estudiante
          */
         public List<Apunte> listaApuntesEstudiante (int idEstudiante)

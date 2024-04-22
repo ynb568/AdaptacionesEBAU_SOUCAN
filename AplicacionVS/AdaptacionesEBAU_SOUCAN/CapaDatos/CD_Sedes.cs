@@ -37,13 +37,11 @@ namespace CapaDatos
                             );
                         }
                     }
-
                 }
-
             }
-            catch
+            catch (Exception ex)
             {
-                listaSedes = new List<Sede>();
+                Console.WriteLine("Error en CD_Sedes.listaSedes: " + ex.Message);
             }
             return listaSedes;
         }
@@ -74,9 +72,9 @@ namespace CapaDatos
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                sede = new Sede();
+                Console.WriteLine("Error en CD_Sedes.obtenSedeCentro: " + ex.Message);
             }
             return sede;
         }

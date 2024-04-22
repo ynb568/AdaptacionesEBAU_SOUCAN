@@ -45,9 +45,9 @@ namespace CapaDatos
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
-                listaAdaptaciones = new List<Adaptacion>();
+                Console.WriteLine("Error en CD_Adaptaciones.listaAdaptaciones: " + ex.Message);
             }
             return listaAdaptaciones;
         }
@@ -87,7 +87,6 @@ namespace CapaDatos
             }
             catch (Exception ex)
             {
-                a = new Adaptacion();
                 Console.WriteLine("Error en CD_Adaptaciones.obtenAdaptacion: " + ex.Message);
             }
             return a;
@@ -126,11 +125,9 @@ namespace CapaDatos
                     }
 
                 }
-
             }
             catch (Exception ex)
             {
-                listaAdaptaciones = new List<Adaptacion>();
                 Console.WriteLine("Error en CD_Adaptaciones.listaAdaptacionesDiagnostico: " + ex.Message);
             }
             return listaAdaptaciones;

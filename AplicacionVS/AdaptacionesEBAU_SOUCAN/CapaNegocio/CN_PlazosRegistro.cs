@@ -11,6 +11,11 @@ namespace CapaNegocio
     public class CN_PlazosRegistro
     {
         CD_PlazosRegistro objCD = new CD_PlazosRegistro();
+        /*
+         * Obtiene el plazo de registro activo actual
+         * 
+         * @return plazo de registro activo
+        */
         public PlazosRegistro obtenPlazoRegistroActivo()
         {
             return objCD.obtenPlazoRegistroActivo();

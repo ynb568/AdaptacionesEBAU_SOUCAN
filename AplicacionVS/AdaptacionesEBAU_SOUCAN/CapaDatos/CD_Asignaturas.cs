@@ -39,11 +39,9 @@ namespace CapaDatos
                     }
 
                 }
-
             }
             catch (Exception ex)
             {
-                listaAsignaturas = new List<Asignatura>();
                 Console.WriteLine("Error en CD_Asignaturas.listaAsignaturas: " + ex.Message);
             }
             return listaAsignaturas;
@@ -85,7 +83,6 @@ namespace CapaDatos
             }
             catch (Exception ex)
             {
-                listaAsignaturas = new List<Asignatura>();
                 Console.WriteLine("Error en CD_Asignaturas.listaAsignaturasPrevistasEstudiante: " + ex.Message);
             }
             return listaAsignaturas;
@@ -127,7 +124,6 @@ namespace CapaDatos
             }
             catch (Exception ex)
             {
-                listaAsignaturas = new List<Asignatura>();
                 Console.WriteLine("Error en CD_Asignaturas.listaAsignaturasMatriculadasEstudiante: " + ex.Message);
             }
             return listaAsignaturas;
@@ -175,8 +171,7 @@ namespace CapaDatos
                         Console.WriteLine("No se pudo registrar la asignatura prevista.");
                     }
                 }
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Console.WriteLine("Error en CD_Asignaturas.registraAsignaturaPrevistaEstudiante: " + ex.Message);
             }
@@ -222,8 +217,7 @@ namespace CapaDatos
                         Console.WriteLine("No se pudieron eliminar las asignaturas previstas.");
                     }
                 }
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Console.WriteLine("Error en CD_Asignaturas.eliminaAsignaturasPrevistasEstudiante: " + ex.Message);
             }

@@ -72,7 +72,6 @@ namespace CapaDatos
             }
             catch (Exception ex)
             {
-                centros = new List<CentroEducativo>();
                 Console.WriteLine("Error en CD_CentrosEducativos.listaCentros: " + ex.Message);
             }
             return centros;
@@ -133,7 +132,6 @@ namespace CapaDatos
             catch (Exception ex)
             {
                 Console.WriteLine("Error en CD_CentrosEducativos.obtenCentro: " + ex.Message);
-                ce = new CentroEducativo();
             }
             return ce;
         }

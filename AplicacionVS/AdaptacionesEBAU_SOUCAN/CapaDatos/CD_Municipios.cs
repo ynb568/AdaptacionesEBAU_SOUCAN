@@ -41,9 +41,9 @@ namespace CapaDatos
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
-                listaMunicipios = new List<Municipio>();
+                Console.WriteLine("Error en CD_Municipios.listaMunicipios: " + ex.Message);
             }
             return listaMunicipios;
         }
@@ -76,9 +76,9 @@ namespace CapaDatos
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
-                municipio = new Municipio();
+                Console.WriteLine("Error en CD_Municipios.obtenMunicipioDirecccion: " + ex.Message);
             }
             return municipio;
         }

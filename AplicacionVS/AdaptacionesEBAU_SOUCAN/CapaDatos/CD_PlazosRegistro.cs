@@ -40,7 +40,6 @@ namespace CapaDatos
             } catch (Exception ex)
             {
                 Console.WriteLine("Error en CD_PlazosRegistro.obtenPlazoRegistroActivo: " + ex.Message);
-                pr = new PlazosRegistro();
             }
             return pr;
         }

@@ -57,8 +57,5 @@
     <Compile Include="Sede.cs" />
     <Compile Include="Soucan.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Referencias.txt" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
