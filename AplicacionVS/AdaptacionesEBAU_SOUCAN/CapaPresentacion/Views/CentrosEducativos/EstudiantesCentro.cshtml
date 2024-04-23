@@ -1,0 +1,68 @@
+﻿@using CapaPresentacion.Controllers;
+@{
+    ViewBag.Title = "Estudiantes Centro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var estudiantes = Model;
+}
+<style>
+    .custab {
+        border: 1px solid #ccc;
+        padding: 5px;
+        margin: 5% 0;
+        box-shadow: 3px 3px 2px #ccc;
+        transition: 0.5s;
+    }
+
+        .custab:hover {
+            box-shadow: 3px 3px 0px transparent;
+            transition: 0.5s;
+        }
+</style>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre Estudiante</th>
+            <th>Validado</th>
+            <th>Ver</th>
+            <th>Editar</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Lista de estudiantes procedentes del modelo-->
+        @foreach (var e in estudiantes)
+        {
+            <tr>
+                <td>@e.NombreCompleto</td>
+                <td>
+                    @if (e.Validado == true)
+                    {
+                        <span class="badge text-bg-success">Validado</span>
+                    }
+                    else if (e.Validado == false)
+                    {
+                        <span class="badge text-bg-danger">>Rechazado</span>
+                    }
+                    else
+                    {
+                        <span class="badge text-bg-primary">Pendiente</span>
+                    }
+                </td>
+                <td>@Html.ActionLink("VER", nameof(CentrosEducativosController.InfoEstudiante), "CentrosEducativos", new { idE = e.IdEstudiante }, new { @class = "btn btn-custom" })</td>
+                <td>
+                    @if (e.Validado == true)
+                    {
+                        <button class="btn btn-custom" disabled>EDITAR</button>
+                    }
+                    else
+                    {
+                        @Html.ActionLink("EDITAR", nameof(CentrosEducativosController.EdicionEstudiante), "CentrosEducativos", new { idE = e.IdEstudiante }, new { @class = "btn btn-custom" })
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="form-group">
+    <p>@Html.ActionLink("Volver", nameof(CentrosEducativosController.ControladorCentro), "CentrosEducativos", null, new { @class = "btn btn-custom" })</p>
+</div>
+

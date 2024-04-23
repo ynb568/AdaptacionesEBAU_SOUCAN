@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - GestionAdaptacionesUNICAN</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JavaScript para los Modales-->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+
+    <style>
+        .nav-link-uc {
+            width: 60px; /* Ancho del logo */
+            height: 60px; /* Altura del logo */
+            display: inline-block;
+            text-indent: -9999px; /* Oculta el texto del enlace */
+        }
+
+        .btn-custom {
+            background-color: #005c64; /* Color de fondo */
+            color: #fff; /* Color del texto */
+            border-color: #005c64; /* Color del borde */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+        <div class="container">
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav">
+                    <li>
+                        <a href="https://web.unican.es">
+                            <img src="@Url.Content("~/Images/UC_LogotipoVReducida-1_verde.png")" alt="Logo UC" class="nav-link-uc" />
+
+                        </a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://web.unican.es/unidades/soucan" class="nav-link">
+                            SOUCAN (Sistema de Orientación de la UC)
+                        </a>
+                    </li>
+
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li>
+                        <a href="https://web.unican.es/unidades/soucan/preuniversitarios" class="nav-link">
+                            Programas de Orientación
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="https://web.unican.es/unidades/soucan/estudiantes/universidad-y-discapacidad" class="nav-link">
+                            Inclusión en la UC
+                        </a>
+                        )
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>SOUCAN (Sistema de Orientación de la UC)</p>
+        </footer>
+    </div>
+
+    <!-- Toast para mostrar mensaje de sesión expirada -->
+    @if (TempData["ShowSessionExpiredToast"] != null && (bool)TempData["ShowSessionExpiredToast"])
+    {
+        <div class="toast bg-danger text-white" role="alert" aria-live="assertive" aria-atomic="true" 
+             style="position: absolute; top: 10%; left: 50%; transform: translateX(-50%);">
+            <div class="toast-body" style="text-align: center">
+                Sesión Expirada
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $('.toast').toast({ delay: 3000 });
+                $('.toast').toast('show');
+            });
+        </script>
+    }
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

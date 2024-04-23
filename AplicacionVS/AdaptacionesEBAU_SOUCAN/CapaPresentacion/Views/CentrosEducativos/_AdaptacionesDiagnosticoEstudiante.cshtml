@@ -1,0 +1,28 @@
+﻿@using HtmlHelpers.BeginCollectionItem;
+@using CapaPresentacion.ViewModels;
+@model AdaptacionDiagnosticoViewModel
+
+@using (Html.BeginCollectionItem($"SelectedAdaptaciones"))
+{
+    <div>
+        @Html.HiddenFor(m => m.DiagnosticoId)
+        @Html.HiddenFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion)
+
+        <div>
+            @Html.LabelFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.Descripcion)
+            @Html.DisplayFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.Descripcion)
+        </div>
+        @if (Model.AdaptacionDiagnosticoEstudiante.Adaptacion.Excepcional)
+        {
+            <div>
+                @Html.LabelFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.DescripcionExcepcional)
+                @Html.DisplayFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.DescripcionExcepcional)
+            </div>
+        }
+        <div>
+            @Html.LabelFor(m => m.AdaptacionDiagnosticoEstudiante.Observaciones)
+            @Html.TextBoxFor(m => m.AdaptacionDiagnosticoEstudiante.Observaciones)
+        </div>
+        <button type="button" id="guardadoAdapEst">Añadir</button>
+    </div>
+}
