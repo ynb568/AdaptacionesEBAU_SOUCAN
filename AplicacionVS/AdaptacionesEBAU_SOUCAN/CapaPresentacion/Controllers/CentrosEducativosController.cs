@@ -206,6 +206,14 @@ namespace CapaPresentacion.Controllers
             return PartialView("_AdaptacionesDiagnosticoEstudiante", viewModel);
         }
 
+        [HttpGet]
+        public ActionResult ObtenNombreDiagnostico(int idDiagnostico)
+        {
+            var diagnostico = cnDiagnosticos.obtenDiagnostico(idDiagnostico);
+            var nombreDiagnostico = diagnostico.NombreDiagnostico;
+            return View((object)nombreDiagnostico);
+        }
+
         [HttpPost]
         public ActionResult RegistroEstudiante(EstudianteViewModel model)
         {

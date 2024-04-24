@@ -5,9 +5,9 @@
 @using (Html.BeginCollectionItem($"SelectedAdaptaciones"))
 {
     <div>
-        @Html.HiddenFor(m => m.DiagnosticoId)
-        @Html.HiddenFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion)
-
+        @Html.HiddenFor(m => m.DiagnosticoId, new { id = "DiagnosticoId" })
+        @Html.HiddenFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion, new { id = "IdAdaptacion" })
+        @Html.HiddenFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.NombreAdaptacion, new { id = "NombreAdaptacion" })
         <div>
             @Html.LabelFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.Descripcion)
             @Html.DisplayFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.Descripcion)
@@ -21,8 +21,31 @@
         }
         <div>
             @Html.LabelFor(m => m.AdaptacionDiagnosticoEstudiante.Observaciones)
-            @Html.TextBoxFor(m => m.AdaptacionDiagnosticoEstudiante.Observaciones)
+            @Html.TextBoxFor(m => m.AdaptacionDiagnosticoEstudiante.Observaciones, new { id = "Observaciones" })
         </div>
-        <button type="button" id="guardadoAdapEst">Añadir</button>
+        <button type="button" id="botonAnhadir">Añadir</button>
     </div>
 }
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Controlador de eventos de clic para el botón "Añadir"
+        $("#botonAnhadir").click(function () {
+            // Obtén los datos de los campos
+            var diagnosticoId = $("#DiagnosticoId").val();
+            var nombreAdaptacion = $("#NombreAdaptacion").val();
+            var observaciones = $("#Observaciones").val();
+
+            // Crea una nueva fila y añádela a la tabla
+            var newRow = `<tr><td>${diagnosticoId}</td><td>${nombreAdaptacion}</td><td>${observaciones}</td><td><button class="deleteButton">Borrar</button></td></tr>`;
+            $("#myTable").append(newRow);
+        });
+
+        // Controlador de eventos de clic para los botones "Borrar"
+        $("#myTable").on("click", ".deleteButton", function () {
+            // Elimina la fila correspondiente
+            $(this).closest("tr").remove();
+        });
+    });
+</script>
