@@ -33,19 +33,60 @@
         // Controlador de eventos de clic para el botón "Añadir"
         $("#botonAnhadir").click(function () {
             // Obtén los datos de los campos
-            var diagnosticoId = $("#DiagnosticoId").val();
+            var idDiagnostico = $("#DiagnosticoId").val();
+            var idAdaptacion = $("#IdAdaptacion").val();
             var nombreAdaptacion = $("#NombreAdaptacion").val();
             var observaciones = $("#Observaciones").val();
 
-            // Crea una nueva fila y añádela a la tabla
-            var newRow = `<tr><td>${diagnosticoId}</td><td>${nombreAdaptacion}</td><td>${observaciones}</td><td><button class="deleteButton">Borrar</button></td></tr>`;
-            $("#myTable").append(newRow);
+            // Comprueba si ya existe una fila con el mismo nombre de adaptación
+            var exists = false;
+            $("#tablaAdaptacionesRegistradas tbody tr").each(function () {
+                if ($(this).find("td:eq(1)").text() === nombreAdaptacion) {
+                    exists = true;
+                    return false; // Salir del bucle .each
+                }
+            });
+
+            // Si no existe, añade la nueva fila
+            if (!exists) {
+                // Crea una nueva fila y añádela a la tabla
+                var newRow = `
+                    <tr>
+                        <td>
+                            ${idDiagnostico}
+                            <input type="hidden" name="SelectedAdaptaciones[${$("#tablaAdaptacionesRegistradas tr").length}].DiagnosticoId" value="${idDiagnostico}" />
+                        </td>
+                        <td>
+                            ${nombreAdaptacion}
+                            <input type="hidden" name="SelectedAdaptaciones[${$("#tablaAdaptacionesRegistradas tr").length}].AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion" value="${idAdaptacion}" />
+                        </td>
+                        <td>
+                            ${observaciones}
+                            <input type="hidden" name="SelectedAdaptaciones[${$("#tablaAdaptacionesRegistradas tr").length}].AdaptacionDiagnosticoEstudiante.Observaciones" value="${observaciones}" />
+                        </td>
+                        <td>
+                            <button class="deleteButton">Borrar</button>
+                        </td>
+                    </tr>`;
+                $("#tablaAdaptacionesRegistradas tbody").append(newRow);
+
+                // Muestra la tabla si es la primera fila
+                if ($("#tablaAdaptacionesRegistradas tbody tr").length > 0) {
+                    $("#tablaAdaptacionesRegistradas").css("display", "table");
+                }
+            } else {
+                alert("Ya existe una fila con el mismo nombre de adaptación.");
+            }
         });
 
         // Controlador de eventos de clic para los botones "Borrar"
-        $("#myTable").on("click", ".deleteButton", function () {
+        $("#tablaAdaptacionesRegistradas").on("click", ".deleteButton", function () {
             // Elimina la fila correspondiente
             $(this).closest("tr").remove();
+
+            if ($("#tablaAdaptacionesRegistradas tbody tr").length === 0) {
+                $("#tablaAdaptacionesRegistradas").css("display", "none");
+            }
         });
-    });
+     });
 </script>

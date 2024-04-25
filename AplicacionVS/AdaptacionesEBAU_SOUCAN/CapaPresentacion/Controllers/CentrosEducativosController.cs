@@ -8,6 +8,7 @@ using CapaEntidad;
 using CapaNegocio;
 using System.Collections;
 using CapaPresentacion.ViewModels;
+using Microsoft.Ajax.Utilities;
 
 
 namespace CapaPresentacion.Controllers
@@ -25,6 +26,7 @@ namespace CapaPresentacion.Controllers
         private CN_Asignaturas cnAsignaturas = new CN_Asignaturas();
         private CN_PlazosRegistro cnPlazosRegistro = new CN_PlazosRegistro();
         private CN_AdaptacionesDiagnosticoEstudiante cnAdaptacionesDiagnosticoEstudiante = new CN_AdaptacionesDiagnosticoEstudiante();
+        private CN_Recursos cnRecursos = new CN_Recursos();
 
         [OverrideActionFilters] //Filtro para que no se aplique el filtro de CheckSessionFilter
         [HttpGet]
@@ -254,9 +256,14 @@ namespace CapaPresentacion.Controllers
             {
                 if (model.Documentos[i].RutaDocumento != null)
                 {
-                    cnDocumentos.registraDocumentoEstudiante(model.Estudiante.IdEstudiante, model.Documentos[i].IdDocumento,
-                        model.Documentos[i].RutaDocumento);
-                }
+                    if (!model.Documentos[i].RutaDocumento.IsNullOrWhiteSpace())
+                    {
+                        var rutaDocumento = Server.MapPath(model.Documentos[i].RutaDocumento);
+                        model.Documentos[i].RutaDocumento = CN_Recursos.ConvertirArchivoABinario(rutaDocumento);
+                        cnDocumentos.registraDocumentoEstudiante(model.Estudiante.IdEstudiante, model.Documentos[i].IdDocumento,
+                            model.Documentos[i].RutaDocumento);
+                    }
+                }               
             }
 
             return RedirectToAction("EstudiantesCentro");

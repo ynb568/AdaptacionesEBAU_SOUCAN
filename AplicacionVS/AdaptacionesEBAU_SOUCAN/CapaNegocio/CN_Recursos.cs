@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using System.IO;
 
 namespace CapaNegocio
 {
@@ -29,6 +30,12 @@ namespace CapaNegocio
                 }
             }
             return sb.ToString ();
+        }
+
+        public static string ConvertirArchivoABinario(string rutaDocumento)
+        {
+            byte[] binaryData = File.ReadAllBytes(rutaDocumento);
+            return Convert.ToBase64String(binaryData);
         }
     }
 }

@@ -43,6 +43,46 @@
         @Html.LabelFor(m => m.Estudiante.TelefonoTutor2)
         @Html.TextBoxFor(m => m.Estudiante.TelefonoTutor2, new { @class = "form-control" })
     </div>
+
+    <h5>DIAGNÓSTICOS</h5>
+
+    <style>
+        #tablaAdaptacionesRegistradas th, #tablaAdaptacionesRegistradas td {
+            width: 25%;
+            text-align: left;
+        }
+    </style>
+
+    <table id="tablaAdaptacionesRegistradas" style="display: none;">
+        <thead>
+            <tr>
+                <th>Id Diagnóstico</th>
+                <th>Nombre Adaptación</th>
+                <th>Observaciones</th>
+                <th>Borrar Adaptación</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.SelectedAdaptaciones.Count; i++)
+            {
+                <tr>
+                    <td>@Html.HiddenFor(m => m.SelectedAdaptaciones[i].DiagnosticoId)</td>
+                    <td>@Html.EditorFor(m => m.SelectedAdaptaciones[i].AdaptacionDiagnosticoEstudiante.Adaptacion.NombreAdaptacion)</td>
+                    <td>@Html.EditorFor(m => m.SelectedAdaptaciones[i].AdaptacionDiagnosticoEstudiante.Observaciones)</td>
+                    <td><button class="deleteButton">Borrar</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="row" id="diagnosticosDropdown">
+        <div class="col-md-auto">
+            @Html.DropDownListFor(m => m.SelectedDiagnostico, new SelectList(Model.Diagnosticos, "IdDiagnostico", "NombreDiagnostico"), "Seleccione select", new { @class = "form-select", id = "selectDiagnostico" })
+        </div>
+    </div>
+    <div id="diagnosticosBody">
+
+    </div>
+
     <div class="form-group">
         @Html.LabelFor(m => m.Estudiante.Convocatoria)
         <div>

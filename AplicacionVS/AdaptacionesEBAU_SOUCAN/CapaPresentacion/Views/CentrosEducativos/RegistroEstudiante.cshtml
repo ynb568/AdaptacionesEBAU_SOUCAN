@@ -77,20 +77,28 @@
 
 
     <h5>DIAGNÓSTICOS</h5>
-    <table>
+
+    <style>
+        #tablaAdaptacionesRegistradas th, #tablaAdaptacionesRegistradas td {
+            width: 25%;
+            text-align: left;
+        }
+    </style>
+
+    <table id="tablaAdaptacionesRegistradas" style="display: none;">
         <thead>
             <tr>
-                <th>Diagnóstico</th>
-                <th>Adaptación</th>
+                <th>Id Diagnóstico</th>
+                <th>Nombre Adaptación</th>
                 <th>Observaciones</th>
-                <th>Borrar</th>
+                <th>Borrar Adaptación</th>
             </tr>
         </thead>
-        <tbody id="tablaAdaptacionesRegistradas">
-
+        <tbody>
+            <!-- Aquí se añadirán las filas -->
         </tbody>
     </table>
-    <div class="row" id="diagnosticosDropdown" >
+    <div class="row" id="diagnosticosDropdown">
         <div class="col-md-auto">
             @Html.DropDownListFor(m => m.SelectedDiagnostico, new SelectList(Model.Diagnosticos, "IdDiagnostico", "NombreDiagnostico"), "Seleccione select", new { @class = "form-select", id = "selectDiagnostico" })
         </div>
@@ -107,12 +115,12 @@
     </div>
 
 
-    <h5>DOCUMENTOS</h5> 
+    <h5>DOCUMENTOS</h5>
     <div class="form-group m-3">
         @for (int i = 0; i < Model.Documentos.Count; i++)
         {
             @Html.LabelFor(m => m.Documentos[i].NombreDocumento)
-            <input type="file" id="fileUpload@i" name="Documentos[@i].RutaDocumento" accept="application/pdf"/>
+            <input type="file" id="fileUpload@i" name="Documentos[@i].RutaDocumento" accept="application/pdf" />
         }
     </div>
     <div class="form-group">
