@@ -9,6 +9,7 @@ using CapaNegocio;
 using System.Collections;
 using CapaPresentacion.ViewModels;
 using Microsoft.Ajax.Utilities;
+using CapaNegocio.Interfaces;
 
 
 namespace CapaPresentacion.Controllers
@@ -18,15 +19,15 @@ namespace CapaPresentacion.Controllers
         
         //static string cadenaCon = "Data Source=3TPC64\SQLEXPRESS;Initial Catalog=AdaptacionesEBAU_SOUCAN;Integrated Security=true";
 
-        private CN_CentrosEducativos cnCentrosEducativos = new CN_CentrosEducativos();
-        private CN_Estudiantes cnEstudiantes = new CN_Estudiantes();
-        private CN_Diagnosticos cnDiagnosticos = new CN_Diagnosticos();
-        private CN_Adaptaciones cnAdaptaciones = new CN_Adaptaciones();
-        private CN_Documentos cnDocumentos = new CN_Documentos();
-        private CN_Asignaturas cnAsignaturas = new CN_Asignaturas();
-        private CN_PlazosRegistro cnPlazosRegistro = new CN_PlazosRegistro();
-        private CN_AdaptacionesDiagnosticoEstudiante cnAdaptacionesDiagnosticoEstudiante = new CN_AdaptacionesDiagnosticoEstudiante();
-        private CN_Recursos cnRecursos = new CN_Recursos();
+        private ICN_CentrosEducativos cnCentrosEducativos = new CN_CentrosEducativos();
+        private ICN_Estudiantes cnEstudiantes = new CN_Estudiantes();
+        private ICN_Diagnosticos cnDiagnosticos = new CN_Diagnosticos();
+        private ICN_Adaptaciones cnAdaptaciones = new CN_Adaptaciones();
+        private ICN_Documentos cnDocumentos = new CN_Documentos();
+        private ICN_Asignaturas cnAsignaturas = new CN_Asignaturas();
+        private ICN_PlazosRegistro cnPlazosRegistro = new CN_PlazosRegistro();
+        private ICN_AdaptacionesDiagnosticoEstudiante cnAdaptacionesDiagnosticoEstudiante = new CN_AdaptacionesDiagnosticoEstudiante();
+        private ICN_Recursos cnRecursos = new CN_Recursos();
 
         [OverrideActionFilters] //Filtro para que no se aplique el filtro de CheckSessionFilter
         [HttpGet]

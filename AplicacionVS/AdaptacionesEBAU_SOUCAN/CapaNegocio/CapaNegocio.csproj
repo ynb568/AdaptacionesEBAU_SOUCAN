@@ -53,6 +53,17 @@
     <Compile Include="CN_PlazosRegistro.cs" />
     <Compile Include="CN_Recursos.cs" />
     <Compile Include="CN_Sedes.cs" />
+    <Compile Include="Interfaces\ICN_Adaptaciones.cs" />
+    <Compile Include="Interfaces\ICN_AdaptacionesDIagnosticoEstudiante.cs" />
+    <Compile Include="Interfaces\ICN_Apuntes.cs" />
+    <Compile Include="Interfaces\ICN_Asignaturas.cs" />
+    <Compile Include="Interfaces\ICN_CentrosEducativos.cs" />
+    <Compile Include="Interfaces\ICN_Diagnosticos.cs" />
+    <Compile Include="Interfaces\ICN_Documentos.cs" />
+    <Compile Include="Interfaces\ICN_Estudiantes.cs" />
+    <Compile Include="Interfaces\ICN_Municipios.cs" />
+    <Compile Include="Interfaces\ICN_PlazosRegistro.cs" />
+    <Compile Include="Interfaces\ICN_Sedes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

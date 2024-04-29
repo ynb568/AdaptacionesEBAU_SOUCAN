@@ -5,18 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.IO;
+using CapaNegocio.Interfaces;
 
 namespace CapaNegocio
 {
-    public class CN_Recursos
+    public class CN_Recursos : ICN_Recursos
     {
-        /*
-         * Método que encripta un texto utilizando el algoritmo SHA256.
-         * 
-         * @param c_base: Texto a encriptar.
-         * @return: Cadena de texto encriptada en formato hexadecimal.
-        */
-        public static string convertirSha256 (string c_base)
+
+        public string convertirSha256 (string c_base)
         {
             StringBuilder sb = new StringBuilder ();
             using (SHA256 hash = SHA256Managed.Create())
@@ -32,7 +28,7 @@ namespace CapaNegocio
             return sb.ToString ();
         }
 
-        public static string ConvertirArchivoABinario(string rutaDocumento)
+        public string ConvertirArchivoABinario(string rutaDocumento)
         {
             byte[] binaryData = File.ReadAllBytes(rutaDocumento);
             return Convert.ToBase64String(binaryData);
