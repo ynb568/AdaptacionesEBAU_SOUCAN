@@ -14,6 +14,7 @@ namespace CapaNegocio
     public class CN_CentrosEducativos : ICN_CentrosEducativos
     {
         private CD_CentrosEducativos objCD = new CD_CentrosEducativos();
+        private ICN_Recursos cnRecursos = new CN_Recursos();
 
         public List<CentroEducativo> listaCentros()
         {
@@ -51,7 +52,7 @@ namespace CapaNegocio
         public int LoginCE(string correo, string contrasenha)
         {
             int idCE = -1;
-            contrasenha = CN_Recursos.convertirSha256(contrasenha);
+            contrasenha = cnRecursos.convertirSha256(contrasenha);
 
             using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
             {
@@ -79,8 +80,8 @@ namespace CapaNegocio
 
             if (nuevaContrasenha == repetirContrasenha)
             {
-                contrasenha = CN_Recursos.convertirSha256(contrasenha);
-                nuevaContrasenha = CN_Recursos.convertirSha256(nuevaContrasenha);
+                contrasenha = cnRecursos.convertirSha256(contrasenha);
+                nuevaContrasenha = cnRecursos.convertirSha256(nuevaContrasenha);
 
                 using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
                 {

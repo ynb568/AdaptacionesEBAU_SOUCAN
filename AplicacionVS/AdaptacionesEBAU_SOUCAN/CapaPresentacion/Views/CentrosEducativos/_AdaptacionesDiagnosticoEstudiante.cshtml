@@ -39,7 +39,7 @@
             var observaciones = $("#Observaciones").val();
 
             // Comprueba si ya existe una fila con el mismo nombre de adaptación
-            var exists = false;
+            var exists = $("#tablaAdaptacionesRegistradas tbody tr[data-id-diagnostico='" + idAdaptacion + "'][data-id-adaptacion=" + idAdaptacion + "]").length>0;
             $("#tablaAdaptacionesRegistradas tbody tr").each(function () {
                 if ($(this).find("td:eq(1)").text() === nombreAdaptacion) {
                     exists = true;
@@ -51,7 +51,7 @@
             if (!exists) {
                 // Crea una nueva fila y añádela a la tabla
                 var newRow = `
-                    <tr>
+                    <tr data-id-diagnostico="` + idDiagnostico + `" data-id-adaptacion="` + idAdaptacion + `">
                         <td>
                             ${idDiagnostico}
                             <input type="hidden" name="SelectedAdaptaciones[${$("#tablaAdaptacionesRegistradas tr").length}].DiagnosticoId" value="${idDiagnostico}" />

@@ -11,7 +11,10 @@
         @Html.DisplayFor(m => m.Estudiante.CursoConvocatoria)
     </h2>
     <div class="form-group">
-
+        @Html.LabelFor(m => m.Estudiante.DniEstudiante)
+        @Html.TextBoxFor(m => m.Estudiante.DniEstudiante, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
         @Html.LabelFor(m => m.Estudiante.CursoConvocatoria)
         @Html.TextBoxFor(m => m.Estudiante.CursoConvocatoria, new { @class = "form-control" })
     </div>
@@ -43,6 +46,33 @@
         @Html.LabelFor(m => m.Estudiante.TelefonoTutor2)
         @Html.TextBoxFor(m => m.Estudiante.TelefonoTutor2, new { @class = "form-control" })
     </div>
+    <h5>ASIGNATURAS PREVISTAS A PRESENTAR EN LA EBAU</h5>
+    <div class="form-group m-3">
+        <h6>FASE 1:</h6>
+        @for (int i = 0; i < Model.AsignaturasFase1.Count; i++)
+        {
+            var currentItem = Model.AsignaturasFase1[i];
+            var exist = Model.Estudiante.AsignaturasPrevistas.FirstOrDefault(a => a.Fase1 && a.IdAsignatura == currentItem.IdAsignatura) != null;
+            Model.AsignaturasFase1[i].IsSelected = exist;
+
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.AsignaturasFase1[i].IsSelected, new { @class = "form-check-input" })
+                @Html.LabelFor(m => m.AsignaturasFase1[i].IsSelected, Model.AsignaturasFase1[i].NombreAsignatura, new { @class = "form-check-label" })
+            </div>
+        }
+        <h6>FASE 2 (Opcional):</h6>
+        @for (int i = 0; i < Model.AsignaturasFase2.Count; i++)
+        {
+            var currentItem = Model.AsignaturasFase2[i];
+            var exist = Model.Estudiante.AsignaturasPrevistas.FirstOrDefault(a => a.Fase2 && a.IdAsignatura == currentItem.IdAsignatura) != null;
+            Model.AsignaturasFase2[i].IsSelected = exist;
+
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.AsignaturasFase2[i].IsSelected, new { @class = "form-check-input" })
+                @Html.LabelFor(m => m.AsignaturasFase2[i].IsSelected, Model.AsignaturasFase2[i].NombreAsignatura, new { @class = "form-check-label" })
+            </div>
+        }
+    </div>
 
     <h5>DIAGNÓSTICOS</h5>
 
@@ -53,7 +83,7 @@
         }
     </style>
 
-    <table id="tablaAdaptacionesRegistradas" style="display: none;">
+    <table id="tablaAdaptacionesRegistradas">
         <thead>
             <tr>
                 <th>Id Diagnóstico</th>
@@ -63,14 +93,20 @@
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < Model.SelectedAdaptaciones.Count; i++)
+            @if (Model.Estudiante.Diagnosticos != null && Model.Diagnosticos.Any())
             {
-                <tr>
-                    <td>@Html.HiddenFor(m => m.SelectedAdaptaciones[i].DiagnosticoId)</td>
-                    <td>@Html.EditorFor(m => m.SelectedAdaptaciones[i].AdaptacionDiagnosticoEstudiante.Adaptacion.NombreAdaptacion)</td>
-                    <td>@Html.EditorFor(m => m.SelectedAdaptaciones[i].AdaptacionDiagnosticoEstudiante.Observaciones)</td>
-                    <td><button class="deleteButton">Borrar</button></td>
-                </tr>
+                foreach (var diagnostico in Model.Estudiante.Diagnosticos)
+                {
+                    foreach (var adaptacion in diagnostico.AdaptacionesEstudiante)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(m => diagnostico.IdDiagnostico)</td>
+                            <td>@Html.DisplayFor(m => adaptacion.Adaptacion.NombreAdaptacion)</td>
+                            <td>@Html.DisplayFor(m => adaptacion.Observaciones)</td>
+                            <td><button class="deleteButton">Borrar</button></td>
+                        </tr>
+                    }
+                }
             }
         </tbody>
     </table>
@@ -102,3 +138,16 @@
     </div>
 </form>
 <!-- Script de gestion de radio button de convocatoria-->
+@section Scripts{
+    <script>
+        // Controlador de eventos de clic para los botones "Borrar"
+        $("#tablaAdaptacionesRegistradas").on("click", ".deleteButton", function () {
+            // Elimina la fila correspondiente
+            $(this).closest("tr").remove();
+
+            if ($("#tablaAdaptacionesRegistradas tbody tr").length === 0) {
+                $("#tablaAdaptacionesRegistradas").css("display", "none");
+            }
+        });
+    </script>
+}

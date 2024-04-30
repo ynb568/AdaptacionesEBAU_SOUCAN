@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using System.Web.Mvc;
-
+using CapaNegocio.Interfaces;
 using CapaEntidad;
 using CapaNegocio;
 using System.Collections;
 using CapaPresentacion.ViewModels;
 using Microsoft.Ajax.Utilities;
-using CapaNegocio.Interfaces;
 
 
 namespace CapaPresentacion.Controllers
@@ -229,6 +228,7 @@ namespace CapaPresentacion.Controllers
                 model.Estudiante.NombreCompletoTutor1, model.Estudiante.TelefonoTutor1, 
                 model.Estudiante.NombreCompletoTutor2, model.Estudiante.TelefonoTutor2,
                 ordinaria, !ordinaria, idCentro, model.Estudiante.Observaciones);
+
             for (int i = 0; i < model.AsignaturasFase1.Count; i++)
             {
                 if (model.AsignaturasFase1[i].IsSelected)
@@ -260,7 +260,7 @@ namespace CapaPresentacion.Controllers
                     if (!model.Documentos[i].RutaDocumento.IsNullOrWhiteSpace())
                     {
                         var rutaDocumento = Server.MapPath(model.Documentos[i].RutaDocumento);
-                        model.Documentos[i].RutaDocumento = CN_Recursos.ConvertirArchivoABinario(rutaDocumento);
+                        model.Documentos[i].RutaDocumento = cnRecursos.ConvertirArchivoABinario(rutaDocumento);
                         cnDocumentos.registraDocumentoEstudiante(model.Estudiante.IdEstudiante, model.Documentos[i].IdDocumento,
                             model.Documentos[i].RutaDocumento);
                     }
@@ -320,9 +320,11 @@ namespace CapaPresentacion.Controllers
             {
                 CE = centro,
                 Estudiante = estudiante,
-                AsignaturasFase1 = cnAsignaturas.listaAsignaturasPrevistasEstudiantePorFase(idE, 1),
-                AsignaturasFase2 = cnAsignaturas.listaAsignaturasPrevistasEstudiantePorFase(idE, 2),
-                isOrdinaria = (estudiante.Convocatoria == "Ordinaria")
+                AsignaturasFase1 = cnAsignaturas.listaAsignaturasPorFase(1),
+                AsignaturasFase2 = cnAsignaturas.listaAsignaturasPorFase(2),
+                isOrdinaria = (estudiante.Convocatoria == "Ordinaria"),
+                Diagnosticos = cnDiagnosticos.listaDiagnosticosActivos(),
+                Documentos = cnDocumentos.listaDocumentos()
             };
 
             return View(viewModel);

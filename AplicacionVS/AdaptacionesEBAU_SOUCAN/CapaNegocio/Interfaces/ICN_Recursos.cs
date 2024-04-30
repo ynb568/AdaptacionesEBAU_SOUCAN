@@ -20,6 +20,6 @@ namespace CapaNegocio.Interfaces
         /// </summary>
         /// <param name="rutaDocumento">Ruta del documento a transformar.</param>
         /// <returns>Archivo en binario.</returns>
-        string ConvertirArchivoABinario(string rutaDocumento)
+        string ConvertirArchivoABinario(string rutaDocumento);
     }
 }
