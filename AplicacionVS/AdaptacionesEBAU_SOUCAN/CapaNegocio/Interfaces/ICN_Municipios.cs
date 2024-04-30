@@ -10,9 +10,9 @@ namespace CapaNegocio.Interfaces
     public interface ICN_Municipios
     {
         /// <summary>
-        /// Obtiene una lista de todos los municipios
+        /// Obtiene una lista de todos los municipios.
         /// </summary>
-        /// <returns>lista de municipios</returns>
+        /// <returns>Lista de municipios.</returns>
         List<Municipio> listaMunicipios();
     }
 }

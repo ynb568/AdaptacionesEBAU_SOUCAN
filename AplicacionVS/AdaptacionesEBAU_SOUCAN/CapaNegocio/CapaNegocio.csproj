@@ -63,6 +63,7 @@
     <Compile Include="Interfaces\ICN_Estudiantes.cs" />
     <Compile Include="Interfaces\ICN_Municipios.cs" />
     <Compile Include="Interfaces\ICN_PlazosRegistro.cs" />
+    <Compile Include="Interfaces\ICN_Recursos.cs" />
     <Compile Include="Interfaces\ICN_Sedes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

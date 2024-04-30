@@ -18,8 +18,8 @@ namespace CapaNegocio.Interfaces
         /// <summary>
         /// Método que convierte un archivo a base 64.
         /// </summary>
-        /// <param name="rutaDocumento">Ruta del documento a transformar </param>
-        /// <returns>Archivo en binario</returns>
+        /// <param name="rutaDocumento">Ruta del documento a transformar.</param>
+        /// <returns>Archivo en binario.</returns>
         string ConvertirArchivoABinario(string rutaDocumento)
     }
 }

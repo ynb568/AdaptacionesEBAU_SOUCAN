@@ -10,9 +10,9 @@ namespace CapaNegocio.Interfaces
     public interface ICN_PlazosRegistro
     {
         /// <summary>
-        /// Obtiene el plazo de registro activo actual
+        /// Obtiene el plazo de registro activo actual.
         /// </summary>
-        /// <returns>plazo de registro activo</returns>
+        /// <returns>Plazo de registro activo.</returns>
         PlazosRegistro obtenPlazoRegistroActivo();
     }
 }
