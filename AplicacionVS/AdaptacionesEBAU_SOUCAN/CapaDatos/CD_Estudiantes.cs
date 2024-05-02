@@ -173,61 +173,11 @@ namespace CapaDatos
             return e;
         }
         
-        /*
-        public void RegistrarEstudiante(Estudiante e, int idCentro)
-        {
-            using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
-            {
-                using (SqlCommand command = new SqlCommand("sp_registraEstudiante", con))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    // Parámetros del procedimiento almacenado
-                    command.Parameters.Add("@nombreEstudiante", SqlDbType.VarChar).Value = e.NombreEstudiante;
-                    command.Parameters.Add("@dniEstudiante", SqlDbType.VarChar).Value = e.DniEstudiante;
-                    command.Parameters.Add("@ap1Estudiante", SqlDbType.VarChar).Value = e.Ap1Estudiante;
-                    command.Parameters.Add("@ap2Estudiante", SqlDbType.VarChar).Value = e.Ap2Estudiante;
-                    command.Parameters.Add("@nombreCompletoT1", SqlDbType.VarChar).Value = e.NombreCompletoTutor1;
-                    command.Parameters.Add("@telefonoT1", SqlDbType.VarChar).Value = e.TelefonoTutor1;
-                    command.Parameters.Add("@nombreCompletoT2", SqlDbType.VarChar).Value = e.NombreCompletoTutor2;
-                    command.Parameters.Add("@telefonoT2", SqlDbType.VarChar).Value = e.TelefonoTutor2;
-                    command.Parameters.Add("@idCE", SqlDbType.Int).Value = idCentro;
-
-                    // Parámetros de salida
-                    SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);
-                    mensajeParameter.Direction = ParameterDirection.Output;
-                    command.Parameters.Add(mensajeParameter);
-
-                    SqlParameter registradoParameter = new SqlParameter("@Registrado", SqlDbType.Bit);
-                    registradoParameter.Direction = ParameterDirection.Output;
-                    command.Parameters.Add(registradoParameter);
-
-                    con.Open();
-                    command.ExecuteNonQuery();
-
-                    // Obtener resultados de los parámetros de salida
-                    string mensaje = mensajeParameter.Value.ToString();
-                    bool registrado = Convert.ToBoolean(registradoParameter.Value);
-
-                    Console.WriteLine(mensaje);
-                    if (registrado)
-                    {
-                        Console.WriteLine("El estudiante ha sido registrado correctamente.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("No se pudo registrar al estudiante.");
-                    }
-                }
-            }
-        }
-        */
-
-        public bool registraEstudiante(string dniEstudiante, string nombreEstudiante, string ap1Estudiante, string ap2Estudiante,
+        public int registraEstudiante(string dniEstudiante, string nombreEstudiante, string ap1Estudiante, string ap2Estudiante,
             string nombreCompletoT1, string telefonoT1, string nombreCompletoT2, string telefonoT2,
             bool ordinaria, bool extraordinaria, int idCE, string observaciones)
         {
-            bool registro = false;
+            int idENuevo = -1;
             try
             {
                 using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
@@ -257,13 +207,19 @@ namespace CapaDatos
                     registradoParameter.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(registradoParameter);
 
+                    SqlParameter idENuevoParameter = new SqlParameter("@idE", SqlDbType.Bit);
+                    registradoParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(idENuevoParameter);
+
+
                     con.Open();
 
                     cmd.ExecuteNonQuery();
 
                     // Obtener resultados de los parámetros de salida
                     string mensaje = mensajeParameter.Value.ToString();
-                    registro = Convert.ToBoolean(registradoParameter.Value);
+                    bool registro = Convert.ToBoolean(registradoParameter.Value);
+                    idENuevo = Convert.ToInt32(idENuevoParameter.Value);
 
                     Console.WriteLine(mensaje);
                     if (registro)
@@ -280,7 +236,7 @@ namespace CapaDatos
             {
                 Console.WriteLine("Error en CD_Estudiantes.registraEstudiante: " + ex.Message);
             }
-            return registro;
+            return idENuevo;
         }
 
         public bool modificaDatosEstudiante(int idE, bool ordinaria, bool extraordinaria, string observaciones)

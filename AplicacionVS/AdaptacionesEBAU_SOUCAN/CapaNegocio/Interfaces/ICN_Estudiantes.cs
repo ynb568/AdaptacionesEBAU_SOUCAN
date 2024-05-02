@@ -41,8 +41,8 @@ namespace CapaNegocio.Interfaces
         /// <param name="extraordinaria">Convocatoria extraordinaria.</param>
         /// <param name="idCE">Identificador del centro.</param>
         /// <param name="observaciones">Observaciones del estudiante.</param>
-        /// <returns>True si se ha insertado correctamente, false en caso contrario.</returns>
-        bool registraEstudiante(string dniEstudiante, string nombreEstudiante, string ap1Estudiante, string ap2Estudiante,
+        /// <returns>Dni/NIF/NIE del estudiante registrado.</returns>
+        int registraEstudiante(string dniEstudiante, string nombreEstudiante, string ap1Estudiante, string ap2Estudiante,
             string nombreCompletoT1, string telefonoT1, string nombreCompletoT2, string telefonoT2,
             bool ordinaria, bool extraordinaria, int idCE, string observaciones);
         /// <summary>

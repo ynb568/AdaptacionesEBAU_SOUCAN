@@ -222,18 +222,20 @@ namespace CapaPresentacion.Controllers
             int idCentro = (int)Session["centro educativo"];
             bool ordinaria = model.isOrdinaria;
 
-            cnEstudiantes.registraEstudiante(
+            int idE = cnEstudiantes.registraEstudiante(
                 model.Estudiante.DniEstudiante, model.Estudiante.NombreEstudiante, 
                 model.Estudiante.Ap1Estudiante, model.Estudiante.Ap2Estudiante,
                 model.Estudiante.NombreCompletoTutor1, model.Estudiante.TelefonoTutor1, 
                 model.Estudiante.NombreCompletoTutor2, model.Estudiante.TelefonoTutor2,
                 ordinaria, !ordinaria, idCentro, model.Estudiante.Observaciones);
 
+
+
             for (int i = 0; i < model.AsignaturasFase1.Count; i++)
             {
                 if (model.AsignaturasFase1[i].IsSelected)
                 {
-                    cnAsignaturas.registraAsignaturaPrevistaEstudiante(model.Estudiante.IdEstudiante, 
+                    cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE, 
                         model.AsignaturasFase1[i].IdAsignatura, true, false);
 
                 }
@@ -242,13 +244,13 @@ namespace CapaPresentacion.Controllers
             {
                 if (model.AsignaturasFase2[i].IsSelected)
                 {
-                    cnAsignaturas.registraAsignaturaPrevistaEstudiante(model.Estudiante.IdEstudiante, 
+                    cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE, 
                         model.AsignaturasFase2[i].IdAsignatura, false, true);
                 }
             }
             for (int i = 0; i < model.SelectedAdaptaciones.Count; i++)
             {
-                cnAdaptacionesDiagnosticoEstudiante.registraAdaptacionDiagnosticoEstudiante(model.Estudiante.IdEstudiante,
+                cnAdaptacionesDiagnosticoEstudiante.registraAdaptacionDiagnosticoEstudiante(idE,
                     model.SelectedAdaptaciones[i].DiagnosticoId,
                                        model.SelectedAdaptaciones[i].AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion,
                                                           model.SelectedAdaptaciones[i].AdaptacionDiagnosticoEstudiante.Observaciones);            
@@ -261,7 +263,7 @@ namespace CapaPresentacion.Controllers
                     {
                         var rutaDocumento = Server.MapPath(model.Documentos[i].RutaDocumento);
                         model.Documentos[i].RutaDocumento = cnRecursos.ConvertirArchivoABinario(rutaDocumento);
-                        cnDocumentos.registraDocumentoEstudiante(model.Estudiante.IdEstudiante, model.Documentos[i].IdDocumento,
+                        cnDocumentos.registraDocumentoEstudiante(idE, model.Documentos[i].IdDocumento,
                             model.Documentos[i].RutaDocumento);
                     }
                 }               
@@ -310,8 +312,11 @@ namespace CapaPresentacion.Controllers
             int id = (int)Session["centro educativo"];
             var centro = cnCentrosEducativos.obtenCentro(id);
             var estudiante = cnEstudiantes.obtenEstudianteCentro(id, idE);
+            PlazosRegistro pr = cnPlazosRegistro.obtenPlazoRegistroActivo();
 
-            if (centro == null || estudiante == null)
+
+
+            if (centro == null || estudiante == null || DateTime.Now  < pr.FechaIni || DateTime.Now > pr.FechaFin)
             {
                 return RedirectToAction(nameof(HomeController.LoginCE), "Home");
             }
@@ -334,8 +339,55 @@ namespace CapaPresentacion.Controllers
         public ActionResult EdicionEstudiante(EstudianteViewModel model)
         {
             bool ordinaria = model.isOrdinaria;
-
+            int idE = model.Estudiante.IdEstudiante;
             cnEstudiantes.modificaDatosEstudiante(model.Estudiante.IdEstudiante, ordinaria, !ordinaria, model.Estudiante.Observaciones);
+
+            cnAsignaturas.eliminaAsignaturasPrevistasEstudiante(idE);
+
+            for (int i = 0; i < model.AsignaturasFase1.Count; i++)
+            {
+                if (model.AsignaturasFase1[i].IsSelected)
+                {
+                    cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE,
+                        model.AsignaturasFase1[i].IdAsignatura, true, false);
+
+                }
+            }
+            for (int i = 0; i < model.AsignaturasFase2.Count; i++)
+            {
+                if (model.AsignaturasFase2[i].IsSelected)
+                {
+                    cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE,
+                        model.AsignaturasFase2[i].IdAsignatura, false, true);
+                }
+            }
+
+            for (int i = 0; i < model.AdaptacionDiagnosticoEstudiantes.Count; i++)
+            {
+                cnDiagnosticos.eliminaDiagnosticoEstudiante(idE, model.SelectedAdaptaciones[i].DiagnosticoId);
+            }
+            
+            
+            for (int i = 0; i < model.SelectedAdaptaciones.Count; i++)
+            {
+                cnAdaptacionesDiagnosticoEstudiante.registraAdaptacionDiagnosticoEstudiante(idE,
+                    model.SelectedAdaptaciones[i].DiagnosticoId,
+                                       model.SelectedAdaptaciones[i].AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion,
+                                                          model.SelectedAdaptaciones[i].AdaptacionDiagnosticoEstudiante.Observaciones);
+            }
+            for (int i = 0; i < model.Documentos.Count; i++)
+            {
+                if (model.Documentos[i].RutaDocumento != null)
+                {
+                    if (!model.Documentos[i].RutaDocumento.IsNullOrWhiteSpace())
+                    {
+                        var rutaDocumento = Server.MapPath(model.Documentos[i].RutaDocumento);
+                        model.Documentos[i].RutaDocumento = cnRecursos.ConvertirArchivoABinario(rutaDocumento);
+                        cnDocumentos.registraDocumentoEstudiante(idE, model.Documentos[i].IdDocumento,
+                            model.Documentos[i].RutaDocumento);
+                    }
+                }
+            }
 
             return RedirectToAction("EstudiantesCentro");
         }

@@ -72,7 +72,7 @@
 
                 // Muestra la tabla si es la primera fila
                 if ($("#tablaAdaptacionesRegistradas tbody tr").length > 0) {
-                    $("#tablaAdaptacionesRegistradas").css("display", "table");
+                    $("#tablaAdaptacionesRegistradas").show();
                 }
             } else {
                 alert("Ya existe una fila con el mismo nombre de adaptación.");
@@ -85,7 +85,7 @@
             $(this).closest("tr").remove();
 
             if ($("#tablaAdaptacionesRegistradas tbody tr").length === 0) {
-                $("#tablaAdaptacionesRegistradas").css("display", "none");
+                $("#tablaAdaptacionesRegistradas").hide();
             }
         });
      });

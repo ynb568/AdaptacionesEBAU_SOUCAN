@@ -24,7 +24,7 @@ namespace CapaNegocio
             return objCD.obtenEstudianteCentro(idCentro, idEstudiante);
         }
 
-        public bool registraEstudiante(string dniEstudiante, string nombreEstudiante, string ap1Estudiante, string ap2Estudiante,
+        public int registraEstudiante(string dniEstudiante, string nombreEstudiante, string ap1Estudiante, string ap2Estudiante,
             string nombreCompletoT1, string telefonoT1, string nombreCompletoT2, string telefonoT2,
             bool ordinaria, bool extraordinaria, int idCE, string observaciones)
         {

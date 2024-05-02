@@ -74,6 +74,16 @@
         }
     </div>
 
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Estudiante.Convocatoria)
+        <div>
+            @Html.RadioButtonFor(m => m.isOrdinaria, true, new { id = "ordinaria" }) <label for="ordinaria">Ordinaria</label>
+            @Html.RadioButtonFor(m => m.isOrdinaria, false, new { id = "extraordinaria" }) <label for="extraordinaria">Extraordinaria</label>
+        </div>
+    </div>
+
+
     <h5>DIAGNÓSTICOS</h5>
 
     <style>
@@ -119,13 +129,15 @@
 
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Estudiante.Convocatoria)
-        <div>
-            @Html.RadioButtonFor(m => m.isOrdinaria, true, new { id = "ordinaria" }) <label for="ordinaria">Ordinaria</label>
-            @Html.RadioButtonFor(m => m.isOrdinaria, false, new { id = "extraordinaria" }) <label for="extraordinaria">Extraordinaria</label>
-        </div>
+    <h5>DOCUMENTOS</h5>
+    <div class="form-group m-3">
+        @for (int i = 0; i < Model.Documentos.Count; i++)
+        {
+            @Html.LabelFor(m => m.Documentos[i].NombreDocumento)
+            <input type="file" id="fileUpload@i" name="Documentos[@i].RutaDocumento" accept="application/pdf" />
+        }
     </div>
+
     <div class="form-group">
         @Html.LabelFor(m => m.Estudiante.Observaciones)
         @Html.TextBoxFor(m => m.Estudiante.Observaciones, new { @class = "form-control" })
@@ -146,8 +158,51 @@
             $(this).closest("tr").remove();
 
             if ($("#tablaAdaptacionesRegistradas tbody tr").length === 0) {
-                $("#tablaAdaptacionesRegistradas").css("display", "none");
+                $("#tablaAdaptacionesRegistradas").hide();
             }
         });
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            // Función para manejar el cambio en el desplegable de diagnósticos
+            $("#selectDiagnostico").change(function () {
+                // Obtener el diagnóstico seleccionado
+                var selectedDiagnostico = $(this).val();
+                // Mostrar las adaptaciones activas correspondientes al diagnóstico seleccionado
+                // Puedes implementar esta parte según la lógica específica de tu aplicación
+
+                SetDiagnostico();
+            });
+        });
+    </script>
+    <script>
+        function SetDiagnostico() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action(nameof(CentrosEducativosController.SetDiagnostico), "CentrosEducativos")",
+                data: {
+                    idDiagnostico: $("#selectDiagnostico").val()
+                },
+                success: function(partialView) {
+                    $("#diagnosticosBody").append(partialView);
+                }
+            })
+        }
+
+        function SetAdaptacion() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action(nameof(CentrosEducativosController.SetAdaptacion), "CentrosEducativos")",
+                data: {
+                    idAdaptacion: $("#selectAdaptacion").val(),
+                    idDiagnostico: $("#selectDiagnostico").val()
+                },
+                success: function(partialView) {
+                    $("#adaptacionesBody").append(partialView);
+                }
+            })
+        }
     </script>
 }

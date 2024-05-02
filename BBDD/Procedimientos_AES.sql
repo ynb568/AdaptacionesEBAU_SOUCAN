@@ -156,7 +156,7 @@ as
 		declare @Completado bit;
 		if (exists (select * from Estudiante where idEstudiante = @idE))
 			begin
-				select * from Asignatura a
+				select aep.idAsignatura, a.nombreAsignatura, a.activo, aep.fase1, aep.fase2 from Asignatura a
 					inner join AsignaturaEstudiantePrevista aep on a.idAsignatura = aep.idAsignatura
 					where aep.idEstudiante = @idE
 				set @Mensaje = ('Procedimiento correcto');
@@ -170,6 +170,7 @@ as
 	end;
 go	
 
+
 create or alter procedure sp_obtenAsignaturasMatriculadasEstudiante @idE int
 as
 	begin
@@ -177,7 +178,7 @@ as
 		declare @Completado bit;
 		if (exists (select * from Estudiante where idEstudiante = @idE))
 			begin
-				select * from Asignatura a
+				select aem.idAsignatura, a.nombreAsignatura, a.activo, aem.fase1, aem.fase2 from Asignatura a
 					inner join AsignaturaEstudianteMatriculada aem on a.idAsignatura = aem.idAsignatura
 					where aem.idEstudiante = @idE
 				set @Mensaje = ('Procedimiento correcto');
@@ -408,7 +409,7 @@ create or alter procedure sp_registraEstudiante @dniE varchar(20),
 	@nombreE varchar(50), @ap1E varchar(50), @ap2E varchar(50),
 	@nombreT1 varchar(100), @telefonoT1 varchar(9), @nombreT2 varchar(100), @telefonoT2 varchar(9),
 	@ordinaria bit, @extraordinaria bit, @idCE int, @observaciones varchar(500),
-	@Mensaje varchar(50) output, @registrado bit output
+	@Mensaje varchar(50) output, @registrado bit output, @idE int output
 as
 	begin
 		declare @curso varchar(10);
@@ -421,7 +422,6 @@ as
 					begin
 						if (exists (select * from PlazosRegistro where activo = 1))
 							begin
-								--TODO: asegurar que únicamente haya 1 plazo activo
 								set @curso = (select top(1) cursoConvocatoria from PlazosRegistro where activo = 1) 
 								insert into Estudiante (dniEstudiante, nombreEstudiante, ap1Estudiante, ap2Estudiante, 
 									nombreCompletoTutor1, telefonoTutor1,  nombreCompletoTutor2, telefonoTutor2, 
@@ -432,6 +432,9 @@ as
 		
 								set @Mensaje = ('Procedimiento correcto');
 								set @Registrado = 1;
+
+								set @idE = (select idEstudiante from Estudiante where dniEstudiante = @dniE);
+								
 								commit transaction
 							end
 						else

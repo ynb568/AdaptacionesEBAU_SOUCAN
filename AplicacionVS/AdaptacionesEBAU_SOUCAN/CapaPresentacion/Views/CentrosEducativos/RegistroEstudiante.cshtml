@@ -105,13 +105,6 @@
         <div class="col-md-auto">
             @Html.DropDownListFor(m => m.SelectedDiagnostico, new SelectList(Model.Diagnosticos, "IdDiagnostico", "NombreDiagnostico"), "Seleccione select", new { @class = "form-select", id = "selectDiagnostico" })
         </div>
-        <!--
-        <div class="col-md-auto my-auto">
-            <button class="btn btn-sm btn-primary" type="button" onclick="SetDiagnostico()">
-                Añadir
-            </button>
-        </div>
-        -->
     </div>
     <div id="diagnosticosBody">
 
