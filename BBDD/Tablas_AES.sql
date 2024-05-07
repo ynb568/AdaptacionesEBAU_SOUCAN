@@ -88,10 +88,7 @@ create table Estudiante (
 	fechaRegistro datetime default getdate(),
 	idCE int foreign key references CentroEducativo (idCE) not null,
 	constraint ck_tlfnT1 check (telefonoTutor1 like ('[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')),
-	constraint ck_tlfnT2 check (telefonoTutor2 like ('[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')),
-	--CONSTRAINT ck_convocatoria check (
-    --    (ordinaria = 1 AND extraordinaria = 0) OR
-    --    (ordinaria = 0 AND extraordinaria = 1))
+	constraint ck_tlfnT2 check (telefonoTutor2 like ('[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'))
 );
 
 create table Documento (

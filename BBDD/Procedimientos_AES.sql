@@ -433,7 +433,7 @@ as
 								set @Mensaje = ('Procedimiento correcto');
 								set @Registrado = 1;
 
-								set @idE = (select idEstudiante from Estudiante where dniEstudiante = @dniE);
+								set @idE = SCOPE_IDENTITY(); --OBTIENE LA PK DEL ÚLTIMO REGISTRO INSERTADO
 								
 								commit transaction
 							end

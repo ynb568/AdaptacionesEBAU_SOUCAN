@@ -9,6 +9,7 @@ using CapaNegocio;
 using System.Collections;
 using CapaPresentacion.ViewModels;
 using Microsoft.Ajax.Utilities;
+using System.IO;
 
 
 namespace CapaPresentacion.Controllers
@@ -154,6 +155,31 @@ namespace CapaPresentacion.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idE"></param>
+        /// <returns></returns>
+        private List<FileUploadViewModel> InitFilesViewModel(int? idE = null)
+        {
+            var Documentos = cnDocumentos.listaDocumentos();
+            if (idE.HasValue) 
+            {
+                Documentos = cnDocumentos.listaDocumentosEstudiante(idE.Value);
+            }
+
+            var filesModel = new List<FileUploadViewModel>();
+            foreach (var d in Documentos)
+            {
+                filesModel.Add(new FileUploadViewModel 
+                {
+                    Informacion = d
+                });
+            }
+
+
+            return filesModel;
+        }
 
 
         [HttpGet]
@@ -167,6 +193,7 @@ namespace CapaPresentacion.Controllers
                 return RedirectToAction(nameof(HomeController.LoginCE), "Home");
             }
 
+
             var viewModel = new EstudianteViewModel
             {
                 PlazoRegistroActivo = cnPlazosRegistro.obtenPlazoRegistroActivo(),
@@ -177,7 +204,7 @@ namespace CapaPresentacion.Controllers
                 Diagnosticos = cnDiagnosticos.listaDiagnosticosActivos(),
                 Adaptaciones = new List<Adaptacion>(),
                 AdaptacionDiagnosticoEstudiantes = new List<AdaptacionDiagnosticoEstudiante>(),
-                Documentos = cnDocumentos.listaDocumentos()
+                Documentos = InitFilesViewModel()
 
             };
 
@@ -255,10 +282,31 @@ namespace CapaPresentacion.Controllers
                                        model.SelectedAdaptaciones[i].AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion,
                                                           model.SelectedAdaptaciones[i].AdaptacionDiagnosticoEstudiante.Observaciones);            
             }
-            for (int i = 0; i < model.Documentos.Count; i++)
+            
+            foreach (var documento in model.Documentos)
             {
-                if (model.Documentos[i].RutaDocumento != null)
+                var memoryStream = new MemoryStream();
+                documento.Contenido.InputStream.CopyTo(memoryStream);
+                var arrayBytes = memoryStream.ToArray();
+
+                try
                 {
+                    System.IO.File.WriteAllBytes("PAAAAAAAAATHHHHHHHHHHHHHHH", arrayBytes);
+
+                    // Guardar la ruta en la DB
+
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                if (model.DocumentosUploaded[i].RutaDocumento != null)
+                {
+                    if (!System.IO.File.Exists(model.Documentos[i].RutaDocumento)) {
+                        ViewData["Mensaje"] = "El archivo no existe";                    
+                    }
+
                     if (!model.Documentos[i].RutaDocumento.IsNullOrWhiteSpace())
                     {
                         var rutaDocumento = Server.MapPath(model.Documentos[i].RutaDocumento);
@@ -295,7 +343,7 @@ namespace CapaPresentacion.Controllers
                 AsignaturasFase1 = cnAsignaturas.listaAsignaturasPrevistasEstudiantePorFase(idE, 1),
                 AsignaturasFase2 = cnAsignaturas.listaAsignaturasPrevistasEstudiantePorFase(idE, 2),
                 Diagnosticos = cnDiagnosticos.listaDiagnosticosEstudiante(idE),
-                Documentos = cnDocumentos.listaDocumentosEstudiante(idE)
+                Documentos = InitFilesViewModel(idE)
 
             };
             foreach (Diagnostico d in viewModel.Diagnosticos)
@@ -329,7 +377,7 @@ namespace CapaPresentacion.Controllers
                 AsignaturasFase2 = cnAsignaturas.listaAsignaturasPorFase(2),
                 isOrdinaria = (estudiante.Convocatoria == "Ordinaria"),
                 Diagnosticos = cnDiagnosticos.listaDiagnosticosActivos(),
-                Documentos = cnDocumentos.listaDocumentos()
+                Documentos = InitFilesViewModel()
             };
 
             return View(viewModel);
@@ -375,7 +423,7 @@ namespace CapaPresentacion.Controllers
                                        model.SelectedAdaptaciones[i].AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion,
                                                           model.SelectedAdaptaciones[i].AdaptacionDiagnosticoEstudiante.Observaciones);
             }
-            for (int i = 0; i < model.Documentos.Count; i++)
+            /*for (int i = 0; i < model.Documentos.Count; i++)
             {
                 if (model.Documentos[i].RutaDocumento != null)
                 {
@@ -387,7 +435,7 @@ namespace CapaPresentacion.Controllers
                             model.Documentos[i].RutaDocumento);
                     }
                 }
-            }
+            }*/
 
             return RedirectToAction("EstudiantesCentro");
         }

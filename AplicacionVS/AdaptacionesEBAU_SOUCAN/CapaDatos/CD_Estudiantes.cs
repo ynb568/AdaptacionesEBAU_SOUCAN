@@ -189,14 +189,14 @@ namespace CapaDatos
                     cmd.Parameters.AddWithValue("nombreE", nombreEstudiante);
                     cmd.Parameters.AddWithValue("ap1E", ap1Estudiante);
                     cmd.Parameters.AddWithValue("ap2E", ap2Estudiante);
-                    cmd.Parameters.AddWithValue("nombreT1", nombreCompletoT1);
-                    cmd.Parameters.AddWithValue("telefonoT1", telefonoT1);
-                    cmd.Parameters.AddWithValue("nombreT2", nombreCompletoT2);
-                    cmd.Parameters.AddWithValue("telefonoT2", telefonoT2);
+                    cmd.Parameters.AddWithValue("nombreT1", string.IsNullOrEmpty(nombreCompletoT1) ? (object)DBNull.Value : nombreCompletoT1); // Manejo de nulos
+                    cmd.Parameters.AddWithValue("telefonoT1", string.IsNullOrEmpty(telefonoT1) ? (object)DBNull.Value : telefonoT1); // Manejo de nulos
+                    cmd.Parameters.AddWithValue("nombreT2", string.IsNullOrEmpty(nombreCompletoT2) ? (object)DBNull.Value : nombreCompletoT2); // Manejo de nulos
+                    cmd.Parameters.AddWithValue("telefonoT2", string.IsNullOrEmpty(telefonoT2) ? (object)DBNull.Value : telefonoT2); // Manejo de nulos
                     cmd.Parameters.AddWithValue("ordinaria", ordinaria);
                     cmd.Parameters.AddWithValue("extraordinaria", extraordinaria);
                     cmd.Parameters.AddWithValue("idCE", idCE);
-                    cmd.Parameters.AddWithValue("observaciones", observaciones);
+                    cmd.Parameters.AddWithValue("observaciones", string.IsNullOrEmpty(observaciones) ? (object)DBNull.Value : observaciones);
 
                     // Parámetros de salida
                     SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);
@@ -207,8 +207,8 @@ namespace CapaDatos
                     registradoParameter.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(registradoParameter);
 
-                    SqlParameter idENuevoParameter = new SqlParameter("@idE", SqlDbType.Bit);
-                    registradoParameter.Direction = ParameterDirection.Output;
+                    SqlParameter idENuevoParameter = new SqlParameter("@idE", SqlDbType.Int);
+                    idENuevoParameter.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(idENuevoParameter);
 
 

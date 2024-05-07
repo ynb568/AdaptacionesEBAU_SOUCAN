@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<form method="post" action="@Url.Action(nameof(CentrosEducativosController.RegistroEstudiante), "CentrosEducativos")">
+<form method="post" action="@Url.Action(nameof(CentrosEducativosController.RegistroEstudiante), "CentrosEducativos")" enctype="multipart/form-data">
     @Html.HiddenFor(m => m.Estudiante.IdEstudiante)
     <div>
         @Html.LabelFor(m => m.PlazoRegistroActivo.CursoConvocatoria)
@@ -115,8 +115,7 @@
     <div class="form-group m-3">
         @for (int i = 0; i < Model.Documentos.Count; i++)
         {
-            @Html.LabelFor(m => m.Documentos[i].NombreDocumento)
-            <input type="file" id="fileUpload@i" name="Documentos[@i].RutaDocumento" accept="application/pdf" />
+            Html.RenderPartial("_UploadFile", Model.Documentos[i]);
         }
     </div>
     <div class="form-group">

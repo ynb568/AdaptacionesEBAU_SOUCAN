@@ -132,6 +132,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AdaptacionDiagnosticoViewModel.cs" />
     <Compile Include="ViewModels\EstudianteViewModel.cs" />
+    <Compile Include="ViewModels\FileUploadViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -153,9 +154,6 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Images\green-check-mark.png" />
-    <Content Include="Images\logoUC.png" />
-    <Content Include="Images\red-cross.png" />
     <Content Include="Images\UC_LogotipoVReducida-1_verde.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -198,6 +196,7 @@
     <Content Include="Views\CentrosEducativos\_AdaptacionesDiagnosticoEstudiante.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
     <Content Include="Views\CentrosEducativos\_Diagnostico.cshtml" />
+    <Content Include="Views\CentrosEducativos\_UploadFile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
