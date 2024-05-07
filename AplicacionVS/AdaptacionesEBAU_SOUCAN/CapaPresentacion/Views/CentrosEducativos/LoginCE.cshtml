@@ -26,10 +26,11 @@
                         {
                             <fieldset>
                                 <div class="form-group">
-                                    @Html.TextBox("correo", null, new { @class = "form-control", placeholder = "Correo", @type = "email" })
+                                    @Html.TextBox("correo", null, new { @class = "form-control", placeholder = "Correo del Centro", @type = "email" })
                                 </div>
                                 <div class="form-group">
-                                    @Html.TextBox("contrasenha", null, new { @class = "form-control", placeholder = "Contrasenha", @type = "password" })
+                                    @Html.TextBox("contrasenha", null, new { @class = "form-control", placeholder = "Contraseña", @type = "password" })
+                                    <small id="capsLockWarning" class="badge bg-secondary" style="display: none">Las mayúsculas están activadas.</small>
                                 </div>
                                 <input class="btn btn-lg btn-custom btn-block" type="submit" value="Iniciar Sesión">
                             </fieldset>
@@ -45,5 +46,16 @@
             </div>
         </div>
     </div>
+
+<script>
+    document.getElementById('contrasenha').addEventListener('keyup', function (e) {
+    var capsLockOn = e.getModifierState('CapsLock');
+    if (capsLockOn) {
+        document.getElementById('capsLockWarning').style.display = 'block';
+    } else {
+        document.getElementById('capsLockWarning').style.display = 'none';
+    }
+});
+</script>
 </body>
 </html>

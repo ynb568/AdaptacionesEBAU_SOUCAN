@@ -129,11 +129,6 @@ namespace CapaDatos
                                 Observaciones = dr["observaciones"].ToString()
                             };
 
-                            /* CONSIDERAR SI ES NECESARIO RECUPERAR EL CENTRO EDUCATIVO
-                            CD_CentrosEducativos cdCentros = new CD_CentrosEducativos();
-                            CentroEducativo ce = cdCentros.obtenCentro(idCentro);
-                            e.Centro = ce;
-                            */
                             CD_Asignaturas cdAsignaturas = new CD_Asignaturas();
                             List<Asignatura> asignaturasPrevistas = cdAsignaturas.listaAsignaturasPrevistasEstudiante(idEstudiante);
                             e.AsignaturasPrevistas = asignaturasPrevistas;
@@ -172,7 +167,58 @@ namespace CapaDatos
             }
             return e;
         }
-        
+
+        public Estudiante obtenInfoEstudianteCentro(int idCentro, int idEstudiante)
+        {
+            Estudiante e = null;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_obtenEstudianteCentro", con);
+                    cmd.Parameters.AddWithValue("idCE", idCentro);
+                    cmd.Parameters.AddWithValue("idE", idEstudiante);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    con.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            e = new Estudiante()
+                            {
+                                IdEstudiante = Convert.ToInt32(dr["idEstudiante"]),
+                                DniEstudiante = dr["dniEstudiante"].ToString(),
+                                NombreEstudiante = dr["nombreEstudiante"].ToString(),
+                                Ap1Estudiante = dr["ap1Estudiante"].ToString(),
+                                Ap2Estudiante = dr["ap2Estudiante"].ToString(),
+                                NombreCompletoTutor1 = dr["nombreCompletoTutor1"].ToString(),
+                                TelefonoTutor1 = dr["telefonoTutor1"].ToString(),
+                                NombreCompletoTutor2 = dr["nombreCompletoTutor2"].ToString(),
+                                TelefonoTutor2 = dr["telefonoTutor2"].ToString(),
+                                CursoConvocatoria = dr["cursoConvocatoria"].ToString(),
+                                FechaRegistro = Convert.ToDateTime(dr["fechaRegistro"]),
+                                Ordinaria = Convert.ToBoolean(dr["ordinaria"]),
+                                ExtraOrdinaria = Convert.ToBoolean(dr["extraOrdinaria"]),
+                                Validado = dr["validado"] == DBNull.Value ? (bool?)null : Convert.ToBoolean(dr["validado"]),
+                                Observaciones = dr["observaciones"].ToString()
+                            };
+                        }
+                        dr.Close();
+                        con.Close();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error en CD_Estudiantes.obtenEstudianteCentro: " + ex.Message);
+            }
+            return e;
+        }
+
+
         public int registraEstudiante(string dniEstudiante, string nombreEstudiante, string ap1Estudiante, string ap2Estudiante,
             string nombreCompletoT1, string telefonoT1, string nombreCompletoT2, string telefonoT2,
             bool ordinaria, bool extraordinaria, int idCE, string observaciones)
@@ -189,10 +235,10 @@ namespace CapaDatos
                     cmd.Parameters.AddWithValue("nombreE", nombreEstudiante);
                     cmd.Parameters.AddWithValue("ap1E", ap1Estudiante);
                     cmd.Parameters.AddWithValue("ap2E", ap2Estudiante);
-                    cmd.Parameters.AddWithValue("nombreT1", string.IsNullOrEmpty(nombreCompletoT1) ? (object)DBNull.Value : nombreCompletoT1); // Manejo de nulos
-                    cmd.Parameters.AddWithValue("telefonoT1", string.IsNullOrEmpty(telefonoT1) ? (object)DBNull.Value : telefonoT1); // Manejo de nulos
-                    cmd.Parameters.AddWithValue("nombreT2", string.IsNullOrEmpty(nombreCompletoT2) ? (object)DBNull.Value : nombreCompletoT2); // Manejo de nulos
-                    cmd.Parameters.AddWithValue("telefonoT2", string.IsNullOrEmpty(telefonoT2) ? (object)DBNull.Value : telefonoT2); // Manejo de nulos
+                    cmd.Parameters.AddWithValue("nombreT1", string.IsNullOrEmpty(nombreCompletoT1) ? (object)DBNull.Value : nombreCompletoT1);
+                    cmd.Parameters.AddWithValue("telefonoT1", string.IsNullOrEmpty(telefonoT1) ? (object)DBNull.Value : telefonoT1);
+                    cmd.Parameters.AddWithValue("nombreT2", string.IsNullOrEmpty(nombreCompletoT2) ? (object)DBNull.Value : nombreCompletoT2);
+                    cmd.Parameters.AddWithValue("telefonoT2", string.IsNullOrEmpty(telefonoT2) ? (object)DBNull.Value : telefonoT2);
                     cmd.Parameters.AddWithValue("ordinaria", ordinaria);
                     cmd.Parameters.AddWithValue("extraordinaria", extraordinaria);
                     cmd.Parameters.AddWithValue("idCE", idCE);

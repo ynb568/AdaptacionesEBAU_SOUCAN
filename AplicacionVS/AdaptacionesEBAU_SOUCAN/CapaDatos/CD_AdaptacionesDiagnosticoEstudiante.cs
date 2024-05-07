@@ -42,7 +42,7 @@ namespace CapaDatos
                                         Excepcional = Convert.ToBoolean(dr["excepcional"]),
                                         DescripcionExcepcional = dr["descripcionExcepcional"].ToString()
                                     },
-                                    Validado = dr["validado"] != DBNull.Value ? Convert.ToBoolean(dr["validado"]) : false,
+                                    Validado = dr["validado"] == DBNull.Value ? (bool?)null : Convert.ToBoolean(dr["validado"]),
                                     Observaciones = dr["observaciones"].ToString(),
                                     Revision = dr["revision"].ToString()
                                 }
@@ -71,7 +71,7 @@ namespace CapaDatos
                     cmd.Parameters.AddWithValue("idE", idEstudiante);
                     cmd.Parameters.AddWithValue("idD", idDiagnostico);
                     cmd.Parameters.AddWithValue("idA", idAdaptacion);
-                    cmd.Parameters.AddWithValue("observaciones", observaciones);
+                    cmd.Parameters.AddWithValue("observaciones", string.IsNullOrEmpty(observaciones) ? (object)DBNull.Value : observaciones);
 
                     // Parámetros de salida
                     SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);

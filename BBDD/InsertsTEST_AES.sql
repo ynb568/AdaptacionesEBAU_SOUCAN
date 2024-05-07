@@ -5,6 +5,7 @@ insert into PlazosRegistro (fechaIni, fechaFin, cursoConvocatoria, activo)
 	values ('2024-01-01','2024-12-31','Curso 2024', 1);
 go
 
+
 insert into Municipio (nombreMunicipio)
 	values ('MunTest');
 go
@@ -80,3 +81,39 @@ insert into AdaptacionDiagnosticoEstudiante (idAdaptacion, idDiagnostico, idEstu
 												validado, observaciones, revision)
 	values (1,1,1, null, 'ObserAdapEst Test', 'RevisionAdapEst test');
 go
+
+/*
+delete from AdaptacionDiagnosticoEstudiante;
+
+delete from AdaptacionDiagnostico;
+
+delete from Adaptacion;
+
+delete from Diagnostico;
+
+delete from AsignaturaEstudianteMatriculada;
+
+delete from AsignaturaEstudiantePrevista;
+
+delete from Asignatura;
+
+delete from Apunte;
+
+delete from DocumentoEstudiante;
+
+delete from Documento;
+
+delete from Estudiante;
+
+delete from CentroEducativo;
+
+delete from Sede;
+
+delete from Usuario;
+
+delete from Direccion;
+
+delete from Municipio;
+
+delete from PlazosRegistro;
+*/

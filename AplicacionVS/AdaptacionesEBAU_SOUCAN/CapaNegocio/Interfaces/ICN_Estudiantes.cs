@@ -55,5 +55,14 @@ namespace CapaNegocio.Interfaces
         /// <returns>True si se ha modificado correctamente, false en caso contrario.</returns>
         /// <throws>ArgumentException si el id del estudiante es 0 o si la convocatoria es incorrecta.</throws>
         bool modificaDatosEstudiante(int idE, bool ordinaria, bool extraordinaria, string observaciones);
+
+        /// <summary>
+        /// Ontiene la información básica (datos de tipo nativo) de un estudiante 
+        /// cuyo id es pasado como parametro.
+        /// </summary>
+        /// <param name="idCentro">Identificador del centro.</param>
+        /// <param name="idEstudiante">Identificador del estudiante.</param>
+        /// <returns>Estudiante sin incluir sus listas.</returns>
+        Estudiante obtenInfoEstudianteCentro(int idCentro, int idEstudiante);
     }
 }

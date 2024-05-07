@@ -11,6 +11,9 @@
 
 <form method="post" action="@Url.Action(nameof(CentrosEducativosController.RegistroEstudiante), "CentrosEducativos")" enctype="multipart/form-data">
     @Html.HiddenFor(m => m.Estudiante.IdEstudiante)
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
     <div>
         @Html.LabelFor(m => m.PlazoRegistroActivo.CursoConvocatoria)
         <p>@Html.DisplayFor(m => m.PlazoRegistroActivo.CursoConvocatoria)</p>
@@ -21,6 +24,7 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Estudiante.DniEstudiante)
         @Html.TextBoxFor(m => m.Estudiante.DniEstudiante, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Estudiante.DniEstudiante, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Estudiante.NombreEstudiante)
@@ -98,7 +102,7 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Aquí se añadirán las filas -->
+            <!-- Aquí se añadirán las filas de adaptaciones registradas-->
         </tbody>
     </table>
     <div class="row" id="diagnosticosDropdown">

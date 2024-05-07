@@ -3,7 +3,6 @@
 @using (Html.BeginCollectionItem("Documentos"))
 {
     @Html.HiddenFor(m => m.Informacion.IdDocumento)
-
     <label for="@Html.IdFor(m => m.Contenido)">
         @Model.Informacion.NombreDocumento
     </label>

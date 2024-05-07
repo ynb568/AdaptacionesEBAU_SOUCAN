@@ -15,17 +15,20 @@
                 <div class="modal-body">
                     <div class="form-group">
                         @Html.Label("Contraseña Actual", new { @class = "control-label" })
-                        @Html.Password("Contraseña Actual", null, new { @class="form-control"})
+                        @Html.Password("Contraseña Actual", null, new { @class = "form-control", id = "contrasenhaActual" })
+                        <small id="capsLockWarningActual" class="badge bg-secondary" style="display: none">Las mayúsculas están activadas.</small>
                     </div>
 
                     <div class="form-group">
                         @Html.Label("NuevaContrasena", "Nueva contraseña", new { @class = "control-label" })
-                        @Html.Password("NuevaContrasena", null, new { @class = "form-control" })
+                        @Html.Password("NuevaContrasena", null, new { @class = "form-control", id = "nuevaContrasenha" })
+                        <small id="capsLockWarningNueva" class="badge bg-secondary" style="display: none">Las mayúsculas están activadas.</small>
                     </div>
 
                     <div class="form-group">
-                        @Html.Label("ConfirmarNuevaContrasena",  "Confirmar Nueva Contraseña", new { @class = "control-label" })
-                        @Html.Password("ConfirmarNuevaContrasena", null, new { @class = "form-control" })
+                        @Html.Label("ConfirmarNuevaContrasena", "Confirmar Nueva Contraseña", new { @class = "control-label" })
+                        @Html.Password("ConfirmarNuevaContrasena", null, new { @class = "form-control", id = "confirmarContrasenha" })
+                        <small id="capsLockWarningConfirmar" class="badge bg-secondary" style="display:none">Las mayúsculas están activadas.</small>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -36,3 +39,18 @@
         </div>
     </div>
 </div>
+
+<script>
+    function toggleCapsWarning(fieldId, warningId) {
+        var inputField = document.getElementById(fieldId);
+        var warning = document.getElementById(warningId);
+        inputField.addEventListener('keyup', function (e) {
+            var capsLockOn = e.getModifierState('CapsLock');
+            warning.style.display = capsLockOn ? 'block' : 'none';
+        });
+    }
+
+    toggleCapsWarning('contrasenhaActual', 'capsLockWarningActual');
+    toggleCapsWarning('nuevaContrasenha', 'capsLockWarningNueva');
+    toggleCapsWarning('confirmarContrasenha', 'capsLockWarningConfirmar');
+</script>

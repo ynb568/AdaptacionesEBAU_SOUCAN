@@ -64,11 +64,11 @@
     <h5>ASIGNATURAS PREVISTAS A PRESENTAR EN LA EBAU</h5>
     <div class="form-group m-3">
         <h6>FASE 1:</h6>
-        @foreach (var asignatura in Model.AsignaturasFase1)
+        @foreach (var asignatura in Model.Estudiante.AsignaturasPrevistas)
         {
             <div class="form-group">
-                @Html.DisplayFor(m => asignatura.NombreAsignatura)
-            </div>
+            @Html.DisplayFor(m => asignatura.NombreAsignatura)
+            </div> 
         }
         <h6>FASE 2 (Opcional):</h6>
         @foreach (var asignatura in Model.AsignaturasFase2)
@@ -98,7 +98,7 @@
                     }
                     else if (adaptacion.Validado == false)
                     {
-                <span class="badge text-bg-danger">Rechazado</span>
+                        <span class="badge text-bg-danger">Rechazado</span>
                     }
                     else
                     {

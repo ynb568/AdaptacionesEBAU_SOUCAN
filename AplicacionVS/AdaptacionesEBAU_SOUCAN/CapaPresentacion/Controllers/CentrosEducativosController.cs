@@ -16,7 +16,7 @@ namespace CapaPresentacion.Controllers
 {
     public class CentrosEducativosController : Controller
     {
-        
+        //CADENA DE CONEXION CON LA BBDD GESTIONADA EN WEB.CONFIG
         //static string cadenaCon = "Data Source=3TPC64\SQLEXPRESS;Initial Catalog=AdaptacionesEBAU_SOUCAN;Integrated Security=true";
 
         private ICN_CentrosEducativos cnCentrosEducativos = new CN_CentrosEducativos();
@@ -60,14 +60,6 @@ namespace CapaPresentacion.Controllers
         [HttpGet]
         public ActionResult ControladorCentro()
         {
-            /*
-            var id = (int)Session["centro educativo"];
-            var centro = cnCentrosEducativos.obtenCentro(id);
-            if (centro == null)
-            {
-                return RedirectToAction(nameof(HomeController.LoginCE), "Home");
-            }
-            */
             PlazosRegistro plazosRegistro = cnPlazosRegistro.obtenPlazoRegistroActivo();
             return View(plazosRegistro);
         }
@@ -86,7 +78,6 @@ namespace CapaPresentacion.Controllers
         }
         
         //TODO: investigar como poner para mensaje de error y ok
-        //  No recupera los datos que no son editables
         [HttpPost]
         public ActionResult EdicionCentro(CentroEducativo ce)
         {
@@ -156,10 +147,10 @@ namespace CapaPresentacion.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Recupera los documentos que son cargados en el registro de estudiante.
         /// </summary>
-        /// <param name="idE"></param>
-        /// <returns></returns>
+        /// <param name="idE">Identificador del estudiante.</param>
+        /// <returns>Lista de documentos.</returns>
         private List<FileUploadViewModel> InitFilesViewModel(int? idE = null)
         {
             var Documentos = cnDocumentos.listaDocumentos();
@@ -211,7 +202,6 @@ namespace CapaPresentacion.Controllers
             return View(viewModel);
         }
 
-        //METODO AUXILIAR PARA OBTENER LAS ADAPTACIONES DE UN DIAGNOSTICO EN EL REGISTRO DE ESTUDIANTE
         [HttpPost]
         public ActionResult SetDiagnostico(int idDiagnostico)
         {
@@ -291,28 +281,24 @@ namespace CapaPresentacion.Controllers
 
                 try
                 {
-                    System.IO.File.WriteAllBytes("PAAAAAAAAATHHHHHHHHHHHHHHH", arrayBytes);
+                    //System.IO.File.WriteAllBytes("PAAAAAAAAATHHHHHHHHHHHHHHH", arrayBytes);
 
                     // Guardar la ruta en la DB
 
                 }
                 catch (Exception e)
                 {
-
+                    Console.WriteLine("Error al escribir el documento en memoria: " + e);
                 }
 
-                if (model.DocumentosUploaded[i].RutaDocumento != null)
+                if (documento.Informacion != null)
                 {
-                    if (!System.IO.File.Exists(model.Documentos[i].RutaDocumento)) {
-                        ViewData["Mensaje"] = "El archivo no existe";                    
-                    }
-
-                    if (!model.Documentos[i].RutaDocumento.IsNullOrWhiteSpace())
+                    Estudiante e = cnEstudiantes.obtenInfoEstudianteCentro(idCentro, idE);
+                    documento.Informacion.RutaDocumento = documento.Informacion.NombreDocumento + "_" + e.IdEstudiante + "_" + e.NombreCompleto;
+                    if (!documento.Informacion.RutaDocumento.IsNullOrWhiteSpace())
                     {
-                        var rutaDocumento = Server.MapPath(model.Documentos[i].RutaDocumento);
-                        model.Documentos[i].RutaDocumento = cnRecursos.ConvertirArchivoABinario(rutaDocumento);
-                        cnDocumentos.registraDocumentoEstudiante(idE, model.Documentos[i].IdDocumento,
-                            model.Documentos[i].RutaDocumento);
+                        cnDocumentos.registraDocumentoEstudiante(idE, documento.Informacion.IdDocumento,
+                            documento.Informacion.RutaDocumento);
                     }
                 }               
             }
@@ -344,7 +330,6 @@ namespace CapaPresentacion.Controllers
                 AsignaturasFase2 = cnAsignaturas.listaAsignaturasPrevistasEstudiantePorFase(idE, 2),
                 Diagnosticos = cnDiagnosticos.listaDiagnosticosEstudiante(idE),
                 Documentos = InitFilesViewModel(idE)
-
             };
             foreach (Diagnostico d in viewModel.Diagnosticos)
             {

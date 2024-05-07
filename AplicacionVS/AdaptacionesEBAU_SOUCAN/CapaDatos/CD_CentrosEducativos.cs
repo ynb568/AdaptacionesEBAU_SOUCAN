@@ -152,19 +152,19 @@ namespace CapaDatos
 
                     cmd.Parameters.AddWithValue("nombreCE", nombreCE);
                     cmd.Parameters.AddWithValue("telefonoCE", telefonoCE);
-                    cmd.Parameters.AddWithValue("nombreOrientador", nombreOrientador);
-                    cmd.Parameters.AddWithValue("apellidosOrientador", apellidosOrientador);
-                    cmd.Parameters.AddWithValue("telefonoOrientador", telefonoOrientador);
-                    cmd.Parameters.AddWithValue("correoOrientador", correoOrientador);
-                    cmd.Parameters.AddWithValue("nombreEquipoDirectivo", nombreEquipoDirectivo);
-                    cmd.Parameters.AddWithValue("apellidosEquipoDirectivo", apellidosEquipoDirectivo);
-                    cmd.Parameters.AddWithValue("telefonoEquipoDirectivo", telefonoEquipoDirectivo);
+                    cmd.Parameters.AddWithValue("nombreOrientador", string.IsNullOrEmpty(nombreOrientador) ? (object)DBNull.Value : nombreOrientador);
+                    cmd.Parameters.AddWithValue("apellidosOrientador", string.IsNullOrEmpty(apellidosOrientador) ? (object)DBNull.Value : apellidosOrientador);
+                    cmd.Parameters.AddWithValue("telefonoOrientador", string.IsNullOrEmpty(telefonoOrientador) ? (object)DBNull.Value : telefonoOrientador);
+                    cmd.Parameters.AddWithValue("correoOrientador", string.IsNullOrEmpty(correoOrientador) ? (object)DBNull.Value : correoOrientador);
+                    cmd.Parameters.AddWithValue("nombreEquipoDirectivo", string.IsNullOrEmpty(nombreEquipoDirectivo) ? (object)DBNull.Value : nombreEquipoDirectivo);
+                    cmd.Parameters.AddWithValue("apellidosEquipoDirectivo", string.IsNullOrEmpty(apellidosEquipoDirectivo) ? (object)DBNull.Value : apellidosEquipoDirectivo);
+                    cmd.Parameters.AddWithValue("telefonoEquipoDirectivo", string.IsNullOrEmpty(telefonoEquipoDirectivo) ? (object)DBNull.Value : telefonoEquipoDirectivo);
                     cmd.Parameters.AddWithValue("direccion", direccion);
                     cmd.Parameters.AddWithValue("idMunicipio", idMunicipio);
                     cmd.Parameters.AddWithValue("idSede", idSede);
                     cmd.Parameters.AddWithValue("correo", correo);
-                    cmd.Parameters.AddWithValue("contrasenha", contrasenha);
-                    cmd.Parameters.AddWithValue("repetirContrasenha", repetirContrasenha);
+                    cmd.Parameters.AddWithValue("contrasenha", string.IsNullOrEmpty(contrasenha) ? (object)DBNull.Value : contrasenha);
+                    cmd.Parameters.AddWithValue("repetirContrasenha", string.IsNullOrEmpty(repetirContrasenha) ? (object)DBNull.Value : repetirContrasenha);
 
                     // Parámetros de salida
                     SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);
@@ -214,14 +214,14 @@ namespace CapaDatos
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("idCE", idCE);
-                    cmd.Parameters.AddWithValue("telefonoCE", telefonoCE);
-                    cmd.Parameters.AddWithValue("nomO", nombreO);
-                    cmd.Parameters.AddWithValue("apO", apellidosO);
-                    cmd.Parameters.AddWithValue("telefonoO", telefonoO);
-                    cmd.Parameters.AddWithValue("correoO", correoO);
-                    cmd.Parameters.AddWithValue("nomED", nombreED);
-                    cmd.Parameters.AddWithValue("apED", apellidosED);
-                    cmd.Parameters.AddWithValue("telefonoED", telefonoED);
+                    cmd.Parameters.AddWithValue("telefonoCE", string.IsNullOrEmpty(telefonoCE) ? (object)DBNull.Value : telefonoCE);
+                    cmd.Parameters.AddWithValue("nomO", string.IsNullOrEmpty(nombreO) ? (object)DBNull.Value : nombreO);
+                    cmd.Parameters.AddWithValue("apO", string.IsNullOrEmpty(apellidosO) ? (object)DBNull.Value : apellidosO);
+                    cmd.Parameters.AddWithValue("telefonoO", string.IsNullOrEmpty(telefonoO) ? (object)DBNull.Value : telefonoO);
+                    cmd.Parameters.AddWithValue("correoO", string.IsNullOrEmpty(correoO) ? (object)DBNull.Value : correoO);
+                    cmd.Parameters.AddWithValue("nomED", string.IsNullOrEmpty(nombreED) ? (object)DBNull.Value : nombreED);
+                    cmd.Parameters.AddWithValue("apED", string.IsNullOrEmpty(apellidosED) ? (object)DBNull.Value : apellidosED);
+                    cmd.Parameters.AddWithValue("telefonoED", string.IsNullOrEmpty(telefonoED) ? (object)DBNull.Value : telefonoED);
 
                     // Parámetros de salida
                     SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);

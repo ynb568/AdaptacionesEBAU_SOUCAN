@@ -420,28 +420,38 @@ as
 				if (exists(select * from CentroEducativo
 								where idCE = @idCE))
 					begin
-						if (exists (select * from PlazosRegistro where activo = 1))
+						if (not exists (select * from Estudiante where dniEstudiante = @dniE))
 							begin
-								set @curso = (select top(1) cursoConvocatoria from PlazosRegistro where activo = 1) 
-								insert into Estudiante (dniEstudiante, nombreEstudiante, ap1Estudiante, ap2Estudiante, 
-									nombreCompletoTutor1, telefonoTutor1,  nombreCompletoTutor2, telefonoTutor2, 
-										ordinaria, extraordinaria, cursoConvocatoria, idCE, observaciones)
-									values (@dniE, @nombreE, @ap1E, @ap2E, 
-										@nombreT1, @telefonoT1, @nombreT2, @telefonoT2, 
-										@ordinaria, @extraordinaria, @curso, @idCE, @observaciones)
+								if (exists (select * from PlazosRegistro where activo = 1))
+									begin
+										set @curso = (select top(1) cursoConvocatoria from PlazosRegistro where activo = 1) 
+										insert into Estudiante (dniEstudiante, nombreEstudiante, ap1Estudiante, ap2Estudiante, 
+											nombreCompletoTutor1, telefonoTutor1,  nombreCompletoTutor2, telefonoTutor2, 
+												ordinaria, extraordinaria, cursoConvocatoria, idCE, observaciones)
+											values (@dniE, @nombreE, @ap1E, @ap2E, 
+												@nombreT1, @telefonoT1, @nombreT2, @telefonoT2, 
+												@ordinaria, @extraordinaria, @curso, @idCE, @observaciones)
 		
-								set @Mensaje = ('Procedimiento correcto');
-								set @Registrado = 1;
+										set @Mensaje = ('Procedimiento correcto');
+										set @Registrado = 1;
 
-								set @idE = SCOPE_IDENTITY(); --OBTIENE LA PK DEL ÚLTIMO REGISTRO INSERTADO
+										set @idE = SCOPE_IDENTITY(); --OBTIENE LA PK DEL ÚLTIMO REGISTRO INSERTADO
 								
-								commit transaction
+										commit transaction
+									end
+								else
+									begin
+										if @@trancount > 0
+										rollback transaction
+										set @Mensaje = 'No hay un curso académico activo';
+										set @Registrado = 0;
+									end
 							end
 						else
 							begin
 								if @@trancount > 0
 								rollback transaction
-								set @Mensaje = 'No hay un curso académico activo';
+								set @Mensaje = 'El dni del estudiante está duplicado';
 								set @Registrado = 0;
 							end
 					end
@@ -594,6 +604,7 @@ GO
 SELECT * FROM DocumentoEstudiante;
 GO
 */
+
 
 create or alter procedure sp_registraAdaptacionDiagnosticoEstudiante @idE int, @idD int, @idA int, @observaciones varchar(500),
 @Mensaje varchar(50) output, @Registrado bit output

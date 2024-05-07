@@ -44,5 +44,10 @@ namespace CapaNegocio
 
             return objCD.modificaDatosEstudiante(idE, ordinaria, extraordinaria, observaciones);
         }
+
+        public Estudiante obtenInfoEstudianteCentro(int idCentro, int idEstudiante)
+        {
+            return objCD.obtenInfoEstudianteCentro(idCentro, idEstudiante);
+        }
     }
 }
