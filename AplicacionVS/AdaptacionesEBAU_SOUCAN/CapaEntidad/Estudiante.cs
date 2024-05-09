@@ -15,8 +15,7 @@ namespace CapaEntidad
 		public string Ap1Estudiante { get; set; }
 		[DisplayName("Segundo Apellido Estudiante:")]
 		public string Ap2Estudiante { get;set; }
-
-		//Propiedad para mostrar el nombre completo del estudiante en la vista
+        //Propiedad para mostrar el nombre completo del estudiante en la vista
 		[DisplayName("Nombre Completo:")]
         public string NombreCompleto
         {
@@ -25,7 +24,7 @@ namespace CapaEntidad
                 return $"{NombreEstudiante} {Ap1Estudiante} {Ap2Estudiante}";
             }
         }
-
+        //Propiedad para mostrar la convocatoria en la vista
         [DisplayName("Convocatoria:")]
         public string Convocatoria
         {

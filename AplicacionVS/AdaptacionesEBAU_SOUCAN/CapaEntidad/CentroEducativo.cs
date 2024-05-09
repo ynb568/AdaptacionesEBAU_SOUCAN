@@ -18,10 +18,6 @@ namespace CapaEntidad
 		public string RepetirContrasenha { get; set; }
 		[DisplayName("Nombre del Centro:")]
 		public string NombreCE {  get; set; }
-
-		[DisplayName("Sede Asignada:")]
-		public Sede Sede { get; set; }
-
 		[DisplayName("Teléfono del Centro:")]
 		public string TelefonoCE { get; set; }
 		[DisplayName("Nombre:")]
@@ -38,9 +34,12 @@ namespace CapaEntidad
 		public string ApellidosEquipoDirectivo { get; set; }
 		[DisplayName("Teléfono:")]
 		public string TelefonoEquipoDirectivo { get; set; }
-		public Direccion Direccion { get; set; }
 		public DateTime FechaRegistro { get; set; }
 
-		public List<Estudiante> Estudiantes { get; set; }
+        [DisplayName("Sede Asignada:")]
+        public Sede Sede { get; set; }
+        public Direccion Direccion { get; set; }
+
+        public List<Estudiante> Estudiantes { get; set; }
     }
 }

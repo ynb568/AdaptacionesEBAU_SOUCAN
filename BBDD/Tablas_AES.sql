@@ -152,8 +152,6 @@ create table Adaptacion (
 create table AdaptacionDiagnostico (
 	idDiagnostico int foreign key references Diagnostico(idDiagnostico),
 	idAdaptacion int foreign key references Adaptacion(idAdaptacion),
-	--excepcional bit default 0,
-	--descripcionExcepcional varchar(500) null,
 	primary key (idDiagnostico, idAdaptacion)
 );
 
