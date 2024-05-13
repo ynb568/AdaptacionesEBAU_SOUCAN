@@ -159,7 +159,7 @@ namespace CapaDatos
 
                     // Obtener resultados de los parámetros de salida
                     string mensaje = mensajeParameter.Value.ToString();
-                    registro = registradoParameter.Value != DBNull.Value ? Convert.ToBoolean(registradoParameter.Value) : false;
+                    registro = Convert.ToBoolean(registradoParameter.Value);
 
                     Console.WriteLine(mensaje);
                     if (registro)

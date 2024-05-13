@@ -46,6 +46,7 @@
         @Html.LabelFor(m => m.Estudiante.TelefonoTutor2)
         @Html.TextBoxFor(m => m.Estudiante.TelefonoTutor2, new { @class = "form-control" })
     </div>
+
     <h5>ASIGNATURAS PREVISTAS A PRESENTAR EN LA EBAU</h5>
     <div class="form-group m-3">
         <h6>FASE 1:</h6>
@@ -56,6 +57,7 @@
             Model.AsignaturasFase1[i].IsSelected = exist;
 
             <div class="form-check">
+                @Html.HiddenFor(m => m.AsignaturasFase1[i].IdAsignatura)
                 @Html.CheckBoxFor(m => m.AsignaturasFase1[i].IsSelected, new { @class = "form-check-input" })
                 @Html.LabelFor(m => m.AsignaturasFase1[i].IsSelected, Model.AsignaturasFase1[i].NombreAsignatura, new { @class = "form-check-label" })
             </div>
@@ -68,6 +70,7 @@
             Model.AsignaturasFase2[i].IsSelected = exist;
 
             <div class="form-check">
+                @Html.HiddenFor(m => m.AsignaturasFase2[i].IdAsignatura)
                 @Html.CheckBoxFor(m => m.AsignaturasFase2[i].IsSelected, new { @class = "form-check-input" })
                 @Html.LabelFor(m => m.AsignaturasFase2[i].IsSelected, Model.AsignaturasFase2[i].NombreAsignatura, new { @class = "form-check-label" })
             </div>
@@ -133,14 +136,12 @@
     <div class="form-group m-3">
         @for (int i = 0; i < Model.Documentos.Count; i++)
         {
-            @Html.LabelFor(m => m.Documentos[i].NombreDocumento)
-            <input type="file" id="fileUpload@i" name="Documentos[@i].RutaDocumento" accept="application/pdf" />
+            Html.RenderPartial("_UploadFile", Model.Documentos[i]);
         }
     </div>
-
     <div class="form-group">
         @Html.LabelFor(m => m.Estudiante.Observaciones)
-        @Html.TextBoxFor(m => m.Estudiante.Observaciones, new { @class = "form-control" })
+        @Html.TextAreaFor(m => m.Estudiante.Observaciones, new { @class = "form-control" })
     </div>
     <div class="form-group">
         <button name="submit" type="submit" class="btn btn-custom">Guardar cambios</button>

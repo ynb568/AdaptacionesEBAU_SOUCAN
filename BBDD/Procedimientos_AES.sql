@@ -496,7 +496,7 @@ GO
 */
 
 create or alter procedure sp_registraAsignaturaPrevistaEstudiante @idE int, @idA int, @fase1 bit, @fase2 bit,
-@Mensaje varchar(50) output, @registrado bit output
+@Mensaje varchar(50) output, @Registrado bit output
 as
 	begin 
 		begin try
@@ -505,13 +505,34 @@ as
 					begin
 						if (exists (select * from Asignatura where idAsignatura = @idA and activo = 1))
 							begin
-								insert into AsignaturaEstudiantePrevista(idEstudiante, idAsignatura, fase1, fase2)
-									values (@idE, @idA, @fase1, @fase2)
-								set @Mensaje = ('Procedimiento correcto');
-								set @Registrado = 1;
+								if (not exists (select * from AsignaturaEstudiantePrevista where idEstudiante = @idE and idAsignatura = @idA))
+									begin
+										insert into AsignaturaEstudiantePrevista(idEstudiante, idAsignatura, fase1, fase2)
+											values (@idE, @idA, @fase1, @fase2)
+										set @Mensaje = ('Procedimiento correcto');
+										set @Registrado = 1;
+									end
+								else
+									begin
+										if (exists (select * from AsignaturaEstudiantePrevista where idEstudiante = @idE and idAsignatura = @idA and fase2 = 1) and @fase1 = 1)
+											begin
+											update AsignaturaEstudiantePrevista set fase1 = @fase1 where idEstudiante = @idE and idAsignatura = @idA;
+											set @Mensaje = ('Procedimiento correcto');
+											set @Registrado = 1;
+										end
+									else
+										if (exists (select * from AsignaturaEstudiantePrevista where idEstudiante = @idE and idAsignatura = @idA and fase1 = 1) and @fase2 = 1)
+											begin
+												update AsignaturaEstudiantePrevista set fase2 = @fase2 where idEstudiante = @idE and idAsignatura = @idA;
+												set @Mensaje = ('Procedimiento correcto');
+												set @Registrado = 1;
+											end
+									end
+								commit transaction
 							end
 						else 
 							begin 
+								if @@trancount > 0
 								rollback transaction
 								set @Mensaje = 'No existe el asignatura activa asociada';
 								set @Registrado = 0;
@@ -524,20 +545,22 @@ as
 						set @Mensaje = 'No existe el estudiante asociado';
 						set @Registrado = 0;
 					end
-			commit transaction
 		end try
 
 		begin catch
 			if @@trancount > 0
 			rollback transaction
-			set @Mensaje = ('Se ha producido un error');
+			set @Mensaje = 'Error: ' + ERROR_MESSAGE();
 			set @Registrado = 0;
 		end catch
 	end;
 go
 /*
+select * from Estudiante where idEstudiante = 6;
+select * from Asignatura where idAsignatura = 1;
+
 EXEC sp_registraAsignaturaPrevistaEstudiante 
-    @idE = 1, 
+    @idE = 2, 
     @idA = 1, 
     @fase1 = 1, 
     @fase2 = 0,
@@ -1533,6 +1556,7 @@ as
 									values (@idE, @idA, @fase1, @fase2)
 								set @Mensaje = ('Procedimiento correcto');
 								set @Registrado = 1;
+								commit transaction;
 							end
 						else 
 							begin 

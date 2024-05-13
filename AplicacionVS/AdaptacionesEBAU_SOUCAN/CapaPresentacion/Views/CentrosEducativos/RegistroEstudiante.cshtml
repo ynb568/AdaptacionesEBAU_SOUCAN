@@ -67,6 +67,7 @@
         @for (int i = 0; i < Model.AsignaturasFase1.Count; i++)
         {
             <div class="form-check">
+                @Html.HiddenFor(m => m.AsignaturasFase1[i].IdAsignatura)
                 @Html.CheckBoxFor(m => m.AsignaturasFase1[i].IsSelected, new { @class = "form-check-input" })
                 @Html.LabelFor(m => m.AsignaturasFase1[i].IsSelected, Model.AsignaturasFase1[i].NombreAsignatura, new { @class = "form-check-label" })
             </div>
@@ -75,6 +76,7 @@
         @for (int i = 0; i < Model.AsignaturasFase2.Count; i++)
         {
             <div class="form-check">
+                @Html.HiddenFor(m => m.AsignaturasFase2[i].IdAsignatura)
                 @Html.CheckBoxFor(m => m.AsignaturasFase2[i].IsSelected, new { @class = "form-check-input" })
                 @Html.LabelFor(m => m.AsignaturasFase2[i].IsSelected, Model.AsignaturasFase2[i].NombreAsignatura, new { @class = "form-check-label" })
             </div>

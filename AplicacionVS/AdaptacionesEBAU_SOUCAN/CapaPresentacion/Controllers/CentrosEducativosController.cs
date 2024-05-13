@@ -246,39 +246,45 @@ namespace CapaPresentacion.Controllers
                 model.Estudiante.NombreCompletoTutor2, model.Estudiante.TelefonoTutor2,
                 ordinaria, !ordinaria, idCentro, model.Estudiante.Observaciones);
 
-
-
-            for (int i = 0; i < model.AsignaturasFase1.Count; i++)
+            foreach (Asignatura a in model.AsignaturasFase1)
             {
-                if (model.AsignaturasFase1[i].IsSelected)
+                if (a.IsSelected && a.IdAsignatura > 0)
                 {
-                    cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE, 
-                        model.AsignaturasFase1[i].IdAsignatura, true, false);
-
+                    if (!cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE, a.IdAsignatura, true, false))
+                    {
+                        throw new Exception("Error al registrar asignatura prevista de Fase 1 con ID: " + a.IdAsignatura);
+                    }
                 }
             }
-            for (int i = 0; i < model.AsignaturasFase2.Count; i++)
+
+            foreach (Asignatura a in model.AsignaturasFase2)
             {
-                if (model.AsignaturasFase2[i].IsSelected)
+                if (a.IsSelected && a.IdAsignatura > 0)
                 {
-                    cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE, 
-                        model.AsignaturasFase2[i].IdAsignatura, false, true);
+                    if (!cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE, a.IdAsignatura, false, true))
+                    {
+                        throw new Exception("Error al registrar asignatura prevista de Fase 1 con ID: " + a.IdAsignatura);
+                    }
                 }
             }
-            for (int i = 0; i < model.SelectedAdaptaciones.Count; i++)
+
+            //cuando no hay: System.NullReferenceException: 'Referencia a objeto no establecida como instancia de un objeto.'
+            
+            foreach (var adaptacion in model.SelectedAdaptaciones)
             {
                 cnAdaptacionesDiagnosticoEstudiante.registraAdaptacionDiagnosticoEstudiante(idE,
-                    model.SelectedAdaptaciones[i].DiagnosticoId,
-                                       model.SelectedAdaptaciones[i].AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion,
-                                                          model.SelectedAdaptaciones[i].AdaptacionDiagnosticoEstudiante.Observaciones);            
+                                       adaptacion.DiagnosticoId,
+                                           adaptacion.AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion,
+                                               adaptacion.AdaptacionDiagnosticoEstudiante.Observaciones);
             }
-            
+
+            //cuando no hay: System.NullReferenceException: 'Referencia a objeto no establecida como instancia de un objeto.'
             foreach (var documento in model.Documentos)
             {
                 var memoryStream = new MemoryStream();
                 documento.Contenido.InputStream.CopyTo(memoryStream);
                 var arrayBytes = memoryStream.ToArray();
-
+                /*
                 try
                 {
                     //System.IO.File.WriteAllBytes("PAAAAAAAAATHHHHHHHHHHHHHHH", arrayBytes);
@@ -290,6 +296,7 @@ namespace CapaPresentacion.Controllers
                 {
                     Console.WriteLine("Error al escribir el documento en memoria: " + e);
                 }
+                */
 
                 if (documento.Informacion != null)
                 {
@@ -377,36 +384,40 @@ namespace CapaPresentacion.Controllers
 
             cnAsignaturas.eliminaAsignaturasPrevistasEstudiante(idE);
 
-            for (int i = 0; i < model.AsignaturasFase1.Count; i++)
-            {
-                if (model.AsignaturasFase1[i].IsSelected)
-                {
-                    cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE,
-                        model.AsignaturasFase1[i].IdAsignatura, true, false);
 
-                }
-            }
-            for (int i = 0; i < model.AsignaturasFase2.Count; i++)
+            foreach (Asignatura a in model.AsignaturasFase1)
             {
-                if (model.AsignaturasFase2[i].IsSelected)
+                if (a.IsSelected && a.IdAsignatura > 0)
                 {
-                    cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE,
-                        model.AsignaturasFase2[i].IdAsignatura, false, true);
+                    if (!cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE, a.IdAsignatura, true, false))
+                    {
+                        throw new Exception("Error al registrar asignatura prevista de Fase 1 con ID: " + a.IdAsignatura);
+                    }
                 }
             }
 
-            for (int i = 0; i < model.AdaptacionDiagnosticoEstudiantes.Count; i++)
+            foreach (Asignatura a in model.AsignaturasFase2)
             {
-                cnDiagnosticos.eliminaDiagnosticoEstudiante(idE, model.SelectedAdaptaciones[i].DiagnosticoId);
+                if (a.IsSelected && a.IdAsignatura > 0)
+                {
+                    if (!cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE, a.IdAsignatura, false, true))
+                    {
+                        throw new Exception("Error al registrar asignatura prevista de Fase 1 con ID: " + a.IdAsignatura);
+                    }
+                }
             }
-            
-            
-            for (int i = 0; i < model.SelectedAdaptaciones.Count; i++)
+
+            foreach (var diagnostico in model.Estudiante.Diagnosticos)
+            {
+                cnDiagnosticos.eliminaDiagnosticoEstudiante(idE, diagnostico.IdDiagnostico);
+            }
+
+            foreach (var adaptacion in model.SelectedAdaptaciones)
             {
                 cnAdaptacionesDiagnosticoEstudiante.registraAdaptacionDiagnosticoEstudiante(idE,
-                    model.SelectedAdaptaciones[i].DiagnosticoId,
-                                       model.SelectedAdaptaciones[i].AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion,
-                                                          model.SelectedAdaptaciones[i].AdaptacionDiagnosticoEstudiante.Observaciones);
+                                       adaptacion.DiagnosticoId,
+                                           adaptacion.AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion,
+                                               adaptacion.AdaptacionDiagnosticoEstudiante.Observaciones);
             }
             /*for (int i = 0; i < model.Documentos.Count; i++)
             {
