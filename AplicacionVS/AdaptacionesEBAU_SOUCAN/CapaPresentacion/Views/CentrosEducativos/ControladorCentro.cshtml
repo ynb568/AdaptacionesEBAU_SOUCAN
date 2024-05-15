@@ -4,7 +4,6 @@
     ViewBag.Title = "Menú Centro";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var model = Model;
-    var hoy = DateTime.Today;
 }
 
 <h3>
@@ -15,7 +14,13 @@
     @Html.DisplayFor(m => m.FechaIni)
     @Html.DisplayFor(m => m.FechaFin)
 </h3>
-@if (hoy >= Model.FechaIni && hoy <= Model.FechaFin)
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Mensaje"]
+    </div>
+}
+@if (Model != null && DateTime.Today >= Model.FechaIni && DateTime.Today <= Model.FechaFin)
 {
     <p>@Html.ActionLink("REGISTRAR ESTUDIANTE", nameof(CentrosEducativosController.RegistroEstudiante), "CentrosEducativos", null, new { @class = "btn btn-custom" })</p>
 }

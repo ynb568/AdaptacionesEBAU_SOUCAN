@@ -1,16 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace CapaEntidad
 {
     public class Estudiante
     {
 		public int IdEstudiante { get; set; }
+        [Required(ErrorMessage = "El DNI/NIE/Pasaporte es obligatorio.")]
         [DisplayName("DNI/NIE/Pasaporte:")]
         public string DniEstudiante { get; set; }
+        [Required(ErrorMessage = "El nombre del estudiante es obligatorio.")]
 		[DisplayName("Nombre Estudiante:")]
 		public string NombreEstudiante { get; set; }
+        [Required(ErrorMessage = "El primer apellido del estudiante es obligatorio.")]
 		[DisplayName("Primer Apellido Estudiante:")]
 		public string Ap1Estudiante { get; set; }
 		[DisplayName("Segundo Apellido Estudiante:")]
@@ -34,14 +40,18 @@ namespace CapaEntidad
             }
         }
 
-
+        [Required(ErrorMessage = "El nombre del tutor 1 es obligatorio.")]
         [DisplayName("Nombre Completo Primer Tutor:")]
 		public string NombreCompletoTutor1 { get; set; }
-		[DisplayName("Teléfono Primer Tutor:")]
+        [Required(ErrorMessage = "El teléfono del tutor 1 es obligatorio.")]
+        [RegularExpression(@"^[0-9]{9}$", ErrorMessage = "El número de teléfono debe tener exactamente 9 dígitos.")]
+        [DisplayName("Teléfono Primer Tutor:")]
 		public string TelefonoTutor1 { get; set; }
 		[DisplayName("Nombre Completo Segundo Tutor (Opcional):")]
         public string NombreCompletoTutor2 { get; set; }
-		[DisplayName("Teléfono Segundo Tutor (Opcional):")]
+        
+        [RegularExpression(@"^([0-9]{9})?$", ErrorMessage = "El número de teléfono debe tener exactamente 9 dígitos.")]
+        [DisplayName("Teléfono Segundo Tutor (Opcional):")]
         public string TelefonoTutor2 { get; set; }
 		public bool? Validado { get; set; } // Nullable
         public bool Ordinaria { get; set; }

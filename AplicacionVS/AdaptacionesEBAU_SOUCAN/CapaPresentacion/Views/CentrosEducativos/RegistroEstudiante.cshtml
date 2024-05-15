@@ -11,127 +11,130 @@
 
 <form method="post" action="@Url.Action(nameof(CentrosEducativosController.RegistroEstudiante), "CentrosEducativos")" enctype="multipart/form-data">
     @Html.HiddenFor(m => m.Estudiante.IdEstudiante)
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger" role="alert">
+                @Html.ValidationSummary()
+            </div>
+        }
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-    <div>
-        @Html.LabelFor(m => m.PlazoRegistroActivo.CursoConvocatoria)
-        <p>@Html.DisplayFor(m => m.PlazoRegistroActivo.CursoConvocatoria)</p>
-        <p>@Html.DisplayFor(m => m.PlazoRegistroActivo.FechaIni)</p>
-        <p>@Html.DisplayFor(m => m.PlazoRegistroActivo.FechaFin)</p>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Estudiante.DniEstudiante)
-        @Html.TextBoxFor(m => m.Estudiante.DniEstudiante, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Estudiante.DniEstudiante, "", new { @class = "text-danger" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Estudiante.NombreEstudiante)
-        @Html.TextBoxFor(m => m.Estudiante.NombreEstudiante, new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Estudiante.Ap1Estudiante)
-        @Html.TextBoxFor(m => m.Estudiante.Ap1Estudiante, new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Estudiante.Ap2Estudiante)
-        @Html.TextBoxFor(m => m.Estudiante.Ap2Estudiante, new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Estudiante.NombreCompletoTutor1)
-        @Html.TextBoxFor(m => m.Estudiante.NombreCompletoTutor1, new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Estudiante.TelefonoTutor1)
-        @Html.TextBoxFor(m => m.Estudiante.TelefonoTutor1, new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Estudiante.NombreCompletoTutor2)
-        @Html.TextBoxFor(m => m.Estudiante.NombreCompletoTutor2, new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Estudiante.TelefonoTutor2)
-        @Html.TextBoxFor(m => m.Estudiante.TelefonoTutor2, new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Estudiante.Convocatoria)
         <div>
-            @Html.RadioButtonFor(m => m.isOrdinaria, true, new { id = "ordinaria" }) <label for="ordinaria">Ordinaria</label>
-            @Html.RadioButtonFor(m => m.isOrdinaria, false, new { id = "extraordinaria" }) <label for="extraordinaria">Extraordinaria</label>
+            @Html.LabelFor(m => m.PlazoRegistroActivo.CursoConvocatoria)
+            <p>@Html.DisplayFor(m => m.PlazoRegistroActivo.CursoConvocatoria)</p>
+            <p>@Html.DisplayFor(m => m.PlazoRegistroActivo.FechaIni)</p>
+            <p>@Html.DisplayFor(m => m.PlazoRegistroActivo.FechaFin)</p>
         </div>
-    </div>
-    <h5>ASIGNATURAS PREVISTAS A PRESENTAR EN LA EBAU</h5>
-    <div class="form-group m-3">
-        <h6>FASE 1:</h6>
-        @for (int i = 0; i < Model.AsignaturasFase1.Count; i++)
-        {
-            <div class="form-check">
-                @Html.HiddenFor(m => m.AsignaturasFase1[i].IdAsignatura)
-                @Html.CheckBoxFor(m => m.AsignaturasFase1[i].IsSelected, new { @class = "form-check-input" })
-                @Html.LabelFor(m => m.AsignaturasFase1[i].IsSelected, Model.AsignaturasFase1[i].NombreAsignatura, new { @class = "form-check-label" })
-            </div>
-        }
-        <h6>FASE 2 (Opcional):</h6>
-        @for (int i = 0; i < Model.AsignaturasFase2.Count; i++)
-        {
-            <div class="form-check">
-                @Html.HiddenFor(m => m.AsignaturasFase2[i].IdAsignatura)
-                @Html.CheckBoxFor(m => m.AsignaturasFase2[i].IsSelected, new { @class = "form-check-input" })
-                @Html.LabelFor(m => m.AsignaturasFase2[i].IsSelected, Model.AsignaturasFase2[i].NombreAsignatura, new { @class = "form-check-label" })
-            </div>
-        }
-    </div>
 
-
-
-    <h5>DIAGNÓSTICOS</h5>
-
-    <style>
-        #tablaAdaptacionesRegistradas th, #tablaAdaptacionesRegistradas td {
-            width: 25%;
-            text-align: left;
-        }
-    </style>
-
-    <table id="tablaAdaptacionesRegistradas" style="display: none;">
-        <thead>
-            <tr>
-                <th>Id Diagnóstico</th>
-                <th>Nombre Adaptación</th>
-                <th>Observaciones</th>
-                <th>Borrar Adaptación</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Aquí se añadirán las filas de adaptaciones registradas-->
-        </tbody>
-    </table>
-    <div class="row" id="diagnosticosDropdown">
-        <div class="col-md-auto">
-            @Html.DropDownListFor(m => m.SelectedDiagnostico, new SelectList(Model.Diagnosticos, "IdDiagnostico", "NombreDiagnostico"), "Seleccione select", new { @class = "form-select", id = "selectDiagnostico" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estudiante.DniEstudiante)
+            @Html.TextBoxFor(m => m.Estudiante.DniEstudiante, new { @class = "form-control" })
         </div>
-    </div>
-    <div id="diagnosticosBody">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estudiante.NombreEstudiante)
+            @Html.TextBoxFor(m => m.Estudiante.NombreEstudiante, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estudiante.Ap1Estudiante)
+            @Html.TextBoxFor(m => m.Estudiante.Ap1Estudiante, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estudiante.Ap2Estudiante)
+            @Html.TextBoxFor(m => m.Estudiante.Ap2Estudiante, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estudiante.NombreCompletoTutor1)
+            @Html.TextBoxFor(m => m.Estudiante.NombreCompletoTutor1, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estudiante.TelefonoTutor1)
+            @Html.TextBoxFor(m => m.Estudiante.TelefonoTutor1, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estudiante.NombreCompletoTutor2)
+            @Html.TextBoxFor(m => m.Estudiante.NombreCompletoTutor2, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estudiante.TelefonoTutor2)
+            @Html.TextBoxFor(m => m.Estudiante.TelefonoTutor2, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estudiante.Convocatoria)
+            <div>
+                @Html.RadioButtonFor(m => m.isOrdinaria, true, new { id = "ordinaria" }) <label for="ordinaria">Ordinaria</label>
+                @Html.RadioButtonFor(m => m.isOrdinaria, false, new { id = "extraordinaria" }) <label for="extraordinaria">Extraordinaria</label>
+            </div>
+        </div>
+        <h5>ASIGNATURAS PREVISTAS A PRESENTAR EN LA EBAU</h5>
+        <div class="form-group m-3">
+            <h6>FASE 1:</h6>
+            @for (int i = 0; i < Model.AsignaturasFase1.Count; i++)
+            {
+                <div class="form-check">
+                    @Html.HiddenFor(m => m.AsignaturasFase1[i].IdAsignatura)
+                    @Html.CheckBoxFor(m => m.AsignaturasFase1[i].IsSelected, new { @class = "form-check-input" })
+                    @Html.LabelFor(m => m.AsignaturasFase1[i].IsSelected, Model.AsignaturasFase1[i].NombreAsignatura, new { @class = "form-check-label" })
+                </div>
+            }
+            <h6>FASE 2 (Opcional):</h6>
+            @for (int i = 0; i < Model.AsignaturasFase2.Count; i++)
+            {
+                <div class="form-check">
+                    @Html.HiddenFor(m => m.AsignaturasFase2[i].IdAsignatura)
+                    @Html.CheckBoxFor(m => m.AsignaturasFase2[i].IsSelected, new { @class = "form-check-input" })
+                    @Html.LabelFor(m => m.AsignaturasFase2[i].IsSelected, Model.AsignaturasFase2[i].NombreAsignatura, new { @class = "form-check-label" })
+                </div>
+            }
+        </div>
 
-    </div>
 
 
-    <h5>DOCUMENTOS</h5>
-    <div class="form-group m-3">
-        @for (int i = 0; i < Model.Documentos.Count; i++)
-        {
-            Html.RenderPartial("_UploadFile", Model.Documentos[i]);
-        }
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Estudiante.Observaciones)
-        @Html.TextAreaFor(m => m.Estudiante.Observaciones, new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        <button name="submit" type="submit" class="btn btn-custom">Registrar</button>
-    </div>
-</form>
+        <h5>DIAGNÓSTICOS</h5>
+
+        <style>
+            #tablaAdaptacionesRegistradas th, #tablaAdaptacionesRegistradas td {
+                width: 25%;
+                text-align: left;
+            }
+        </style>
+
+        <table id="tablaAdaptacionesRegistradas" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Id Diagnóstico</th>
+                    <th>Nombre Adaptación</th>
+                    <th>Observaciones</th>
+                    <th>Borrar Adaptación</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se añadirán las filas de adaptaciones registradas-->
+            </tbody>
+        </table>
+        <div class="row" id="diagnosticosDropdown">
+            <div class="col-md-auto">
+                @Html.DropDownListFor(m => m.SelectedDiagnostico, new SelectList(Model.Diagnosticos, "IdDiagnostico", "NombreDiagnostico"), "Seleccione select", new { @class = "form-select", id = "selectDiagnostico" })
+            </div>
+        </div>
+        <div id="diagnosticosBody">
+
+        </div>
+
+
+        <h5>DOCUMENTOS</h5>
+        <div class="form-group m-3">
+            @for (int i = 0; i < Model.Documentos.Count; i++)
+            {
+                Html.RenderPartial("_UploadFile", Model.Documentos[i]);
+            }
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estudiante.Observaciones)
+            @Html.TextAreaFor(m => m.Estudiante.Observaciones, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <button name="submit" type="submit" class="btn btn-custom">Registrar</button>
+        </div>
+    </form>
 <div class="form-group">
     <p>@Html.ActionLink("Volver", nameof(CentrosEducativosController.ControladorCentro), "CentrosEducativos", null, new { @class = "btn btn-custom" })</p>
 </div>

@@ -10,6 +10,8 @@ using System.Collections;
 using CapaPresentacion.ViewModels;
 using Microsoft.Ajax.Utilities;
 using System.IO;
+using System.Web.UI;
+using System.Web.Security;
 
 
 namespace CapaPresentacion.Controllers
@@ -116,19 +118,19 @@ namespace CapaPresentacion.Controllers
 
             if (ContrasenaActual == null || NuevaContrasena == null || ConfirmarNuevaContrasena == null)
             {
-                ViewData["Mensaje"] = "Debe rellenar todos los campos";
+                TempData["Mensaje"] = "Debe rellenar todos los campos";
                 return View("ControladorCentro");
             }
 
             if (ContrasenaActual == NuevaContrasena)
             {
-                ViewData["Mensaje"] = "La nueva contraseña y la anterior coinciden";
+                TempData["Mensaje"] = "La nueva contraseña y la anterior coinciden";
                 return View("ControladorCentro");
             }
 
             if (NuevaContrasena != ConfirmarNuevaContrasena)
             {
-                ViewData["Mensaje"] = "La nueva contraseña y la confirmación no coinciden.";
+                TempData["Mensaje"] = "La nueva contraseña y la confirmación no coinciden.";
                 return View("ControladorCentro");
             }
             
@@ -136,14 +138,16 @@ namespace CapaPresentacion.Controllers
 
             if (result)
             {
-                Session.Clear();
-                return RedirectToAction(nameof(CentrosEducativosController.LoginCE), "CentrosEducativos");
+                // Cierra la sesión del usuario
+                FormsAuthentication.SignOut();
+
+                // Redirige al usuario a la página de inicio de sesión
+                return RedirectToAction(nameof(LoginCE), "CentrosEducativos");
             }
-            else
-            {
-                ViewData["Mensaje"] = "No se pudo realizar el cambio de contraseña";
-                return View("ControladorCentro");
-            }
+
+            // Si el cambio de contraseña no fue exitoso, redirige al usuario de vuelta a la página desde la que vino con un mensaje de error.
+            TempData["Mensaje"] = "Error al cambiar la contraseña.";
+            return RedirectToAction(nameof(ControladorCentro));
         }
 
         /// <summary>
@@ -176,7 +180,7 @@ namespace CapaPresentacion.Controllers
         [HttpGet]
         public ActionResult RegistroEstudiante()
         {
-            int id = 1;//(int)Session["centro educativo"];
+            int id = (int)Session["centro educativo"];
             var centro = cnCentrosEducativos.obtenCentro(id);
 
             if (centro == null)
@@ -236,8 +240,23 @@ namespace CapaPresentacion.Controllers
         [HttpPost]
         public ActionResult RegistroEstudiante(EstudianteViewModel model)
         {
+
             int idCentro = (int)Session["centro educativo"];
             bool ordinaria = model.isOrdinaria;
+            if (!ModelState.IsValid)
+            {
+                model.PlazoRegistroActivo = cnPlazosRegistro.obtenPlazoRegistroActivo();
+                model.CE = cnCentrosEducativos.obtenCentro(idCentro);
+                model.Estudiante = new Estudiante();
+                model.AsignaturasFase1 = cnAsignaturas.listaAsignaturasPorFase(1);
+                model.AsignaturasFase2 = cnAsignaturas.listaAsignaturasPorFase(2);
+                model.Diagnosticos = cnDiagnosticos.listaDiagnosticosActivos();
+                model.Adaptaciones = new List<Adaptacion>();
+                model.AdaptacionDiagnosticoEstudiantes = new List<AdaptacionDiagnosticoEstudiante>();
+                model.Documentos = InitFilesViewModel();
+                return View(model);
+            }
+
 
             int idE = cnEstudiantes.registraEstudiante(
                 model.Estudiante.DniEstudiante, model.Estudiante.NombreEstudiante, 
@@ -245,69 +264,83 @@ namespace CapaPresentacion.Controllers
                 model.Estudiante.NombreCompletoTutor1, model.Estudiante.TelefonoTutor1, 
                 model.Estudiante.NombreCompletoTutor2, model.Estudiante.TelefonoTutor2,
                 ordinaria, !ordinaria, idCentro, model.Estudiante.Observaciones);
-
-            foreach (Asignatura a in model.AsignaturasFase1)
+            if (model.AsignaturasFase1 != null)
             {
-                if (a.IsSelected && a.IdAsignatura > 0)
+                foreach (Asignatura a in model.AsignaturasFase1)
                 {
-                    if (!cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE, a.IdAsignatura, true, false))
+                    if (a.IsSelected && a.IdAsignatura > 0)
                     {
-                        throw new Exception("Error al registrar asignatura prevista de Fase 1 con ID: " + a.IdAsignatura);
+                        if (!cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE, a.IdAsignatura, true, false))
+                        {
+                            throw new Exception("Error al registrar asignatura prevista de Fase 1 con ID: " + a.IdAsignatura);
+                        }
                     }
                 }
             }
 
-            foreach (Asignatura a in model.AsignaturasFase2)
+            if (model.AsignaturasFase2 != null)
             {
-                if (a.IsSelected && a.IdAsignatura > 0)
+                foreach (Asignatura a in model.AsignaturasFase2)
                 {
-                    if (!cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE, a.IdAsignatura, false, true))
+                    if (a.IsSelected && a.IdAsignatura > 0)
                     {
-                        throw new Exception("Error al registrar asignatura prevista de Fase 1 con ID: " + a.IdAsignatura);
+                        if (!cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE, a.IdAsignatura, false, true))
+                        {
+                            throw new Exception("Error al registrar asignatura prevista de Fase 1 con ID: " + a.IdAsignatura);
+                        }
                     }
                 }
             }
 
             //cuando no hay: System.NullReferenceException: 'Referencia a objeto no establecida como instancia de un objeto.'
-            
-            foreach (var adaptacion in model.SelectedAdaptaciones)
+            if (model.SelectedAdaptaciones != null)
             {
-                cnAdaptacionesDiagnosticoEstudiante.registraAdaptacionDiagnosticoEstudiante(idE,
-                                       adaptacion.DiagnosticoId,
-                                           adaptacion.AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion,
-                                               adaptacion.AdaptacionDiagnosticoEstudiante.Observaciones);
+                foreach (var adaptacion in model.SelectedAdaptaciones)
+                {
+                    cnAdaptacionesDiagnosticoEstudiante.registraAdaptacionDiagnosticoEstudiante(idE,
+                                           adaptacion.DiagnosticoId,
+                                               adaptacion.AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion,
+                                                   adaptacion.AdaptacionDiagnosticoEstudiante.Observaciones);
+                }
             }
 
             //cuando no hay: System.NullReferenceException: 'Referencia a objeto no establecida como instancia de un objeto.'
-            foreach (var documento in model.Documentos)
+            if (model.Documentos != null)
             {
-                var memoryStream = new MemoryStream();
-                documento.Contenido.InputStream.CopyTo(memoryStream);
-                var arrayBytes = memoryStream.ToArray();
-                /*
-                try
+                foreach (var documento in model.Documentos)
                 {
-                    //System.IO.File.WriteAllBytes("PAAAAAAAAATHHHHHHHHHHHHHHH", arrayBytes);
-
-                    // Guardar la ruta en la DB
-
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Error al escribir el documento en memoria: " + e);
-                }
-                */
-
-                if (documento.Informacion != null)
-                {
-                    Estudiante e = cnEstudiantes.obtenInfoEstudianteCentro(idCentro, idE);
-                    documento.Informacion.RutaDocumento = documento.Informacion.NombreDocumento + "_" + e.IdEstudiante + "_" + e.NombreCompleto;
-                    if (!documento.Informacion.RutaDocumento.IsNullOrWhiteSpace())
+                    if (documento.Contenido == null)
                     {
-                        cnDocumentos.registraDocumentoEstudiante(idE, documento.Informacion.IdDocumento,
-                            documento.Informacion.RutaDocumento);
+                        continue;
                     }
-                }               
+                    var memoryStream = new MemoryStream();
+                    documento.Contenido.InputStream.CopyTo(memoryStream);
+                    var arrayBytes = memoryStream.ToArray();
+                    /*
+                    try
+                    {
+                        //System.IO.File.WriteAllBytes("PAAAAAAAAATHHHHHHHHHHHHHHH", arrayBytes);
+
+                        // Guardar la ruta en la DB
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Error al escribir el documento en memoria: " + e);
+                    }
+                    */
+
+                    if (documento.Informacion != null)
+                    {
+                        Estudiante e = cnEstudiantes.obtenInfoEstudianteCentro(idCentro, idE);
+                        documento.Informacion.RutaDocumento = documento.Informacion.NombreDocumento + "_" + e.IdEstudiante + "_" + e.NombreCompleto;
+                        if (!documento.Informacion.RutaDocumento.IsNullOrWhiteSpace())
+                        {
+                            cnDocumentos.registraDocumentoEstudiante(idE, documento.Informacion.IdDocumento,
+                                documento.Informacion.RutaDocumento);
+                        }
+                    }
+                }
             }
 
             return RedirectToAction("EstudiantesCentro");
@@ -378,60 +411,101 @@ namespace CapaPresentacion.Controllers
         [HttpPost]
         public ActionResult EdicionEstudiante(EstudianteViewModel model)
         {
+            int idCentro = (int)Session["centro educativo"];
             bool ordinaria = model.isOrdinaria;
             int idE = model.Estudiante.IdEstudiante;
             cnEstudiantes.modificaDatosEstudiante(model.Estudiante.IdEstudiante, ordinaria, !ordinaria, model.Estudiante.Observaciones);
 
             cnAsignaturas.eliminaAsignaturasPrevistasEstudiante(idE);
 
-
-            foreach (Asignatura a in model.AsignaturasFase1)
+            if (model.AsignaturasFase1 != null)
             {
-                if (a.IsSelected && a.IdAsignatura > 0)
+
+                foreach (Asignatura a in model.AsignaturasFase1)
                 {
-                    if (!cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE, a.IdAsignatura, true, false))
+                    if (a.IsSelected && a.IdAsignatura > 0)
                     {
-                        throw new Exception("Error al registrar asignatura prevista de Fase 1 con ID: " + a.IdAsignatura);
+                        if (!cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE, a.IdAsignatura, true, false))
+                        {
+                            throw new Exception("Error al registrar asignatura prevista de Fase 1 con ID: " + a.IdAsignatura);
+                        }
                     }
                 }
             }
 
-            foreach (Asignatura a in model.AsignaturasFase2)
+            if (model.AsignaturasFase2 != null)
             {
-                if (a.IsSelected && a.IdAsignatura > 0)
+                foreach (Asignatura a in model.AsignaturasFase2)
                 {
-                    if (!cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE, a.IdAsignatura, false, true))
+                    if (a.IsSelected && a.IdAsignatura > 0)
                     {
-                        throw new Exception("Error al registrar asignatura prevista de Fase 1 con ID: " + a.IdAsignatura);
+                        if (!cnAsignaturas.registraAsignaturaPrevistaEstudiante(idE, a.IdAsignatura, false, true))
+                        {
+                            throw new Exception("Error al registrar asignatura prevista de Fase 1 con ID: " + a.IdAsignatura);
+                        }
                     }
                 }
             }
-
-            foreach (var diagnostico in model.Estudiante.Diagnosticos)
-            {
-                cnDiagnosticos.eliminaDiagnosticoEstudiante(idE, diagnostico.IdDiagnostico);
-            }
-
-            foreach (var adaptacion in model.SelectedAdaptaciones)
-            {
-                cnAdaptacionesDiagnosticoEstudiante.registraAdaptacionDiagnosticoEstudiante(idE,
-                                       adaptacion.DiagnosticoId,
-                                           adaptacion.AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion,
-                                               adaptacion.AdaptacionDiagnosticoEstudiante.Observaciones);
-            }
-            /*for (int i = 0; i < model.Documentos.Count; i++)
-            {
-                if (model.Documentos[i].RutaDocumento != null)
+            if (model.Estudiante.Diagnosticos != null) {
+                foreach (var diagnostico in model.Estudiante.Diagnosticos)
                 {
-                    if (!model.Documentos[i].RutaDocumento.IsNullOrWhiteSpace())
+                    cnDiagnosticos.eliminaDiagnosticoEstudiante(idE, diagnostico.IdDiagnostico);
+                }
+            }
+
+            if (model.SelectedAdaptaciones != null)
+            {
+                foreach (var adaptacion in model.SelectedAdaptaciones)
+                {
+                    cnAdaptacionesDiagnosticoEstudiante.registraAdaptacionDiagnosticoEstudiante(idE,
+                                           adaptacion.DiagnosticoId,
+                                               adaptacion.AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion,
+                                                   adaptacion.AdaptacionDiagnosticoEstudiante.Observaciones);
+                }
+            }
+
+            if (model.Documentos != null) {
+                
+                cnDocumentos.eliminaDocumentosEstudiante(idE);
+
+                if (model.Documentos != null)
+                {
+                    foreach (var documento in model.Documentos)
                     {
-                        var rutaDocumento = Server.MapPath(model.Documentos[i].RutaDocumento);
-                        model.Documentos[i].RutaDocumento = cnRecursos.ConvertirArchivoABinario(rutaDocumento);
-                        cnDocumentos.registraDocumentoEstudiante(idE, model.Documentos[i].IdDocumento,
-                            model.Documentos[i].RutaDocumento);
+                        if (documento.Contenido == null)
+                        {
+                            continue;
+                        }
+                        var memoryStream = new MemoryStream();
+                        documento.Contenido.InputStream.CopyTo(memoryStream);
+                        var arrayBytes = memoryStream.ToArray();
+                        /*
+                        try
+                        {
+                            //System.IO.File.WriteAllBytes("PAAAAAAAAATHHHHHHHHHHHHHHH", arrayBytes);
+
+                            // Guardar la ruta en la DB
+
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Error al escribir el documento en memoria: " + e);
+                        }
+                        */
+
+                        if (documento.Informacion != null)
+                        {
+                            Estudiante e = cnEstudiantes.obtenInfoEstudianteCentro(idCentro, idE);
+                            documento.Informacion.RutaDocumento = documento.Informacion.NombreDocumento + "_" + e.IdEstudiante + "_" + e.NombreCompleto;
+                            if (!documento.Informacion.RutaDocumento.IsNullOrWhiteSpace())
+                            {
+                                cnDocumentos.registraDocumentoEstudiante(idE, documento.Informacion.IdDocumento,
+                                    documento.Informacion.RutaDocumento);
+                            }
+                        }
                     }
                 }
-            }*/
+            }
 
             return RedirectToAction("EstudiantesCentro");
         }

@@ -14,11 +14,11 @@ namespace CapaPresentacion.ViewModels
         public List<Asignatura> AsignaturasFase1 { get; set; }
         public List<Asignatura> AsignaturasFase2 { get; set; }
         public List<Diagnostico> Diagnosticos { get; set; }
-        public int SelectedDiagnostico { get; set; }
+        public int? SelectedDiagnostico { get; set; }
         public List<Adaptacion> Adaptaciones { get; set; }
         public List<AdaptacionDiagnosticoEstudiante> AdaptacionDiagnosticoEstudiantes { get; set; }
         public PlazosRegistro Plazos { get; set; }
-        public bool isOrdinaria { get; set; }
+        public bool isOrdinaria { get; set; } = true;
         public List<FileUploadViewModel> Documentos { get; set; }
         public List<AdaptacionDiagnosticoViewModel> SelectedAdaptaciones { get; set; }
 
