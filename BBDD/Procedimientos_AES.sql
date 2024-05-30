@@ -317,6 +317,71 @@ as
 	end;
 go
 
+--REVISADO
+create or alter procedure sp_listaEstudiantesCentro @idCE int
+as
+	begin
+		declare @Mensaje varchar(50);
+		declare @Completado bit;
+		if (exists (select * from CentroEducativo where idCE = @idCE))
+			begin
+				select * from Estudiante where idCE = @idCE
+				set @Mensaje = ('Procedimiento correcto');
+				set @Completado = 1;
+			end
+		else
+			begin
+				set @Mensaje = ('No existe el centro educativo asociado');
+				set @Completado = 0;
+			end
+	end;
+go
+
+--ABARCA LISTA SEDES Y LISTA SEDES ACTIVAS
+create or alter procedure sp_listaSedes
+as
+	begin
+		select * from Sede
+	end;
+go
+
+
+
+create or alter procedure sp_listaMunicipios 
+as
+	begin
+		select * from Municipio
+	end;
+go
+
+create or alter procedure sp_listaDiagnosticos
+as
+	begin
+		select * from Diagnostico
+	end;
+go
+
+create or alter procedure sp_listaAdaptaciones
+as
+	begin
+		select * from Adaptacion
+	end;
+go
+
+create or alter procedure sp_listaAsignaturas
+as
+	begin 
+		select * from Asignatura
+	end;
+go
+
+create or alter procedure sp_listaDocumentos
+as
+	begin
+		select * from Documento
+	end;
+go
+
 -----------------------------------------------------------------
 -----------------------------------------------------------------
 ----------------- INSERCION DE OBJETOS --------------------------
@@ -393,8 +458,8 @@ EXEC sp_registraCentroEducativo
     @idMunicipio = 1, 
     @idSede = 1,
     @correo = 'centro@prueba.com', 
-    @contrasenha = 'contraseñaPrueba', 
-    @repetirContrasenha = 'contraseñaPrueba',
+    @contrasenha = 'contraseï¿½aPrueba', 
+    @repetirContrasenha = 'contraseï¿½aPrueba',
     @Mensaje = '', 
     @Registrado = 0
 go
@@ -435,7 +500,7 @@ as
 										set @Mensaje = ('Procedimiento correcto');
 										set @Registrado = 1;
 
-										set @idE = SCOPE_IDENTITY(); --OBTIENE LA PK DEL ÚLTIMO REGISTRO INSERTADO
+										set @idE = SCOPE_IDENTITY(); --OBTIENE LA PK DEL ï¿½LTIMO REGISTRO INSERTADO
 								
 										commit transaction
 									end
@@ -443,7 +508,7 @@ as
 									begin
 										if @@trancount > 0
 										rollback transaction
-										set @Mensaje = 'No hay un curso académico activo';
+										set @Mensaje = 'No hay un curso acadï¿½mico activo';
 										set @Registrado = 0;
 									end
 							end
@@ -451,7 +516,7 @@ as
 							begin
 								if @@trancount > 0
 								rollback transaction
-								set @Mensaje = 'El dni del estudiante está duplicado';
+								set @Mensaje = 'El dni del estudiante estï¿½ duplicado';
 								set @Registrado = 0;
 							end
 					end
@@ -915,54 +980,6 @@ select * from Estudiante
 -----------------------------------------------------------------
 
 --REVISADO
-
-
-
-
-
-
---REVISADO
-create or alter procedure sp_listaEstudiantesCentro @idCE int
-as
-	begin
-		declare @Mensaje varchar(50);
-		declare @Completado bit;
-		if (exists (select * from CentroEducativo where idCE = @idCE))
-			begin
-				select * from Estudiante where idCE = @idCE
-				set @Mensaje = ('Procedimiento correcto');
-				set @Completado = 1;
-			end
-		else
-			begin
-				set @Mensaje = ('No existe el centro educativo asociado');
-				set @Completado = 0;
-			end
-	end;
-go
-
-/*
-create or alter procedure sp_validarCentroEducativo @correo varchar(100), @contrasenha varchar(500),
-@Completado bit output
-
-as
-	begin
-		if (exists(select * from CentroEducativo ce
-						inner join Usuario u on ce.idCE = u.idUsuario
-							where u.correo = @correo and u.contrasenha = @contrasenha))
-			begin				
-				select idCE from CentroEducativo ce
-						inner join Usuario u on ce.idCE = u.idUsuario
-							where u.correo = @correo and u.contrasenha = @contrasenha;
-				set @Completado = 1;
-			end
-		else 
-			begin
-				set @Completado = 0;
-			end	end;
-go
-*/
-
 create or alter procedure sp_validarCentroEducativo @correo varchar(100), @contrasenha varchar(500),
 @idCE int output
 
@@ -1023,13 +1040,7 @@ as
 	end;
 go
 
---ABARCA LISTA SEDES Y LISTA SEDES ACTIVAS
-create or alter procedure sp_listaSedes
-as
-	begin
-		select * from Sede
-	end;
-go
+
 
 
 
@@ -1156,41 +1167,6 @@ go
 
 --LISTADO DE OBJETOS
 
-
-create or alter procedure sp_listaMunicipios 
-as
-	begin
-		select * from Municipio
-	end;
-go
-
-create or alter procedure sp_listaDiagnosticos
-as
-	begin
-		select * from Diagnostico
-	end;
-go
-
-create or alter procedure sp_listaAdaptaciones
-as
-	begin
-		select * from Adaptacion
-	end;
-go
-
-create or alter procedure sp_listaAsignaturas
-as
-	begin 
-		select * from Asignatura
-	end;
-go
-
-create or alter procedure sp_listaDocumentos
-as
-	begin
-		select * from Documento
-	end;
-go
 
 
 
