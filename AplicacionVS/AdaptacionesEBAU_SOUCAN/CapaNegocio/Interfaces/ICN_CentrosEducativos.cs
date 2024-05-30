@@ -9,11 +9,6 @@ namespace CapaNegocio.Interfaces
 {
     public interface ICN_CentrosEducativos
     {
-        /// <summary>
-        /// Obtiene una lista de todos los centros educativos.
-        /// </summary>
-        /// <returns>Lista de centros educativos completa.</returns>
-        List<CentroEducativo> listaCentros();
 
         /// <summary>
         /// Obtiene un centro educativo cuyo id es pasado como parÁmetro.

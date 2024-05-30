@@ -16,12 +16,6 @@ namespace CapaNegocio
         private CD_CentrosEducativos objCD = new CD_CentrosEducativos();
         private ICN_Recursos cnRecursos = new CN_Recursos();
 
-        public List<CentroEducativo> listaCentros()
-        {
-            
-            return objCD.listaCentros();
-        }
-
         public CentroEducativo obtenCentro (int idCentroEducativo)
         {
             return objCD.obtenCentro(idCentroEducativo);

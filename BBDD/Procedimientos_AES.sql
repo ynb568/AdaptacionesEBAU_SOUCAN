@@ -1042,29 +1042,6 @@ go
 
 
 
-
-
-
---REVISADO
-create or alter procedure sp_muestraInfoCentroEducativo @idCE int
-as
-	begin
-		declare @Mensaje varchar(50);
-		declare @Completado bit;
-		if (exists (select * from CentroEducativo where idCE = @idCE))
-			begin		
-				select top(1) * from CentroEducativo where idCE = @idCE
-				set @Mensaje = ('Procedimiento correcto');
-				set @Completado = 1;
-			end
-		else
-			begin
-				set @Mensaje = ('No existe el centro educativo asociado');
-				set @Completado = 0;
-			end
-	end;
-go
-
 create or alter procedure sp_cambiaInfoCentro @idCE int, @nuevoTelefono varchar(9), 
 	@nuevoNombreO varchar(50), @nuevosApellidosO varchar(100), @nuevoCorreoO varchar(100), @nuevoTelefonoO varchar(9),
 	@nuevoNombreED varchar(50), @nuevosApellidosED varchar(100), @nuevoTelefonoED varchar(9)
@@ -1129,14 +1106,6 @@ go
 
 
 
-create or alter procedure sp_listaDiagnosticosEstudiante @idE int
-as
-	begin
-		select * from Diagnostico d
-			inner join AdaptacionDiagnosticoEstudiante ade on d.idDiagnostico = ade.idDiagnostico
-			where ade.idEstudiante = @idE
-	end;
-go
 
 
 --create or alter procedure sp_listaAdaptacionesDiagnosticoEstudiante @id

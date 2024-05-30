@@ -91,7 +91,7 @@ namespace CapaDatos
 
             return estudiantes;
         }
-
+         //METODO DUPLICADO
         public Estudiante obtenEstudianteCentro(int idCentro, int idEstudiante)
         {
             Estudiante e = null;
