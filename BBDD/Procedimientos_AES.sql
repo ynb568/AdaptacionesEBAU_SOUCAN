@@ -1041,7 +1041,7 @@ as
 go
 
 
-
+/*
 create or alter procedure sp_cambiaInfoCentro @idCE int, @nuevoTelefono varchar(9), 
 	@nuevoNombreO varchar(50), @nuevosApellidosO varchar(100), @nuevoCorreoO varchar(100), @nuevoTelefonoO varchar(9),
 	@nuevoNombreED varchar(50), @nuevosApellidosED varchar(100), @nuevoTelefonoED varchar(9)
@@ -1075,7 +1075,7 @@ as
 		end catch
 	end;
 go
-
+*/
 
 create or alter procedure sp_listaAsignaturasPrevistasEstudianteF1 @idE int
 as
