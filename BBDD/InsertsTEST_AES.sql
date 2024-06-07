@@ -2,7 +2,7 @@ use AdaptacionesEBAU_SOUCAN;
 go
 
 insert into PlazosRegistro (fechaIni, fechaFin, cursoConvocatoria)
-	values ('2024-07-04','2025-01-10','Curso 2024-2025 1º Cuatrimestre');
+	values ('2024-03-04','2025-01-10','Curso 2024-2025 1º Cuatrimestre');
 go
 
 insert into Municipio (nombreMunicipio) values
@@ -49,7 +49,7 @@ insert into CentroEducativo (idCE, nombreCE, idSede, telefonoCE,
 								nombreOrientador, apellidosOrientador, telefonoOrientador, correoOrientador,
 								nombreEquipoDirectivo, apellidosEquipoDirectivo, telefonoEquipoDirectivo,
 								idDireccion)
-	values (1, 'IES: Las Esclavas', 1, '942222333', 
+	values (1, 'COLEGIO ESCLAVAS SCK', 1, '942222333', 
 				'Benito', 'Martínez Toral', '678333444', 'benitomartinez@gmail.com',
 				'Mercedes', 'García Sainz', '612444555', 1);
 go
@@ -119,7 +119,12 @@ insert into AsignaturaEstudianteMatriculada(idAsignatura, idEstudiante, fase1, f
 	values (2, 1, 1, 0);
 go
 
-insert into Diagnostico (nombreDiagnostico, descripcion) values 
+
+insert into Diagnostico (nombreDiagnostico, descripcion) values
+	('Discapacidad Visual', 'El estudiante cuenta con una agudeza visual inferior o igual a 6/18')
+go
+
+insert into Diagnostico (nombreDiagnostico) values 
 	('Discapacidad Motriz'),
 	('Discapacidad Visual'),
 	('Discapacidad Auditiva'),
@@ -132,7 +137,7 @@ go
 
 
 
-insert into Adaptacion (idAdaptacion, nombreAdaptacion, descripcion, excepcional, descripcionExcepcional) values
+insert into Adaptacion (nombreAdaptacion, descripcion, excepcional, descripcionExcepcional) values
 	('Adaptación de textos: fuente', 'Solicite la fuente deseada en el campo observaciones', 1, 'Solicitable en caso de tener una agudeza visual '),
 	('Adaptación de textos: tamaño', 'Solicite la fuente deseada en el campo observaciones', 0, '')
 go
@@ -164,7 +169,6 @@ insert into Adaptacion(nombreAdaptacion) values
 	('Permiso para acudir al servicio'),
 	('Acompañamiento por parte de una persona de referencia en el tiempo de descanso entre exámenes (es necesario facilitar un nombre y teléfono de contacto)')
 go
-
 
 insert into AdaptacionDiagnostico (idAdaptacion, idDiagnostico) values 
 	(1,1),

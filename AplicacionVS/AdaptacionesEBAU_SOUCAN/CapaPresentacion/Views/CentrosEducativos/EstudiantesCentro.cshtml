@@ -32,7 +32,9 @@
         @foreach (var e in estudiantes)
         {
             <tr>
-                <td>@e.NombreCompleto</td>
+                <td>
+                    @e.NombreCompleto
+                </td>
                 <td>
                     @if (e.Validado == true)
                     {

@@ -9,7 +9,7 @@ namespace CapaPresentacion.ViewModels
     public class EstudianteViewModel
     {
         public PlazosRegistro PlazoRegistroActivo { get; set; }
-        public CentroEducativo CE { get; set; }
+        public string nombreCentro { get; set; }
         public Estudiante Estudiante { get; set; }
         public List<Asignatura> AsignaturasFase1 { get; set; }
         public List<Asignatura> AsignaturasFase2 { get; set; }

@@ -68,9 +68,17 @@ namespace CapaNegocio.Interfaces
         int LoginCE(string correo, string contrasenha);
 
         /// <summary>
+        /// Obtiene el nombre del centro de un identificador en concreto.
+        /// </summary>
+        /// <param name="idCentro">Identificador del centroen concreto.</param>
+        /// <returns></returns>
+        string obtenNombreCentro(int idCentro);
+
+
+        /// <summary>
         /// Cambia la contrasenha de un centro educativo.
         /// </summary>
-        /// <param name="idCE">Identificador del centro educativ.</param>
+        /// <param name="idCE">Identificador del centro educativo.</param>
         /// <param name="contrasenha">Contrasenha actual del centro educativo.</param>
         /// <param name="nuevaContrasenha">Nueva contrasenha del centro educativo.</param>
         /// <param name="repetirContrasenha">Repetir nueva contrasenha del centro educativo.</param>

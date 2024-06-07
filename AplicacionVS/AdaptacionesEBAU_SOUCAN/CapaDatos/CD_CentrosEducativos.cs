@@ -195,6 +195,64 @@ namespace CapaDatos
             return modificado;
         }
 
+        public String obtenNombreCentro(int idCentro)
+        {
+            String nombreCentro = "";
+            try
+            {
+                // Establecer la conexión con la base de datos
+                using (SqlConnection con = new SqlConnection(Conexion.cadenaCon))
+                {
+                    // Crear un nuevo comando SQL para ejecutar el procedimiento almacenado
+                    SqlCommand cmd = new SqlCommand("sp_obtenNombreCentro", con);
+                    cmd.Parameters.AddWithValue("@idCE", idCentro);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Definir los parámetros de salida
+                    SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);
+                    mensajeParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(mensajeParameter);
+
+                    SqlParameter completadoParameter = new SqlParameter("@Completado", SqlDbType.Bit);
+                    completadoParameter.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(completadoParameter);
+
+                    // Abrir la conexión a la base de datos
+                    con.Open();
+
+                    // Ejecutar el comando y procesar los resultados
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            // Asignar el nombre del centro educativo a la variable nombreCentro
+                            nombreCentro = dr["nombreCE"].ToString();
+                        }
+                    }
+
+                    // Gestionar las salidas
+                    string mensaje = cmd.Parameters["@Mensaje"].Value.ToString();
+                    bool completado = Convert.ToBoolean(cmd.Parameters["@Completado"].Value);
+
+                    Console.WriteLine(mensaje);
+                    if (completado)
+                    {
+                        Console.WriteLine("Los datos del centro educativo se han recuperado.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No se pudieron recuperar los datos del centro educativo.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Imprimir cualquier error que ocurra durante la ejecución
+                Console.WriteLine("Error en CD_CentrosEducativos.obtenNombreCentroEstudiante: " + ex.Message);
+            }
+            // Devolver el nombre del centro educativo
+            return nombreCentro;
+        }
 
 
     }

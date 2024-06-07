@@ -149,7 +149,7 @@ namespace CapaDatos
             }
             return listaDiagnosticos;
         }
-        public bool eliminaDiagnosticoEstudiante(int idEstudiante, int idDiagnostico)
+        public bool eliminaDiagnosticosEstudiante(int idEstudiante)
         {
             bool eliminado = false;
             try
@@ -160,7 +160,6 @@ namespace CapaDatos
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("idE", idEstudiante);
-                    cmd.Parameters.AddWithValue("idD", idDiagnostico);
 
                     // Parámetros de salida
                     SqlParameter mensajeParameter = new SqlParameter("@Mensaje", SqlDbType.VarChar, 50);

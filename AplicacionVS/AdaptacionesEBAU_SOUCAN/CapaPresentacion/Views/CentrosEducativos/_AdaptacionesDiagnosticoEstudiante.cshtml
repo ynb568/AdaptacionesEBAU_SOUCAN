@@ -1,31 +1,29 @@
 ﻿@using HtmlHelpers.BeginCollectionItem;
 @using CapaPresentacion.ViewModels;
+@using CapaPresentacion.Controllers;
 @model AdaptacionDiagnosticoViewModel
 
-@using (Html.BeginCollectionItem($"SelectedAdaptaciones"))
-{
+<div>
+    @Html.HiddenFor(m => m.DiagnosticoId, new { id = "DiagnosticoId" })
+    @Html.HiddenFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion, new { id = "IdAdaptacion" })
+    @Html.HiddenFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.NombreAdaptacion, new { id = "NombreAdaptacion" })
     <div>
-        @Html.HiddenFor(m => m.DiagnosticoId, new { id = "DiagnosticoId" })
-        @Html.HiddenFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion, new { id = "IdAdaptacion" })
-        @Html.HiddenFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.NombreAdaptacion, new { id = "NombreAdaptacion" })
-        <div>
-            @Html.LabelFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.Descripcion)
-            @Html.DisplayFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.Descripcion)
-        </div>
-        @if (Model.AdaptacionDiagnosticoEstudiante.Adaptacion.Excepcional)
-        {
-            <div>
-                @Html.LabelFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.DescripcionExcepcional)
-                @Html.DisplayFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.DescripcionExcepcional)
-            </div>
-        }
-        <div>
-            @Html.LabelFor(m => m.AdaptacionDiagnosticoEstudiante.Observaciones)
-            @Html.TextBoxFor(m => m.AdaptacionDiagnosticoEstudiante.Observaciones, new { id = "Observaciones" })
-        </div>
-        <button type="button" id="botonAnhadir">Añadir</button>
+        @Html.LabelFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.Descripcion)
+        @Html.DisplayFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.Descripcion)
     </div>
-}
+    @if (Model.AdaptacionDiagnosticoEstudiante.Adaptacion.Excepcional)
+    {
+        <div>
+            @Html.LabelFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.DescripcionExcepcional)
+            @Html.DisplayFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.DescripcionExcepcional)
+        </div>
+    }
+    <div>
+        @Html.LabelFor(m => m.AdaptacionDiagnosticoEstudiante.Observaciones)
+        @Html.TextBoxFor(m => m.AdaptacionDiagnosticoEstudiante.Observaciones, new { id = "Observaciones" })
+    </div>
+    <button type="button" id="botonAnhadir">Añadir</button>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -39,41 +37,29 @@
             var observaciones = $("#Observaciones").val();
 
             // Comprueba si ya existe una fila con el mismo nombre de adaptación
-            var exists = $("#tablaAdaptacionesRegistradas tbody tr[data-id-diagnostico='" + idAdaptacion + "'][data-id-adaptacion=" + idAdaptacion + "]").length>0;
-            $("#tablaAdaptacionesRegistradas tbody tr").each(function () {
-                if ($(this).find("td:eq(1)").text() === nombreAdaptacion) {
-                    exists = true;
-                    return false; // Salir del bucle .each
-                }
-            });
-
+            var exists = $("#tablaAdaptacionesRegistradas tbody tr[data-id-diagnostico='" + idDiagnostico + "'][data-id-adaptacion=" + idAdaptacion + "]").length>0;
+            debugger;
             // Si no existe, añade la nueva fila
             if (!exists) {
-                // Crea una nueva fila y añádela a la tabla
-                var newRow = `
-                    <tr data-id-diagnostico="` + idDiagnostico + `" data-id-adaptacion="` + idAdaptacion + `">
-                        <td>
-                            ${idDiagnostico}
-                            <input type="hidden" name="SelectedAdaptaciones[${$("#tablaAdaptacionesRegistradas tr").length}].DiagnosticoId" value="${idDiagnostico}" />
-                        </td>
-                        <td>
-                            ${nombreAdaptacion}
-                            <input type="hidden" name="SelectedAdaptaciones[${$("#tablaAdaptacionesRegistradas tr").length}].AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion" value="${idAdaptacion}" />
-                        </td>
-                        <td>
-                            ${observaciones}
-                            <input type="hidden" name="SelectedAdaptaciones[${$("#tablaAdaptacionesRegistradas tr").length}].AdaptacionDiagnosticoEstudiante.Observaciones" value="${observaciones}" />
-                        </td>
-                        <td>
-                            <button class="deleteButton">Borrar</button>
-                        </td>
-                    </tr>`;
-                $("#tablaAdaptacionesRegistradas tbody").append(newRow);
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action(nameof(CentrosEducativosController.SetDiagnosticoAdaptacion), "CentrosEducativos")",
+                    data: {
+                        idAdaptacion: $("#selectAdaptacion").val(),
+                        idDiagnostico: $("#selectDiagnostico").val(),
+                        observaciones: observaciones
+                    },
+                    success: function (partialView) {
+                        $("#diagnosticosDropdown select").val(null);
+                        $("#diagnosticosBody").empty();
+                        $("#tablaAdaptacionesRegistradas tbody").append(partialView);
 
-                // Muestra la tabla si es la primera fila
-                if ($("#tablaAdaptacionesRegistradas tbody tr").length > 0) {
-                    $("#tablaAdaptacionesRegistradas").show();
-                }
+                        // Muestra la tabla si es la primera fila
+                        if ($("#tablaAdaptacionesRegistradas tbody tr").length > 0) {
+                            $("#tablaAdaptacionesRegistradas").show();
+                        }
+                    }
+                })
             } else {
                 alert("Ya existe una fila con el mismo nombre de adaptación.");
             }

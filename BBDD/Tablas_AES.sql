@@ -15,7 +15,7 @@ create table PlazosRegistro (
 	activo bit default 1,
 	fechaIni date not null,
 	fechaFin date not null,
-	cursoConvocatoria varchar(10) not null
+	cursoConvocatoria varchar(40) not null
 );
 
 create table Municipio (
@@ -84,7 +84,7 @@ create table Estudiante (
 	extraordinaria bit null,
 	observaciones varchar(500) null,
 	validado bit null default null,
-	cursoConvocatoria varchar(10),
+	cursoConvocatoria varchar(40),
 	fechaRegistro datetime default getdate(),
 	idCE int foreign key references CentroEducativo (idCE) not null,
 	constraint ck_tlfnT1 check (telefonoTutor1 like ('[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')),
@@ -135,14 +135,14 @@ create table AsignaturaEstudianteMatriculada (
 
 create table Diagnostico (
 	idDiagnostico int primary key identity,
-	nombreDiagnostico varchar(100) not null,
+	nombreDiagnostico varchar(200) not null,
 	activo bit default 1,
 	descripcion varchar(500) null
 );
 
 create table Adaptacion (
 	idAdaptacion int primary key identity,
-	nombreAdaptacion varchar(100) not null,
+	nombreAdaptacion varchar(200) not null,
 	activo bit default 1,
 	excepcional bit default 0,
 	descripcionExcepcional varchar(500) null,

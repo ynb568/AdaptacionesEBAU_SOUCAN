@@ -11,13 +11,16 @@
 
 <form method="post" action="@Url.Action(nameof(CentrosEducativosController.RegistroEstudiante), "CentrosEducativos")" enctype="multipart/form-data">
     @Html.HiddenFor(m => m.Estudiante.IdEstudiante)
+
     @if (!ViewData.ModelState.IsValid)
     {
         <div class="alert alert-danger" role="alert">
             @Html.ValidationSummary()
         </div>
     }
-
+    <h2>
+        @Html.DisplayFor(m => m.nombreCentro)
+    </h2>
     <div>
         @Html.LabelFor(m => m.PlazoRegistroActivo.CursoConvocatoria)
         <p>@Html.DisplayFor(m => m.PlazoRegistroActivo.CursoConvocatoria)</p>
@@ -97,7 +100,7 @@
         }
     </style>
 
-    <table id="tablaAdaptacionesRegistradas" style="display: none;">
+    <table class="table mb-3" id="tablaAdaptacionesRegistradas" style="display: none;">
         <thead>
             <tr>
                 <th>Id Diagnóstico</th>
@@ -160,7 +163,7 @@
             data: {
                 idDiagnostico: $("#selectDiagnostico").val()
             },
-            success: function(partialView) {
+            success: function (partialView) {
                 $("#diagnosticosBody").append(partialView);
             }
         })

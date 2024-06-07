@@ -1,0 +1,24 @@
+﻿@using HtmlHelpers.BeginCollectionItem;
+@using CapaPresentacion.ViewModels;
+@model AdaptacionDiagnosticoViewModel
+
+<tr data-id-diagnostico="@Model.DiagnosticoId" data-id-adaptacion="@Model.AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion">
+    @using (Html.BeginCollectionItem($"SelectedAdaptaciones"))
+    {
+        <td>
+            @Html.DisplayFor(m => m.DiagnosticoId)
+            @Html.HiddenFor(m => m.DiagnosticoId)
+        </td>
+        <td>
+            @Html.DisplayFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.NombreAdaptacion)
+            @Html.HiddenFor(m => m.AdaptacionDiagnosticoEstudiante.Adaptacion.IdAdaptacion)
+        </td>
+        <td>
+            @Html.DisplayFor(m => m.AdaptacionDiagnosticoEstudiante.Observaciones)
+            @Html.HiddenFor(m => m.AdaptacionDiagnosticoEstudiante.Observaciones)
+        </td>
+        <td>
+            <button class="deleteButton btn btn-sm btn-danger">Borrar</button>
+        </td>
+    }
+</tr>

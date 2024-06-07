@@ -68,6 +68,12 @@ namespace CapaNegocio
             return idCE;
         }
 
+
+        public string obtenNombreCentro(int idCentro)
+        {
+            return objCD.obtenNombreCentro(idCentro);
+        }
+
         public bool CambioContrasenha(int idCE, string contrasenha, string nuevaContrasenha, string repetirContrasenha)
         {
             bool completado = false;
@@ -98,11 +104,5 @@ namespace CapaNegocio
             }
             return completado;
         }
-
-
-
-
-
-
     }
 }

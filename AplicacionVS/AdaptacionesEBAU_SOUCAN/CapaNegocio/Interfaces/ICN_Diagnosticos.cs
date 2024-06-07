@@ -36,13 +36,12 @@ namespace CapaNegocio.Interfaces
         List<Diagnostico> listaDiagnosticosEstudiante(int idEstudiante);
 
         /// <summary>
-        /// Elimina un diagnostico de un estudiante cuyo id ha sido pasado como parametro
+        /// Elimina los diagnosticos de un estudiante cuyo id ha sido pasado como parametro
         /// junto con sus adaptaciones.
         /// </summary>
         /// <param name="idEstudiante">Identificador del estudiante.</param>
-        /// <param name="idDiagnostico">Identificador del diagnostico.</param>
         /// <returns>True si se ha eliminado correctamente, false en caso contrario.</returns>
-        bool eliminaDiagnosticoEstudiante(int idEstudiante, int idDiagnostico);
+        bool eliminaDiagnosticosEstudiante(int idEstudiante);
 
     }
 }

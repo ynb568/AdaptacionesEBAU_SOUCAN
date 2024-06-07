@@ -77,7 +77,6 @@ as
 go	
 
 
-
 create or alter procedure sp_obtenAdaptacionDiagnostico @idD int
 as
 	begin
@@ -99,6 +98,7 @@ as
 	end;
 go	
 
+
 create or alter procedure sp_listaDiagnosticosEstudiante @idE int
 as
 	begin
@@ -106,7 +106,7 @@ as
 		declare @Completado bit;
 		if (exists (select * from AdaptacionDiagnosticoEstudiante where idEstudiante = @idE))
 			begin
-				select d.* from Diagnostico d
+				select distinct d.* from Diagnostico d
 					inner join AdaptacionDiagnosticoEstudiante ade on d.idDiagnostico = ade.idDiagnostico
 					where ade.idEstudiante = @idE
 				set @Mensaje = ('Procedimiento correcto');
@@ -116,9 +116,10 @@ as
 			begin
 				set @Mensaje = ('No existe el diagnostico asociado');
 				set @Completado = 0;
-			end
+			end 
 	end;
 go
+
 
 create or alter procedure sp_listaAdaptacionesDiagnosticoEstudiante @idE int, @idD int
 as
@@ -268,6 +269,27 @@ as
 			end
 	end;
 go
+
+
+create or alter procedure sp_obtenNombreCentro @idCE int,
+	@Mensaje varchar(50) output, @Completado bit output
+as
+	begin
+	if (exists(select * from CentroEducativo where idCE = @idCE))
+		begin
+			select ce.nombreCE from CentroEducativo ce
+				where idCE = @idCE
+			set @Mensaje = ('Procedimiento correcto')
+			set @Completado = 1
+		end
+	else
+		begin
+			set @Mensaje = ('No existe el centro asociado');
+			set @Completado = 0;
+		end
+end;
+go
+
 
 create or alter procedure sp_listaAdaptacionesDiagnostico @idD int
 as
@@ -748,7 +770,6 @@ as
 	end;
 GO
 
-
 /*
 EXEC sp_registraAdaptacionDiagnosticoEstudiante 
     @idE = 1, 
@@ -769,7 +790,7 @@ GO
 -----------------------------------------------------------------
 -----------------------------------------------------------------
 
-create or alter procedure sp_eliminaDiagnosticoEstudiante @idE int, @idD int,
+create or alter procedure sp_eliminaDiagnosticosEstudiante @idE int,
 @Mensaje varchar(50) output, @Eliminado bit output
 as
 	begin
@@ -777,21 +798,10 @@ as
 			begin transaction
 				if (exists (select * from Estudiante where idEstudiante = @idE))
 					begin
-						if (exists (select * from AdaptacionDiagnosticoEstudiante 
-								where idEstudiante = @idE and idDiagnostico = @idD))
-							begin
-								delete from AdaptacionDiagnosticoEstudiante 
-									where idEstudiante = @idE and idDiagnostico = @idD;
-								set @Mensaje = 'Procedimiento Correcto';
-								set @Eliminado = 1;	
-							end
-						else
-							begin
-								if @@trancount > 0
-								rollback transaction
-								set @Mensaje = 'No existe el estudiante asociado';
-								set @Eliminado = 0;
-							end
+						delete from AdaptacionDiagnosticoEstudiante 
+							where idEstudiante = @idE;
+						set @Mensaje = 'Procedimiento Correcto';
+						set @Eliminado = 1;	
 					end
 				else
 					begin

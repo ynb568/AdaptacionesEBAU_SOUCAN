@@ -180,10 +180,10 @@ namespace CapaPresentacion.Controllers
         [HttpGet]
         public ActionResult RegistroEstudiante()
         {
-            int id = (int)Session["centro educativo"];
-            var centro = cnCentrosEducativos.obtenCentro(id);
-
-            if (centro == null)
+            int idCE = (int)Session["centro educativo"];
+            string nomCentro = cnCentrosEducativos.obtenNombreCentro(idCE);
+            
+            if (nomCentro == null)
             {
                 return RedirectToAction(nameof(HomeController.LoginCE), "Home");
             }
@@ -192,7 +192,7 @@ namespace CapaPresentacion.Controllers
             var viewModel = new EstudianteViewModel
             {
                 PlazoRegistroActivo = cnPlazosRegistro.obtenPlazoRegistroActivo(),
-                CE = centro,
+                nombreCentro = nomCentro,
                 Estudiante = new Estudiante(),
                 AsignaturasFase1 = cnAsignaturas.listaAsignaturasPorFase(1),
                 AsignaturasFase2 = cnAsignaturas.listaAsignaturasPorFase(2),
@@ -200,7 +200,6 @@ namespace CapaPresentacion.Controllers
                 Adaptaciones = new List<Adaptacion>(),
                 AdaptacionDiagnosticoEstudiantes = new List<AdaptacionDiagnosticoEstudiante>(),
                 Documentos = InitFilesViewModel()
-
             };
 
             return View(viewModel);
@@ -229,6 +228,24 @@ namespace CapaPresentacion.Controllers
             return PartialView("_AdaptacionesDiagnosticoEstudiante", viewModel);
         }
 
+        [HttpPost]
+        public ActionResult SetDiagnosticoAdaptacion(int idAdaptacion, int idDiagnostico, string observaciones)
+        {
+            var adaptacionDiagnosticoEstudiante = new AdaptacionDiagnosticoEstudiante()
+            {
+                Adaptacion = cnAdaptaciones.obtenAdaptacion(idAdaptacion)
+            };
+
+            adaptacionDiagnosticoEstudiante.Observaciones = observaciones;
+
+            var viewModel = new AdaptacionDiagnosticoViewModel()
+            {
+                AdaptacionDiagnosticoEstudiante = adaptacionDiagnosticoEstudiante,
+                DiagnosticoId = idDiagnostico
+            };
+            return PartialView("_AdaptacionesDiagnosticoEstudianteRow", viewModel);
+        }
+
         [HttpGet]
         public ActionResult ObtenNombreDiagnostico(int idDiagnostico)
         {
@@ -246,7 +263,7 @@ namespace CapaPresentacion.Controllers
             if (!ModelState.IsValid)
             {
                 model.PlazoRegistroActivo = cnPlazosRegistro.obtenPlazoRegistroActivo();
-                model.CE = cnCentrosEducativos.obtenCentro(idCentro);
+                model.nombreCentro = cnCentrosEducativos.obtenNombreCentro(idCentro);
                 model.Estudiante = new Estudiante();
                 model.AsignaturasFase1 = cnAsignaturas.listaAsignaturasPorFase(1);
                 model.AsignaturasFase2 = cnAsignaturas.listaAsignaturasPorFase(2);
@@ -358,13 +375,13 @@ namespace CapaPresentacion.Controllers
         [HttpGet]
         public ActionResult InfoEstudiante(int idE)
         {
-            int id = (int)Session["centro educativo"];
-            var centro = cnCentrosEducativos.obtenCentro(id);
-            var estudiante = cnEstudiantes.obtenEstudianteCentro(id, idE);
+            int idCE = (int)Session["centro educativo"];
+            string nomCentro = cnCentrosEducativos.obtenNombreCentro(idCE);
+            var estudiante = cnEstudiantes.obtenEstudianteCentro(idCE, idE);
 
             var viewModel = new EstudianteViewModel
             {
-                CE = centro,
+                nombreCentro = nomCentro,
                 Estudiante = estudiante,
                 AsignaturasFase1 = cnAsignaturas.listaAsignaturasPrevistasEstudiantePorFase(idE, 1),
                 AsignaturasFase2 = cnAsignaturas.listaAsignaturasPrevistasEstudiantePorFase(idE, 2),
@@ -382,21 +399,21 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult EdicionEstudiante(int idE)
         {
-            int id = (int)Session["centro educativo"];
-            var centro = cnCentrosEducativos.obtenCentro(id);
-            var estudiante = cnEstudiantes.obtenEstudianteCentro(id, idE);
+            int idCE = (int)Session["centro educativo"];
+            string nomCentro = cnCentrosEducativos.obtenNombreCentro(idCE);
+            var estudiante = cnEstudiantes.obtenEstudianteCentro(idCE, idE);
             PlazosRegistro pr = cnPlazosRegistro.obtenPlazoRegistroActivo();
 
 
 
-            if (centro == null || estudiante == null || DateTime.Now  < pr.FechaIni || DateTime.Now > pr.FechaFin)
+            if (nomCentro == null || estudiante == null || DateTime.Now  < pr.FechaIni || DateTime.Now > pr.FechaFin)
             {
                 return RedirectToAction(nameof(HomeController.LoginCE), "Home");
             }
 
             var viewModel = new EstudianteViewModel
             {
-                CE = centro,
+                nombreCentro = nomCentro,
                 Estudiante = estudiante,
                 AsignaturasFase1 = cnAsignaturas.listaAsignaturasPorFase(1),
                 AsignaturasFase2 = cnAsignaturas.listaAsignaturasPorFase(2),
@@ -446,12 +463,9 @@ namespace CapaPresentacion.Controllers
                     }
                 }
             }
-            if (model.Estudiante.Diagnosticos != null) {
-                foreach (var diagnostico in model.Estudiante.Diagnosticos)
-                {
-                    cnDiagnosticos.eliminaDiagnosticoEstudiante(idE, diagnostico.IdDiagnostico);
-                }
-            }
+
+            cnDiagnosticos.eliminaDiagnosticosEstudiante(idE);
+            
 
             if (model.SelectedAdaptaciones != null)
             {

@@ -40,9 +40,9 @@ namespace CapaNegocio
             return objCD.listaDiagnosticosEstudiante(idEstudiante);
         }
 
-        public bool eliminaDiagnosticoEstudiante(int idEstudiante, int idDiagnostico) 
+        public bool eliminaDiagnosticosEstudiante(int idEstudiante) 
         { 
-            return objCD.eliminaDiagnosticoEstudiante(idEstudiante, idDiagnostico); 
+            return objCD.eliminaDiagnosticosEstudiante(idEstudiante); 
         }
 
 
