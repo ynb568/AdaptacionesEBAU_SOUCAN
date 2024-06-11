@@ -24,7 +24,7 @@ insert into Direccion (nombreDireccion, idmunicipio)
 go
 
 insert into Usuario (correo, contrasenha) --contrasenha = test
-	values ('lasEsclavas@gmail.com', '9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08');
+	values ('UC@gmail.com', '9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08');
 go
 
 insert into Sede (nombreSede) values
@@ -49,7 +49,7 @@ insert into CentroEducativo (idCE, nombreCE, idSede, telefonoCE,
 								nombreOrientador, apellidosOrientador, telefonoOrientador, correoOrientador,
 								nombreEquipoDirectivo, apellidosEquipoDirectivo, telefonoEquipoDirectivo,
 								idDireccion)
-	values (1, 'COLEGIO ESCLAVAS SCK', 1, '942222333', 
+	values (1, 'Universidad de Cantabria', 1, '942222333', 
 				'Benito', 'Martínez Toral', '678333444', 'benitomartinez@gmail.com',
 				'Mercedes', 'García Sainz', '612444555', 1);
 go

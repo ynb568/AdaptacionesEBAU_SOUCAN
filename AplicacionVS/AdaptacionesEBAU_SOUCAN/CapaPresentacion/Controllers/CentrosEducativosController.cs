@@ -79,7 +79,6 @@ namespace CapaPresentacion.Controllers
             return View(centro);
         }
         
-        //TODO: investigar como poner para mensaje de error y ok
         [HttpPost]
         public ActionResult EdicionCentro(CentroEducativo ce)
         {
@@ -150,32 +149,6 @@ namespace CapaPresentacion.Controllers
             return RedirectToAction(nameof(ControladorCentro));
         }
 
-        /// <summary>
-        /// Recupera los documentos que son cargados en el registro de estudiante.
-        /// </summary>
-        /// <param name="idE">Identificador del estudiante.</param>
-        /// <returns>Lista de documentos.</returns>
-        private List<FileUploadViewModel> InitFilesViewModel(int? idE = null)
-        {
-            var Documentos = cnDocumentos.listaDocumentos();
-            if (idE.HasValue) 
-            {
-                Documentos = cnDocumentos.listaDocumentosEstudiante(idE.Value);
-            }
-
-            var filesModel = new List<FileUploadViewModel>();
-            foreach (var d in Documentos)
-            {
-                filesModel.Add(new FileUploadViewModel 
-                {
-                    Informacion = d
-                });
-            }
-
-
-            return filesModel;
-        }
-
 
         [HttpGet]
         public ActionResult RegistroEstudiante()
@@ -203,6 +176,32 @@ namespace CapaPresentacion.Controllers
             };
 
             return View(viewModel);
+        }
+
+        /// <summary>
+        /// Recupera los documentos que son cargados en el registro de estudiante.
+        /// </summary>
+        /// <param name="idE">Identificador del estudiante.</param>
+        /// <returns>Lista de documentos.</returns>
+        private List<FileUploadViewModel> InitFilesViewModel(int? idE = null)
+        {
+            var Documentos = cnDocumentos.listaDocumentos();
+            if (idE.HasValue)
+            {
+                Documentos = cnDocumentos.listaDocumentosEstudiante(idE.Value);
+            }
+
+            var filesModel = new List<FileUploadViewModel>();
+            foreach (var d in Documentos)
+            {
+                filesModel.Add(new FileUploadViewModel
+                {
+                    Informacion = d
+                });
+            }
+
+
+            return filesModel;
         }
 
         [HttpPost]
@@ -336,7 +335,7 @@ namespace CapaPresentacion.Controllers
                     /*
                     try
                     {
-                        //System.IO.File.WriteAllBytes("PAAAAAAAAATHHHHHHHHHHHHHHH", arrayBytes);
+                        //System.IO.File.WriteAllBytes("PATH", arrayBytes);
 
                         // Guardar la ruta en la DB
 
@@ -396,7 +395,7 @@ namespace CapaPresentacion.Controllers
 
             return View(viewModel);
         }
-
+        [HttpGet]
         public ActionResult EdicionEstudiante(int idE)
         {
             int idCE = (int)Session["centro educativo"];
