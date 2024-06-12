@@ -768,7 +768,7 @@ as
 			set @Registrado = 0;
 		end catch
 	end;
-GO
+go
 
 /*
 EXEC sp_registraAdaptacionDiagnosticoEstudiante 
