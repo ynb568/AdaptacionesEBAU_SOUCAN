@@ -14,11 +14,11 @@
     </h2>
     <h2>
         Estado de la Solicitud:
-        @if (Model.Estudiante.Validado == true)
+        @if (Model.Estudiante.Validado == 1)
         {
             <span class="badge text-success">VALIDADO</span>
         }
-        else if (Model.Estudiante.Validado == false)
+        else if (Model.Estudiante.Validado == 2)
         {
             <span class="badge text-danger">RECHAZADO</span>
         }
@@ -95,11 +95,11 @@
                     @Html.DisplayFor(m => adaptacion.Adaptacion.NombreAdaptacion)
                     @Html.DisplayFor(m => adaptacion.Observaciones)
                     @Html.DisplayFor(m => adaptacion.Revision)
-                    @if (adaptacion.Validado == true)
+                    @if (adaptacion.Validado == 1)
                     {
                         <span class="badge text-bg-success">Validado</span>
                     }
-                    else if (adaptacion.Validado == false)
+                    else if (adaptacion.Validado == 2)
                     {
                         <span class="badge text-bg-danger">Rechazado</span>
                     }
@@ -118,11 +118,11 @@
 
             <div class="form-group">
                 @Html.DisplayFor(m => documento.NombreDocumento)
-                @if (documento.Validado == true)
+                @if (documento.Validado == 1)
                 {
                     <span class="badge text-bg-success">Validado</span>
                 }
-                else if (documento.Validado == false)
+                else if (documento.Validado == 2)
                 {
             <span class="badge text-bg-danger">Rechazado</span>
                 }

@@ -10,7 +10,7 @@ namespace CapaEntidad
     public class AdaptacionDiagnosticoEstudiante
     {
         public Adaptacion Adaptacion { get; set; }
-        public bool? Validado { get; set; }
+        public int Validado { get; set; }
         [DisplayName("Observaciones: ")]
         public string Observaciones { get; set; }
         [DisplayName("Observaciones de revisión: ")]

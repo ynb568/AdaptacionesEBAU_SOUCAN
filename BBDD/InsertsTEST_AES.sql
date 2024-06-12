@@ -19,6 +19,7 @@ insert into Municipio (nombreMunicipio) values
 	('Torrelavega')
 go
 
+
 insert into Direccion (nombreDireccion, idmunicipio)
 	values ('Calle Honduras 19',1);
 go
@@ -56,11 +57,11 @@ go
 
 insert into Estudiante (dniEstudiante, nombreEstudiante, ap1Estudiante, ap2Estudiante,
 							nombreCompletoTutor1, telefonoTutor1, nombreCompletoTutor2, telefonoTutor2,
-							ordinaria, extraordinaria, observaciones, validado, cursoConvocatoria, idCE)
+							ordinaria, extraordinaria, observaciones, cursoConvocatoria, idCE)
 	values ('12345678A', 'Roberto', 'Bolado', 'García',
 				'Manuel Bolado', '678555666', 'Maria Teresa García', '634666777',
 				1, 0, 'Estudiante de Segundo de Bachillerato que se presenta a la convocatoria 24-25', 
-				null, 'Curso 2024-2025 1º Cuatrimestre', 1);
+				'Curso 2024-2025 1º Cuatrimestre', 1);
 go
 
 insert into Documento (nombreDocumento) values

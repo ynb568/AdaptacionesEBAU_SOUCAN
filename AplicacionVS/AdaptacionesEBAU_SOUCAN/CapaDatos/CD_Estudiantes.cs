@@ -48,7 +48,7 @@ namespace CapaDatos
                                 FechaRegistro = Convert.ToDateTime(dr["fechaRegistro"]),
                                 Ordinaria = Convert.ToBoolean(dr["ordinaria"]),
                                 ExtraOrdinaria = Convert.ToBoolean(dr["extraordinaria"]),
-                                Validado = dr["validado"] == DBNull.Value ? (bool?)null : Convert.ToBoolean(dr["validado"]),
+                                Validado = Convert.ToInt32(dr["validado"]),
                                 Observaciones = dr["observaciones"].ToString()
                             };
 
@@ -125,7 +125,7 @@ namespace CapaDatos
                                 FechaRegistro = Convert.ToDateTime(dr["fechaRegistro"]),
                                 Ordinaria = Convert.ToBoolean(dr["ordinaria"]),
                                 ExtraOrdinaria = Convert.ToBoolean(dr["extraOrdinaria"]),
-                                Validado = dr["validado"] == DBNull.Value ? (bool?)null : Convert.ToBoolean(dr["validado"]),
+                                Validado = Convert.ToInt32(dr["validado"]),
                                 Observaciones = dr["observaciones"].ToString()
                             };
 
@@ -201,7 +201,7 @@ namespace CapaDatos
                                 FechaRegistro = Convert.ToDateTime(dr["fechaRegistro"]),
                                 Ordinaria = Convert.ToBoolean(dr["ordinaria"]),
                                 ExtraOrdinaria = Convert.ToBoolean(dr["extraOrdinaria"]),
-                                Validado = dr["validado"] == DBNull.Value ? (bool?)null : Convert.ToBoolean(dr["validado"]),
+                                Validado = Convert.ToInt32(dr["validado"]),
                                 Observaciones = dr["observaciones"].ToString()
                             };
                         }

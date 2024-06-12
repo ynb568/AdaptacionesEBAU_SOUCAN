@@ -53,7 +53,7 @@ namespace CapaEntidad
         [RegularExpression(@"^([0-9]{9})?$", ErrorMessage = "El número de teléfono debe tener exactamente 9 dígitos.")]
         [DisplayName("Teléfono Segundo Tutor (Opcional):")]
         public string TelefonoTutor2 { get; set; }
-		public bool? Validado { get; set; } // Nullable
+		public int Validado { get; set; } 
         public bool Ordinaria { get; set; }
 		public bool ExtraOrdinaria { get; set; }
 		[DisplayName("Curso Convocatoria:")]

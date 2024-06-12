@@ -42,7 +42,7 @@ namespace CapaDatos
                                         Excepcional = Convert.ToBoolean(dr["excepcional"]),
                                         DescripcionExcepcional = dr["descripcionExcepcional"].ToString()
                                     },
-                                    Validado = dr["validado"] == DBNull.Value ? (bool?)null : Convert.ToBoolean(dr["validado"]),
+                                    Validado = Convert.ToInt32(dr["validado"]),
                                     Observaciones = dr["observaciones"].ToString(),
                                     Revision = dr["revision"].ToString()
                                 }

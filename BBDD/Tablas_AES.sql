@@ -83,7 +83,7 @@ create table Estudiante (
 	ordinaria bit null,
 	extraordinaria bit null,
 	observaciones varchar(500) null,
-	validado bit null default null,
+	validado int default 0,
 	cursoConvocatoria varchar(40),
 	fechaRegistro datetime default getdate(),
 	idCE int foreign key references CentroEducativo (idCE) not null,
@@ -100,7 +100,7 @@ create table DocumentoEstudiante (
 	idEstudiante int foreign key references Estudiante(idEstudiante),
 	idDocumento int foreign key references Documento(idDocumento),
 	rutaDocumento varchar(500) null,
-	validado bit null default null
+	validado int default 0
 );
 
 create table Apunte (
@@ -159,7 +159,7 @@ create table AdaptacionDiagnosticoEstudiante (
 	idAdaptacion int foreign key references Adaptacion(idAdaptacion),
 	idDiagnostico int foreign key references Diagnostico(idDiagnostico),
 	idEstudiante int foreign key references Estudiante(idEstudiante),
-	validado bit null default null,
+	validado int default 0,
 	observaciones varchar(500) null,
 	revision varchar(500) null,
 	primary key (idAdaptacion, idDiagnostico, idEstudiante)

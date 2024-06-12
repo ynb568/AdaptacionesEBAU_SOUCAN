@@ -73,7 +73,7 @@ namespace CapaDatos
                                     IdDocumento = Convert.ToInt32(dr["idDocumento"]),
                                     NombreDocumento = dr["nombreDocumento"].ToString(),
                                     RutaDocumento = dr["rutaDocumento"].ToString(),
-                                    Validado = dr["validado"] == DBNull.Value ? (bool?)null : Convert.ToBoolean(dr["validado"])
+                                    Validado = Convert.ToInt32(dr["validado"])
                                 }
                             );
                         }
