@@ -1,0 +1,53 @@
+﻿@using CapaPresentacion.Controllers;
+@model CapaEntidad.PlazosRegistro
+@{
+    ViewBag.Title = "Menú Centro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var model = Model;
+}
+
+<h3>
+    @Html.LabelFor(m => m.CursoConvocatoria)
+</h3>
+<h3>
+    @Html.DisplayFor(m => m.CursoConvocatoria)
+    @Html.DisplayFor(m => m.FechaIni)
+    @Html.DisplayFor(m => m.FechaFin)
+</h3>
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Mensaje"]
+    </div>
+}
+@if (Model != null && DateTime.Today >= Model.FechaIni && DateTime.Today <= Model.FechaFin)
+{
+    <p>@Html.ActionLink("REGISTRAR ESTUDIANTE", nameof(CentrosEducativosController.RegistroEstudiante), "CentrosEducativos", null, new { @class = "btn btn-custom" })</p>
+}
+else
+{
+    <p><button class="btn btn-custom" disabled>REGISTRAR ESTUDIANTE</button></p>
+}
+<p>@Html.ActionLink("VER ESTUDIANTES REGISTRADOS", nameof(CentrosEducativosController.EstudiantesCentro), "CentrosEducativos", null, new { @class = "btn btn-custom" })</p>
+<p>@Html.ActionLink("EDITAR INFORMACIÓN CENTRO", nameof(CentrosEducativosController.EdicionCentro), "CentrosEducativos", null, new { @class = "btn btn-custom" })</p>
+<button type="button" class="btn btn-custom" data-toggle="modal" data-target="#cambioContrasenaModal">
+    CAMBIAR CONTRASEÑA
+</button>
+
+@Html.Partial("_CambioContrasenhaModal")
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#cambioContrasenaModal').on('show.bs.modal', function () {
+                $(this).find('input[type=password]').val('');
+            });
+        });
+    </script>
+}
+
+
+
+
+
+

@@ -1,0 +1,143 @@
+﻿@using CapaPresentacion.Controllers;
+@model CapaPresentacion.ViewModels.EstudianteViewModel
+@{
+    ViewBag.Title = "Información Estudiante";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" action="@Url.Action(nameof(CentrosEducativosController.InfoEstudiante), "CentrosEducativos")">
+    <h2>
+        @Html.DisplayFor(m => m.nombreCentro)
+    </h2>
+    <h2>
+        @Html.DisplayFor(m => m.Estudiante.CursoConvocatoria)
+    </h2>
+    <h2>
+        Estado de la Solicitud:
+        @if (Model.Estudiante.Validado == 1)
+        {
+            <span class="badge text-success">VALIDADO</span>
+        }
+        else if (Model.Estudiante.Validado == 2)
+        {
+            <span class="badge text-danger">RECHAZADO</span>
+        }
+        else
+        {
+            <span class="badge text-primary">PENDIENTE</span>
+        }
+    </h2>
+    <div class="form-group">
+
+        @Html.LabelFor(m => m.Estudiante.CursoConvocatoria)
+        @Html.DisplayFor(m => m.Estudiante.CursoConvocatoria, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Estudiante.NombreEstudiante)
+        @Html.DisplayFor(m => m.Estudiante.NombreEstudiante, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Estudiante.Ap1Estudiante)
+        @Html.DisplayFor(m => m.Estudiante.Ap1Estudiante, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Estudiante.Ap2Estudiante)
+        @Html.DisplayFor(m => m.Estudiante.Ap2Estudiante, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Estudiante.NombreCompletoTutor1)
+        @Html.DisplayFor(m => m.Estudiante.NombreCompletoTutor1, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Estudiante.TelefonoTutor1)
+        @Html.DisplayFor(m => m.Estudiante.TelefonoTutor1, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Estudiante.NombreCompletoTutor2)
+        @Html.DisplayFor(m => m.Estudiante.NombreCompletoTutor2, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Estudiante.TelefonoTutor2)
+        @Html.DisplayFor(m => m.Estudiante.TelefonoTutor2, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Estudiante.Convocatoria)
+        @Html.DisplayFor(m => m.Estudiante.Convocatoria)
+    </div>
+    <h5>ASIGNATURAS PREVISTAS A PRESENTAR EN LA EBAU</h5>
+    <div class="form-group m-3">
+        <h6>FASE 1:</h6>
+        @foreach (var asignatura in Model.Estudiante.AsignaturasPrevistas)
+        {
+            <div class="form-group">
+            @Html.DisplayFor(m => asignatura.NombreAsignatura)
+            </div> 
+        }
+        <h6>FASE 2 (Opcional):</h6>
+        @foreach (var asignatura in Model.AsignaturasFase2)
+        {
+            <div class="form-group">
+                @Html.DisplayFor(m => asignatura.NombreAsignatura)
+            </div>
+        }
+    </div>
+    <h5>DIAGNOSTICOS</h5>
+    <div class="form-group m-3">
+        @foreach (var diagnostico in Model.Estudiante.Diagnosticos)
+        {
+            <div class="form-group">
+                @Html.DisplayFor(m => diagnostico.NombreDiagnostico)
+            </div>
+            <h6 class="m-3">Adaptaciones</h6>
+            foreach (var adaptacion in diagnostico.AdaptacionesEstudiante)
+            {
+                <div class="form-group m-3">
+                    @Html.DisplayFor(m => adaptacion.Adaptacion.NombreAdaptacion)
+                    @Html.DisplayFor(m => adaptacion.Observaciones)
+                    @Html.DisplayFor(m => adaptacion.Revision)
+                    @if (adaptacion.Validado == 1)
+                    {
+                        <span class="badge text-bg-success">Validado</span>
+                    }
+                    else if (adaptacion.Validado == 2)
+                    {
+                        <span class="badge text-bg-danger">Rechazado</span>
+                    }
+                    else
+                    {
+                        <span class="badge text-bg-primary">Pendiente</span>
+                    }
+                </div>
+            }
+        }
+    </div>
+    <h5>DOCUMENTOS</h5>
+    <div class="form-group m-3">
+        @foreach (var documento in Model.Estudiante.Documentos)
+        {
+
+            <div class="form-group">
+                @Html.DisplayFor(m => documento.NombreDocumento)
+                @if (documento.Validado == 1)
+                {
+                    <span class="badge text-bg-success">Validado</span>
+                }
+                else if (documento.Validado == 2)
+                {
+            <span class="badge text-bg-danger">Rechazado</span>
+                }
+                else
+                {
+                    <span class="badge text-bg-primary">Pendiente</span>
+                }
+            </div>
+        }
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Estudiante.Observaciones)
+        @Html.DisplayFor(m => m.Estudiante.Observaciones, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <p>@Html.ActionLink("Volver", nameof(CentrosEducativosController.EstudiantesCentro), "CentrosEducativos", null, new { @class = "btn btn-custom" })</p>
+    </div>
+</form>

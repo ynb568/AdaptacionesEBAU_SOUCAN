@@ -1,0 +1,8 @@
+[ODBC]
+DRIVER=SQL Server
+UID=navay
+DATABASE=AdaptacionesEBAU_SOUCAN
+WSID=3TPC64
+APP=Microsoft Office 2016
+Trusted_Connection=Yes
+SERVER=3TPC64\SQLEXPRESS

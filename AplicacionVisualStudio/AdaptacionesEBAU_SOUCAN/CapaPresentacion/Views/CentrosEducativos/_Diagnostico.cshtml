@@ -1,0 +1,43 @@
+﻿@using HtmlHelpers.BeginCollectionItem;
+@using CapaPresentacion.Controllers;
+@model CapaEntidad.Diagnostico
+
+@using (Html.BeginCollectionItem($"Diagnosticos"))
+{
+    <div class="col-md-auto">
+        <!--CREAR LA FUNCION PARA MOSTRAR DENTRO DEL DROPDOWN LOS CAMPOS DE DESCRIPCION-->
+        @Html.DropDownListFor(m => m.SelectedAdaptacion, new SelectList(Model.Adaptaciones, "IdAdaptacion", "NombreAdaptacion"), "Seleccione select", new { @class = "form-select", id="selectAdaptacion" })
+    </div>
+    <!--
+    <div class="col-md-auto my-auto">
+        <button class="btn btn-sm btn-primary" type="button" onclick="SetAdaptacion()">
+            Añadir
+        </button>
+    </div>
+        -->
+    <div id="adaptacionesBody">
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        // Función para manejar el cambio en el desplegable de adaptaciones
+        $("#selectAdaptacion").change(function () {
+            SetAdaptacion();
+        });
+    });
+
+    function SetAdaptacion() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action(nameof(CentrosEducativosController.SetAdaptacion), "CentrosEducativos")",
+            data: {
+                idAdaptacion: $("#selectAdaptacion").val(),
+                idDiagnostico: $("#selectDiagnostico").val()
+            },
+            success: function(partialView) {
+                $("#adaptacionesBody").html(partialView);
+            }
+        })
+    }
+</script>
