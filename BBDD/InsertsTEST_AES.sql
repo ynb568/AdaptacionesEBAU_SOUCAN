@@ -171,13 +171,14 @@ insert into Adaptacion(nombreAdaptacion) values
 	('Acompañamiento por parte de una persona de referencia en el tiempo de descanso entre exámenes (es necesario facilitar un nombre y teléfono de contacto)')
 go
 
+
 insert into AdaptacionDiagnostico (idAdaptacion, idDiagnostico) values 
 	(1,1),
-	(2,1),
+	(2,2),
 	(8,1),
 	(9,1),
 	(10,1),
-	(11,1)
+	(11,2)
 go
 
 insert into AdaptacionDiagnosticoEstudiante (idAdaptacion, idDiagnostico, idEstudiante, 
